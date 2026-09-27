@@ -113,7 +113,7 @@ sagen, wohin es dort ginge, und sie entstehen in jeder Runde neu aus dem, was
 diese Ameise sieht. Eine Richtung, in der nichts Interessantes liegt, bekommt
 keine Beschreibung — das ist ehrlich, es gibt nichts darüber zu sagen.
 
-Erinnere dich an `dict.fromkeys(ways)` aus Kapitel 2: Dort standen überall
+Erinnern Sie sich an `dict.fromkeys(ways)` aus Kapitel 2: Dort standen überall
 `None`. Jetzt stehen dort Sätze. Am Typ hat sich nichts geändert.
 
 ## Eine Schwelle
@@ -216,14 +216,14 @@ fällt, sobald jemand etwas sagt. Das ist Kapitel 6.
 
 ## Ausprobieren
 
-* Sieh einer einzelnen Ameise zu, wenn eine Frucht in ihr Sichtfeld kommt.
-* Klapp die verworfenen Antworten auf. Wer verwirft — die Ameisen im Gedränge
+* Sehen Sie einer einzelnen Ameise zu, wenn eine Frucht in ihr Sichtfeld kommt.
+* Klappen Sie die verworfenen Antworten auf. Wer verwirft — die Ameisen im Gedränge
   oder die im Freien?
-* `VISION_RADIUS` auf 1 setzen. Die Kolonie wird deutlich schlechter, und die
+* Setzen Sie `VISION_RADIUS` auf 1. Die Kolonie wird deutlich schlechter, und die
   Zahl der Verwürfe steigt.
-* `VISION_RADIUS` auf 8 setzen. Wird sie besser? Und was passiert mit der
+* Setzen Sie `VISION_RADIUS` auf 8. Wird sie besser? Und was passiert mit der
   Tokenzahl?
-* `MIN_CONFIDENCE` auf 0.0 setzen: Jetzt wird jede Antwort angenommen, auch die
+* Setzen Sie `MIN_CONFIDENCE` auf 0.0: Jetzt wird jede Antwort angenommen, auch die
   geratene. Wird die Kolonie schneller oder langsamer?
-* Nimm den Satz über das Ausschwärmen aus `STEP_QUESTION` heraus und fang neu
-  an. Es lohnt sich, das einmal selbst gesehen zu haben.
+* Nehmen Sie den Satz über das Ausschwärmen aus `STEP_QUESTION` heraus und
+  fangen Sie neu an. Es lohnt sich, das einmal selbst gesehen zu haben.

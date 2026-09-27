@@ -32,8 +32,8 @@ man acht davon bedient, ohne dass eine Runde vier Sekunden dauert.
 
 **Warum nicht im Code?** Weil es Daten sind und keine Regeln. Ein zweites Level
 ist so eine zweite Datei und keine zweite Programmfassung. Und an Zahlen, die in
-einer Datei stehen, kann man folgenlos drehen — was du am Ende des Kapitels tun
-solltest.
+einer Datei stehen, kann man folgenlos drehen — was Sie am Ende des Kapitels tun
+sollten.
 
 `COLUMNS` und `ROWS` verschwinden aus dem Code; die Maße kommen jetzt von hier.
 
@@ -189,6 +189,6 @@ besser gegen etwas Helles.
   sondern eine leichte Schlagseite des Modells, wenn nichts es lenkt.
 * „Five rounds" drücken und auf die Uhr sehen — acht Ameisen mal fünf Runden
   sind vierzig Anfragen in ein paar Sekunden.
-* Ändere in `level1.json` `"ants"` auf 20 und lade neu. Nichts passiert, weil
+* Ändern Sie in `level1.json` `"ants"` auf 20 und laden Sie neu. Nichts passiert, weil
   `start()` die Kolonie nur aufstellt, wenn keine da ist. Dafür ist „Start
-  over" da — und mit zwanzig Ameisen im Bau siehst du, wie eng es wird.
+  over" da — und mit zwanzig Ameisen im Bau sehen Sie, wie eng es wird.

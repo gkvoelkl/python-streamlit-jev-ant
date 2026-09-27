@@ -1,6 +1,6 @@
 # Schritt 2 — Eine Ameise, die fragt
 
-**Ziel:** Eine Ameise steht auf dem Brett. Du drückst einen Knopf, und sie geht
+**Ziel:** Eine Ameise steht auf dem Brett. Sie drücken einen Knopf, und sie geht
 dorthin, wo **TypeSafe Jev** es sagt.
 
 Das ist der wichtigste Schritt des Tutorials, und er kommt bewusst früh. Alles,
@@ -9,13 +9,13 @@ noch davon, was die Ameise gezeigt bekommt und wie man sie fragt.
 
 ## Der Schlüssel
 
-Ab hier brauchst du einen von
+Ab hier brauchen Sie einen von
 [console.typesafe.ai/keys](https://console.typesafe.ai/keys). Zwei Wege hinein:
 
 **In eine Datei `.env` neben `app.py`:**
 
 ```
-TYPESAFE_API_KEY=dein-schlüssel
+TYPESAFE_API_KEY=ihr-schlüssel
 ```
 
 Sie gehört nicht ins Repository; in `.gitignore` steht sie schon.
@@ -42,7 +42,7 @@ Arbeitsspeicher dieser einen Sitzung: Tab zu, Schlüssel weg. `type="password"`
 im Feld macht Punkte statt Zeichen.
 
 **Was das kostet:** Eine Anfrage sind rund 350 Eingabe-Tokens, und eine Million
-davon kostet 0,042 Dollar. Du kannst dieses Kapitel hundertmal durchklicken für
+davon kostet 0,042 Dollar. Sie können dieses Kapitel hundertmal durchklicken für
 weniger als einen Cent. In Kapitel 7 rechnet das Programm selbst mit.
 
 ## Die Ameise
@@ -101,8 +101,8 @@ def free_directions(ant: dict) -> list[str]:
     return open_ways
 ```
 
-Zehn Zeilen, und sie sind der Grund, warum es dieses Spiel gibt. Merk dir die
-Funktion; sie wächst noch, aber ihre Aufgabe bleibt: **Was kann diese eine
+Zehn Zeilen, und sie sind der Grund, warum es dieses Spiel gibt. Merken Sie sich
+die Funktion; sie wächst noch, aber ihre Aufgabe bleibt: **Was kann diese eine
 Ameise gerade wirklich tun?** Vom Brett herunter ist keine Richtung.
 
 ## Die Frage
@@ -116,7 +116,7 @@ STEP_QUESTION = (
 
 Ganz oben bei den Konstanten und nicht irgendwo mitten im Code — weil das
 Umformulieren dieses Textes die **eigentliche Arbeit** an einem solchen
-Programm ist. Du wirst ihn mehrfach ändern und zusehen, wie sich die Antworten
+Programm ist. Sie werden ihn mehrfach ändern und zusehen, wie sich die Antworten
 ändern. Was man oft anfasst, soll leicht zu finden sein.
 
 ## Die Anfrage
@@ -238,7 +238,7 @@ Meine erste echte Anfrage:
 
 0,33 ist wenig. Und das ist genau richtig.
 
-Frag dich, was die Ameise weiß: Sie steht irgendwo, und sonst nichts. Sie sieht
+Fragen Sie sich, was die Ameise weiß: Sie steht irgendwo, und sonst nichts. Sie sieht
 keine Frucht, weil es noch keine gibt. Niemand hat ihr etwas gesagt. Unter
 diesen Umständen ist eine Himmelsrichtung so gut wie die andere — und das
 Modell sagt das, indem es unsicher antwortet.
@@ -254,16 +254,16 @@ schwankt hier bei jedem Schritt.
 
 Diese 0,33 sind die Zahl, gegen die der Rest des Tutorials arbeitet. Kapitel 5
 gibt der Ameise Augen, Kapitel 6 gibt der Königin eine Stimme. Beides sollte sie
-steigen lassen. Schreib sie dir auf.
+steigen lassen. Schreiben Sie sie sich auf.
 
 ## Ausprobieren
 
-* Drück mehrmals. Die Antwort schwankt — bei 0,33 Konfidenz ist das keine
+* Drücken Sie mehrmals. Die Antwort schwankt — bei 0,33 Konfidenz ist das keine
   Fehlfunktion, sondern die Aussage.
-* Lauf mit der Ameise in eine Ecke. Dort hat sie nur noch drei Möglichkeiten,
+* Laufen Sie mit der Ameise in eine Ecke. Dort hat sie nur noch drei Möglichkeiten,
   und im Diagramm sind es auch nur noch drei Balken. Das ist die Auswahl zur
   Laufzeit, in Bildern.
-* Ändere `STEP_QUESTION` in „Which way should it go? It is looking for food in
-  the north." und sieh dir die Konfidenz an.
-* Lösch ein Zeichen aus dem Schlüssel in der Seitenleiste. Du bekommst
+* Ändern Sie `STEP_QUESTION` in „Which way should it go? It is looking for food
+  in the north." und sehen Sie sich die Konfidenz an.
+* Löschen Sie ein Zeichen aus dem Schlüssel in der Seitenleiste. Sie bekommen
   `TypeSafeAuthenticationError` zu sehen statt eines Absturzes.

@@ -120,7 +120,7 @@ Sieben grüne Etiketten und ein rotes. Der Befehl ist eindeutig, die Antworten
 sind es auch — und die einzelne rote gehört zu einer Ameise, der Osten gerade
 versperrt war und die deshalb etwas anderes wählen musste.
 
-Damit kannst du im Bild lesen, was vorher eine Statistik war: **Ein klarer
+Damit können Sie im Bild lesen, was vorher eine Statistik war: **Ein klarer
 Befehl macht sichere Ameisen.** Ob er sie auch klug macht, steht auf einem
 anderen Blatt — genau diese Kolonie ist in Kapitel 6 mit einem ebenso klaren
 Befehl geschlossen in eine Ecke marschiert.
@@ -140,11 +140,11 @@ wert; man sieht trotzdem, was los ist.
 
 ## Ausprobieren
 
-* Gib einen eindeutigen Befehl („Go west") und einen vagen („Do something
+* Geben Sie einen eindeutigen Befehl („Go west") und einen vagen („Do something
   useful") und vergleiche die Farben auf dem Brett.
-* Zähle die grauen Striche pro Runde. Das ist die Verwurfsquote, nur ohne
+* Zählen Sie die grauen Striche pro Runde. Das ist die Verwurfsquote, nur ohne
   Prozentrechnung.
-* Beobachte eine einzelne Ameise über mehrere Runden. Sieht sie eine Frucht,
+* Beobachten Sie eine einzelne Ameise über mehrere Runden. Sieht sie eine Frucht,
   wird ihr Etikett grün, bevor sie dort ankommt.
-* Lass die Kosten mitlaufen und rechne hoch: Was kostet ein Brett mit 50
+* Lassen Sie die Kosten mitlaufen und rechnen Sie hoch: Was kostet ein Brett mit 50
   Ameisen und 200 Runden?

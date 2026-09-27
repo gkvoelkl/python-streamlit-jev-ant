@@ -71,15 +71,15 @@ laufen lassen, ohne einen Cent auszugeben.
 ## Warum das kein Rückfall ist
 
 Die Versuchung ist groß, denselben Würfel einspringen zu lassen, wenn eine
-Anfrage scheitert. Tu es nicht.
+Anfrage scheitert. Tun Sie es nicht.
 
 Eine Kolonie, die beim kleinsten Aussetzer auf den Zufall umschaltet, sieht
 immer gut aus — und man kann nicht mehr erkennen, welcher Teil des Verhaltens
 vom Modell kommt. Dann misst man nichts mehr, man sieht nur noch etwas laufen.
 
 Deshalb gilt weiter, was in Kapitel 5 eingebaut wurde: Eine abgelehnte Antwort
-heißt, dass diese Ameise nichts tut. Der Würfel läuft nur, wenn du ihn
-einschaltest, und dann wird das Modell überhaupt nicht gefragt.
+heißt, dass diese Ameise nichts tut. Der Würfel läuft nur, wenn Sie ihn
+einschalten, und dann wird das Modell überhaupt nicht gefragt.
 
 ## Zweihundert Läufe ohne Streamlit
 
@@ -118,7 +118,7 @@ auch. Der Abstand entsteht beim **Heimweg**. Eine tragende Ameise, der im
 Zustand steht, wo der Bau liegt, geht dorthin. Ein Würfel findet 16 von 384
 Feldern durch Herumlaufen.
 
-Merke dir den allgemeinen Teil davon: Der Nutzen lag nicht dort, wo die
+Merken Sie sich den allgemeinen Teil davon: Der Nutzen lag nicht dort, wo die
 Entscheidung schwierig aussah, sondern dort, wo eine **Information** im Zustand
 stand, die der Zufall nicht verwerten kann.
 
@@ -138,7 +138,7 @@ Zeilen Regel fassen lässt, ist ein Modell nicht die schnellere Lösung.
 
 **Der Anspruch liegt woanders.** Was die Regel nicht kann, ist: auf „Lasst die
 Früchte im Norden liegen" reagieren. Oder auf „Bleibt beieinander". Oder auf
-einen Satz, den du dir gerade erst ausgedacht hast. Dafür gibt es das Textfeld
+einen Satz, den Sie sich gerade erst ausgedacht haben. Dafür gibt es das Textfeld
 aus Kapitel 6, und dafür ist das Ganze gebaut.
 
 ## Ausprobieren
@@ -146,9 +146,9 @@ aus Kapitel 6, und dafür ist das Ganze gebaut.
 * Schalter an, „Five rounds" ein paar Dutzend Mal. Es kostet nichts, und es
   dauert. Genau das ist die Aussage.
 * Schalter aus, „Start over", einen guten Satz sagen, und mitzählen.
-* Öffne `tutorial/baseline.py` und bau die Regel ein, die oben fehlt: Frucht in
+* Öffnen Sie `tutorial/baseline.py` und bauen Sie die Regel ein, die oben fehlt: Frucht in
   Sicht → hin; tragend → heim. Wie viele Runden braucht sie?
-* Setze `RUNS` auf 20 und lass es zweimal laufen. Die Mediane werden
+* Setzen Sie `RUNS` auf 20 und lassen Sie es zweimal laufen. Die Mediane werden
   auseinanderliegen — bei dieser Streuung sagen zwanzig Läufe wenig. Das ist
   die wichtigste Lektion über Messungen in diesem Tutorial.
 
@@ -165,7 +165,7 @@ Acht Schritte, ein Spiel. Was jetzt dasteht:
 * eine Kolonie, die Früchte findet, trägt und heimbringt
 * eine Schwelle, unter der Antworten verworfen und gezählt statt versteckt
   werden, und keinen Regelfallback darunter
-* ein Textfeld, in das du einen Satz tippst, den acht Ameisen für sich lesen
+* ein Textfeld, in das Sie einen Satz tippen, den acht Ameisen für sich lesen
 * die Anzeige, an der man sieht, ob er etwas genützt hat
 * und ein Maßstab, an dem sich das alles messen lässt
 
@@ -185,5 +185,5 @@ Acht Schritte, ein Spiel. Was jetzt dasteht:
   Runden daran arbeiten lassen. Das spart den Großteil der Anfragen.
 * **Die Frage verfeinern.** Der lohnendste Punkt und der billigste: An
   `STEP_QUESTION` zu drehen kostet keine Zeile Code und ändert das Verhalten
-  der ganzen Kolonie. Du hast in Kapitel 5 gesehen, was ein einziger Satz
+  der ganzen Kolonie. Sie haben in Kapitel 5 gesehen, was ein einziger Satz
   ausmacht.

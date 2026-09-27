@@ -1,6 +1,6 @@
 # Schritt 6 — Die Königin
 
-**Ziel:** Ein Textfeld. Was du hineinschreibst, steht im Zustand jeder Ameise,
+**Ziel:** Ein Textfeld. Was Sie hineinschreiben, steht im Zustand jeder Ameise,
 und jede liest es für sich. Und: Bis der erste Satz gesagt ist, schläft die
 Kolonie und es geht keine einzige Anfrage hinaus.
 
@@ -20,7 +20,7 @@ leer": Einmal geweckt bleibt die Kolonie wach, und einen Befehl
 zurückzunehmen ist etwas anderes, als sie wieder schlafen zu legen.
 
 Warum überhaupt schlafen? Weil eine Frage vor dem ersten Befehl wenig hergibt.
-In Kapitel 2 hast du gesehen, was dabei herauskommt: Konfidenz 0,33 für eine
+In Kapitel 2 haben Sie gesehen, was dabei herauskommt: Konfidenz 0,33 für eine
 Ameise, die nichts weiß. Seit Kapitel 5 sieht sie wenigstens etwas — aber im
 Bau, wo alle stehen, sieht sie nur die anderen. Solche Anfragen kosten Geld und
 liefern Rauschen.
@@ -101,7 +101,7 @@ Dazu ein Satz in der Frage:
 > If the ant queen has said something, it applies to this ant too and comes
 > before the rest.
 
-Der Befehl wandert **unverändert** hinein. Du kannst auf Deutsch schreiben, das
+Der Befehl wandert **unverändert** hinein. Sie können auf Deutsch schreiben, das
 Modell versteht es. Die Rust-Fassung dieses Spiels hat nachgemessen: Die Wahl
 ist dieselbe, nur die Sicherheit liegt bei mehrdeutigen deutschen Sätzen etwas
 niedriger.
@@ -137,7 +137,7 @@ Sie haben getan, was man ihnen gesagt hat. Sehr entschlossen.
 
 **Die Verwurfsquote misst Entschlossenheit, nicht Richtigkeit.** Wer sie als
 Gütemaß liest, optimiert auf Befehle, die keinen Spielraum lassen — und die
-sind selten die besten. Behalte das im Kopf, wenn in Kapitel 7 alle Zahlen
+sind selten die besten. Behalten Sie das im Kopf, wenn in Kapitel 7 alle Zahlen
 nebeneinander stehen und in Kapitel 8 gemessen wird.
 
 ### Nachsteuern ist der eigentliche Spielzug
@@ -152,16 +152,18 @@ scheitert, einen besseren sagen. Nichts daran ist Programmierarbeit.
 
 ## Ausprobieren
 
-Das Feld ist die Schnittstelle — benutze sie.
+Das Feld ist die Schnittstelle — benutzen Sie sie.
 
-* Fang mit „Go west" an und sieh zu, wie wörtlich das genommen wird.
-* Sag etwas, das die Ameisen nicht wissen können, weil sie nur drei Felder
-  weit sehen: wo das Obst wirklich liegt. Nur du siehst das Brett.
-* Sag etwas Widersprüchliches („Bleibt zusammen und verteilt euch") und schau
+* Fangen Sie mit „Go west" an und sehen Sie zu, wie wörtlich das genommen wird.
+* Sagen Sie etwas, das die Ameisen nicht wissen können, weil sie nur drei Felder
+  weit sehen: wo das Obst wirklich liegt. Nur Sie sehen das Brett.
+* Sagen Sie etwas Widersprüchliches („Bleibt zusammen und verteilt euch") und
+  schauen Sie
   in die verworfenen Antworten.
-* Sag etwas auf Deutsch. Dann denselben Satz auf Englisch. Ändert sich die
+* Sagen Sie etwas auf Deutsch. Dann denselben Satz auf Englisch. Ändert sich die
   Konfidenz?
-* Drücke „Say nothing" mitten im Spiel. Die Kolonie bleibt wach und entscheidet
+* Drücken Sie „Say nothing" mitten im Spiel. Die Kolonie bleibt wach und entscheidet
   weiter für sich — sie schläft nicht wieder ein.
-* Und der Versuch, der am meisten über das Spiel verrät: Starte neu und drücke
-  sofort „Next round". Geht nicht. Die Kolonie wartet auf dich.
+* Und der Versuch, der am meisten über das Spiel verrät: Starten Sie neu und
+  drücken Sie
+  sofort „Next round". Geht nicht. Die Kolonie wartet auf Sie.

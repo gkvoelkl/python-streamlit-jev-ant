@@ -4,8 +4,8 @@
 24 Felder breit, 16 hoch. Sonst nichts.
 
 Das klingt nach wenig für einen ganzen Schritt. Es ist aber genau deshalb ein
-eigener Schritt: Wenn später etwas nicht auf dem Bildschirm erscheint, willst du
-wissen, dass es nicht am Zeichnen liegt.
+eigener Schritt: Wenn später etwas nicht auf dem Bildschirm erscheint, wollen
+Sie wissen, dass es nicht am Zeichnen liegt.
 
 ## Das Projekt anlegen
 
@@ -17,20 +17,20 @@ uv add streamlit typesafe-sdk python-dotenv
 ```
 
 `uv init --bare` legt nur eine `pyproject.toml` an und sonst nichts — kein
-Beispielprogramm, das du gleich wieder löschst. `uv add` schreibt die drei
+Beispielprogramm, das Sie gleich wieder löschen. `uv add` schreibt die drei
 Abhängigkeiten hinein und erzeugt `uv.lock` mit den genauen Versionen.
 
 `typesafe-sdk` ist die Bibliothek, mit der ab dem nächsten Kapitel gefragt
 wird, `python-dotenv` liest den Schlüssel aus einer Datei. Beide kommen jetzt
 schon mit, damit die Umgebung sich nicht mehr ändert.
 
-> **Ohne uv:** Lege eine Datei `requirements.txt` mit den drei Zeilen
+> **Ohne uv:** Legen Sie eine Datei `requirements.txt` mit den drei Zeilen
 > `streamlit`, `typesafe-sdk`, `python-dotenv` an und rufe
 > `pip install -r requirements.txt` auf.
 
 ## Die Seite
 
-Lege `app.py` an:
+Legen Sie `app.py` an:
 
 ```python
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next."""
@@ -144,6 +144,7 @@ Das kostet genau eine Kleinigkeit, gleich im nächsten Kapitel: Norden ist
 ## Ausprobieren
 
 * Das Brett ist da, dunkel kariert, 672 × 448 Pixel groß.
-* Ändere `CELL` auf 40 und lade neu — Streamlit merkt die Änderung selbst.
-* Tausche `st.image` versuchsweise gegen `st.html` und sieh dir an, wie
-  spurlos das verschwindet. Dann wieder zurück.
+* Ändern Sie `CELL` auf 40 und laden Sie neu — Streamlit merkt die Änderung
+  selbst.
+* Tauschen Sie `st.image` versuchsweise gegen `st.html` und sehen Sie sich an,
+  wie spurlos das verschwindet. Dann wieder zurück.

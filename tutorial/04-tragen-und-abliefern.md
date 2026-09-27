@@ -101,7 +101,7 @@ laufen, müssen das wissen, sonst weichen sie einem Hindernis aus, das es nicht
 mehr gibt.
 
 Die Zeile zieht aus `taken` genau die Felder ab, die dieser Aufnahmevorgang
-geleert hat. Beachte auch, dass `pick_up_and_deliver` **nach** dem Laufen
+geleert hat. Beachten Sie auch, dass `pick_up_and_deliver` **nach** dem Laufen
 aufgerufen wird, nicht davor: Was zählt, ist, wo die Ameise jetzt steht.
 
 Und aus dem `continue` von vorher wird ein `if ways:` — eine Ameise, die nicht
@@ -173,12 +173,12 @@ if five.button("Five rounds", disabled=not ready):
 
 ## Warum es so zäh ist
 
-Sieh eine Weile zu, dann siehst du das Muster: Eine Frucht ist schnell
+Sehen Sie eine Weile zu, dann sehen Sie das Muster: Eine Frucht ist schnell
 aufgenommen — acht Ameisen decken viel Fläche ab, und sie müssen nur daneben
 geraten. Zurück in den Bau zu finden, ist das Problem. Der Bau sind 16 von 384
 Feldern, und eine Ameise, die nicht weiß, wo er liegt, findet ihn nur zufällig.
 
-Du wirst fast alle Ameisen beladen herumirren sehen.
+Sie werden fast alle Ameisen beladen herumirren sehen.
 
 Das ist kein Fehler im Programm und auch keiner des Modells. Es ist eine Frage,
 die mit nichts zu beantworten ist: Im Zustand steht nicht, wo der Bau liegt, und
@@ -190,14 +190,14 @@ den Moment reicht das Gefühl.
 
 ## Ausprobieren
 
-* Drücke „Five rounds" ein paarmal. Bald tragen die meisten Ameisen eine
+* Drücken Sie „Five rounds" ein paarmal. Bald tragen die meisten Ameisen eine
   Frucht, und im Vorrat liegt kaum etwas.
-* Sieh dir eine beladene Ameise genau an: die Frucht sitzt klein über ihr.
-* Halte durch bis fünf — es dauert, und es kostet: acht Anfragen pro Runde.
-  Die Erfolgsmeldung nennt die Rundenzahl; merk sie dir für Kapitel 8.
-* Setze in `level1.json` den Bau probeweise auf `"size": 10` und drücke „Start
-  over". Mit einem riesigen Bau ist das Spiel plötzlich leicht. Das ist kein
+* Sehen Sie sich eine beladene Ameise genau an: die Frucht sitzt klein über ihr.
+* Halten Sie durch bis fünf — es dauert, und es kostet: acht Anfragen pro Runde.
+  Die Erfolgsmeldung nennt die Rundenzahl; merken Sie sie sich für Kapitel 8.
+* Setzen Sie in `level1.json` den Bau probeweise auf `"size": 10` und drücken
+  Sie „Start over". Mit einem riesigen Bau ist das Spiel plötzlich leicht. Das ist kein
   Balancing-Tipp, sondern die Bestätigung, woran es liegt: am Heimfinden.
-* Sieh dir den Zustand an, der jetzt verschickt wird — er hat zwei Zeilen
+* Sehen Sie sich den Zustand an, der jetzt verschickt wird — er hat zwei Zeilen
   bekommen (`carrying`, `in the nest`). Jede davon war eine Entscheidung. Was
   fehlt, ist alles, was die Ameise *sieht*.

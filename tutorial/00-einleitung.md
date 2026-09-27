@@ -64,7 +64,7 @@ Nach **jedem** Schritt haben Sie ein Programm, das läuft. Sie sehen immer etwas
 | 3 | Die Kolonie — acht Ameisen mit acht parallele Anfragen |
 | 4 | Tragen und abliefern — Früchte heimbringen, gewinnen |
 | 5 | Augen — Sichtfeld, bessere Optionen, eine Schwelle |
-| 6 | Die Königin — dein Satz |
+| 6 | Die Königin — Ihr Satz |
 | 7 | Zusehen — was jede Ameise gewählt hat, und was es kostet |
 | 8 | Was bringt das Modell? — der Vergleich mit einem Würfel |
 
@@ -81,7 +81,7 @@ Jeder Schritt ist im Repository ein eigener Stand:
 ```sh
 git clone https://github.com/gkvoelkl/python-streamlit-jev-ant
 cd python-streamlit-jev-ant
-git checkout step-3        # der Stand nach Schritt 3
+git checkout step-1        # der Stand nach Schritt 1
 uv run streamlit run app.py
 ```
 
@@ -89,7 +89,7 @@ Dieselben acht Stände liegen auch als einzelne Dateien unter `steps/`, falls da
 für Sie einfacher ist:
 
 ```sh
-uv run streamlit run steps/03_colony.py
+uv run streamlit run steps/01_board.py
 ```
 
 Starten Sie sie vom Wurzelverzeichnis aus — `level1.json` und `.env` werden
