@@ -1,36 +1,44 @@
-# Ameisen, die fragen
+# Wenn Ameisen Jev fragen
 
-## Ein Spiel in acht Schritten mit Python, Streamlit und TypeSafe Jev
+## Spielerisch den Umgang mit dem Modell Jev von TypSave mit Python austesten
 
-Am Ende dieses Tutorials hast du ein Spiel, das im Browser läuft und so
-funktioniert: Auf einem Brett sitzen acht Ameisen. Irgendwo liegen Früchte. Du
-bist die Königin — und das Einzige, was du tun kannst, ist **einen Satz sagen**.
+Das neuartigen Modell Jev von TypSave trifft schnelle Bewertungen und Entscheidungen, die Programme in ihren Ablauf einbauen können.
 
-Kein Klicken, keine Tasten, keine Wegpunkte. Du tippst „Holt die Früchte aus
+Das Beipspiel in diesem Tutorial ist eine Ameisen-Kolonie, die im Browser zu sehen ist. Jev steuert jede einzelne Ameisen nach den Anweisungen der Königin, die Sie sind. Die Ameisen sollen Früchte in den Bau bringen oder Hindernisse überwinden.
+
+![Das fertige Spiel: acht Ameisen auf dem Brett, über jeder steht, wofür Jev sich
+entschieden hat und wie sicher — grün bei hoher, rot bei knapper
+Zuversicht](bilder/das-spiel.png)
+
+*So sieht es am Ende von Schritt 7 aus. Über jeder Ameise steht, wofür Jev sich
+entschieden hat und wie sicher es sich war.*
+
+Kein Klicken, keine Tasten, keine Joy-Stick. Sie tippen ein „Holt die Früchte aus
 dem Norden", und jede Ameise entscheidet für sich, was das für sie bedeutet.
-Entschieden wird nicht von Regeln, die du programmiert hast, sondern von einem
-Modell: **TypeSafe Jev**. Jede Ameise stellt ihm einmal pro Runde eine Frage,
-und die Antwort ist eine von genau den Möglichkeiten, die diese eine Ameise in
-diesem Moment wirklich hat.
+Die Entscheidung trifft das Modell **TypeSafe Jev**.
 
-Der letzte Satz ist der Kern des Ganzen, deshalb gleich hier ausführlich: Das
-Programm baut die Auswahlmöglichkeiten **zur Laufzeit** aus dem, was die Ameise
-sieht. Steht keine Frucht in Sichtweite, gibt es die Antwort „hol die Frucht"
-gar nicht erst. Das Modell kann also nichts wählen, was es nicht gibt. Diese
-Eigenschaft ist der Grund, warum das Spiel existiert — und sie ist in Python in
-etwa fünfzehn Zeilen zu haben.
+Jev ist kein Chat-Modell. Es beantwortet keine Fragen in Prosa, sondern trifft
+**typisierte Entscheidungen mit kalibrierter Zuversicht** — genau das, was ein
+Programm in seinen Ablauf einbauen kann. Drei Adressen, die Sie brauchen
+werden:
 
-## Woher das kommt
+| | |
+|---|---|
+| Die Website | [typesafe.ai](https://typesafe.ai) |
+| Die Dokumentation | [docs.typesafe.ai](https://docs.typesafe.ai/introduction) |
+| Der Schlüssel | [console.typesafe.ai/keys](https://console.typesafe.ai/keys) |
 
-Es gibt dieses Spiel schon einmal, größer: als Rust-Programm mit der
-Spiele-Engine Bevy, mit Pheromonspuren, mehreren Levels und einer Planke, die
-zwei Ameisen gemeinsam tragen müssen. Diese Python-Fassung nimmt davon Level 1
-und lässt alles weg, was nicht gebraucht wird.
+/* ScreenShot von Web-Seite TypeSafe einfügen — Chrome liefert hier gerade
+   keine Screenshots; Bild bitte selbst ablegen unter
+   tutorial/bilder/typesafe-website.png, dann binde ich es ein */
 
-Das ist keine Einschränkung, sondern der Zweck: Was hier steht, ist das
-Minimum, mit dem man die Idee bauen und begreifen kann.
+Jede Ameise stellt ihm einmal pro Runde eine Frage an Jev und die Antwort ist eine von genau eine der Möglichkeiten, die diese eine Ameise in
+diesem Moment wirklich zur Auswahl hat.
 
-## Was du brauchst
+Das Programm baut die Auswahlmöglichkeiten **zur Laufzeit** aus dem, was die Ameise
+sieht. Ist keine Frucht in Sichtweite, gibt es die Antwort-Möglichkeit „hol die Frucht" nicht. 
+
+## Was Sie brauchen
 
 * **Python 3.12 oder neuer.**
 * **[uv](https://docs.astral.sh/uv/)** als Paketverwaltung. Es geht auch mit
@@ -43,42 +51,30 @@ Minimum, mit dem man die Idee bauen und begreifen kann.
 
 Kosten: Eine Anfrage sind rund 350 bis 600 Eingabe-Tokens, und eine Million
 davon kostet 0,042 Dollar. Ein komplettes Spiel — acht Ameisen, zwanzig Runden
-— liegt bei etwa **einem Fünftel-Cent**. Das Spiel rechnet ab Schritt 7 selbst
-mit. Zum Durcharbeiten des ganzen Tutorials reicht ein einstelliger Centbetrag.
+— liegt bei etwa **einem Fünftel-Cent**. Zum Durcharbeiten des ganzen Tutorials reicht wahrscheinlich ein einstelliger Centbetrag.
 
-## Die acht Schritte
+## Die acht Schritte des Tutorial
 
-Nach **jedem** Schritt hast du ein Programm, das läuft. Das ist keine
-Höflichkeit gegenüber dem Leser, sondern die einzige Art, so etwas zu bauen:
-Wenn nach jedem Schritt etwas auf dem Bildschirm steht, weißt du immer, welche
-Änderung schuld ist, wenn etwas nicht geht.
+Nach **jedem** Schritt haben Sie ein Programm, das läuft. Sie sehen immer etwas Neues auf dem Bildschirm.
 
 | Schritt | Was danach läuft |
 |---|---|
 | 1 | Das Brett — ein Gitter im Browser |
-| 2 | **Eine Ameise, die fragt** — ein Klick, eine Anfrage, ein Schritt |
-| 3 | Die Kolonie — acht Ameisen, acht parallele Anfragen |
+| 2 | **Eine Ameise, die Jev fragt** — ein Klick, eine Anfrage, ein Schritt |
+| 3 | Die Kolonie — acht Ameisen mit acht parallele Anfragen |
 | 4 | Tragen und abliefern — Früchte heimbringen, gewinnen |
 | 5 | Augen — Sichtfeld, bessere Optionen, eine Schwelle |
 | 6 | Die Königin — dein Satz |
 | 7 | Zusehen — was jede Ameise gewählt hat, und was es kostet |
 | 8 | Was bringt das Modell? — der Vergleich mit einem Würfel |
 
-Die Reihenfolge hat einen Grund. **Ab Schritt 2 entscheidet das Modell**, und
-alles danach handelt davon, was es dabei zu sehen bekommt. Erst ist die Ameise
-blind und allein; dann sind es acht; dann haben sie eine Aufgabe; dann Augen;
-dann eine Königin, die ihnen etwas sagt. Man kann bei jedem Schritt zusehen, wie
-die Konfidenz steigt, weil das Modell mehr hat, woran es sich halten kann.
+ **Ab Schritt 2 entscheidet das Modell**, und alles danach handelt davon, was es
+dabei zu sehen bekommt. 
+ 
+Erst ist die Ameise blind und allein; dann sind es acht; dann haben sie eine Aufgabe; dann können sie sehen; dann eine Königin, die ihnen etwas sagt. 
 
-Der Zufall kommt erst am Schluss, in Schritt 8 — nicht als Bauteil, sondern als
-**Maßstab**: Was hätte ein Würfel geschafft?
 
-Ein Grundsatz gilt dabei von Anfang an: **kein Rückfall auf Regeln.** Scheitert
-eine Anfrage oder ist die Antwort zu unsicher, tut die betroffene Ameise in
-dieser Runde nichts. Eine Kolonie, die ohne das Modell weiterarbeitet, würde
-genau das verstecken, was man sehen will.
-
-## Wie du den Code bekommst
+## Wie Sie den Code bekommen
 
 Jeder Schritt ist im Repository ein eigener Stand:
 
@@ -89,15 +85,15 @@ git checkout step-3        # der Stand nach Schritt 3
 uv run streamlit run app.py
 ```
 
-Dieselben acht Stände liegen auch als einzelne Dateien unter `steps/`, falls du
-mit Git nichts zu tun haben willst:
+Dieselben acht Stände liegen auch als einzelne Dateien unter `steps/`, falls das 
+für Sie einfacher ist:
 
 ```sh
 uv run streamlit run steps/03_colony.py
 ```
 
-Starte sie vom Wurzelverzeichnis aus — `level1.json` und `.env` werden dort
-gesucht, wo du das Programm aufrufst.
+Starten Sie sie vom Wurzelverzeichnis aus — `level1.json` und `.env` werden
+dort gesucht, wo Sie das Programm aufrufen.
 
-Du kannst aber genauso gut mit einer leeren Datei anfangen und mittippen. Dafür
-ist das Tutorial geschrieben.
+Sie können aber genauso gut mit einer leeren Datei anfangen und die Programme
+selbst mittippen. Dafür ist das Tutorial geschrieben.

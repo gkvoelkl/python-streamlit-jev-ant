@@ -16,6 +16,7 @@ const {
   BorderStyle,
   Document,
   HeadingLevel,
+  ImageRun,
   LevelFormat,
   Packer,
   Paragraph,
@@ -36,11 +37,50 @@ const CODE_BG = "F2F2F4";
 const CODE_SIZE = 17; // half-points, so 8.5pt — listings are wide
 const TEXT_WIDTH = 9360; // DXA, the printable width of an A4 page with 2.5cm margins
 
-// --- inline: **bold**, `code`, [text](url) -------------------------------
+// --- pictures ------------------------------------------------------------
+
+const TEXT_WIDTH_PX = 624; // the printable width in pixels at 96 dpi
+
+function pngSize(data) {
+  // The IHDR chunk is always first and always holds width and height as two
+  // big-endian 32-bit numbers. Cheaper than a dependency for one fact.
+  return { width: data.readUInt32BE(16), height: data.readUInt32BE(20) };
+}
+
+function picture(alt, src) {
+  const file = path.join(CHAPTERS, src);
+  if (!fs.existsSync(file)) {
+    console.warn(`  ! missing picture: ${src}`);
+    return new Paragraph({ children: runs(`[missing picture: ${src}]`) });
+  }
+
+  const data = fs.readFileSync(file);
+  const { width, height } = pngSize(data);
+  const scale = Math.min(1, TEXT_WIDTH_PX / width);
+
+  return new Paragraph({
+    children: [
+      new ImageRun({
+        data,
+        type: "png",
+        altText: { name: src, title: alt, description: alt },
+        transformation: {
+          width: Math.round(width * scale),
+          height: Math.round(height * scale),
+        },
+      }),
+    ],
+    alignment: AlignmentType.CENTER,
+    spacing: { before: 160, after: 80 },
+  });
+}
+
+// --- inline: **bold**, *italic*, `code`, [text](url) ---------------------
 
 function runs(text, base = {}) {
   const out = [];
-  const pattern = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
+  const pattern =
+    /(\*\*[^*]+\*\*|\*[^*\n]+\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
   let last = 0;
 
   for (const match of text.matchAll(pattern)) {
@@ -51,6 +91,8 @@ function runs(text, base = {}) {
 
     if (piece.startsWith("**")) {
       out.push(new TextRun({ text: piece.slice(2, -2), bold: true, ...base }));
+    } else if (piece.startsWith("*")) {
+      out.push(new TextRun({ text: piece.slice(1, -1), italics: true, ...base }));
     } else if (piece.startsWith("`")) {
       out.push(
         new TextRun({
@@ -166,6 +208,17 @@ function convert(markdown) {
       continue;
     }
 
+    // A working note, not content. It is left out of the document and
+    // reported on the console, so an unanswered one is noticed without
+    // ending up in front of a reader.
+    if (line.trimStart().startsWith("/*")) {
+      const note = [];
+      while (i < lines.length && !lines[i].includes("*/")) note.push(lines[i++]);
+      note.push(lines[i++] ?? "");
+      console.warn(`  ! open note: ${note.join(" ").replace(/\/\*|\*\//g, "").trim().slice(0, 70)}`);
+      continue;
+    }
+
     const heading = line.match(/^(#{1,4})\s+(.*)$/);
     if (heading) {
       const level = [
@@ -232,6 +285,7 @@ function convert(markdown) {
 
     // An ordinary paragraph: everything up to the next empty line.
     const paragraph = [];
+    const startsPicture = /^!\[/.test(lines[i]);
     while (
       i < lines.length &&
       lines[i].trim() &&
@@ -239,13 +293,25 @@ function convert(markdown) {
       !lines[i].startsWith("|") &&
       !lines[i].startsWith("```") &&
       !lines[i].startsWith(">") &&
-      !/^[*-]\s/.test(lines[i])
+      !/^[*-]\s/.test(lines[i]) &&
+      // A picture ends where its closing bracket is, whatever follows.
+      !(paragraph.length && startsPicture && /\)\s*$/.test(paragraph.at(-1)))
     ) {
       paragraph.push(lines[i++].trim());
     }
+    const text = paragraph.join(" ");
+
+    // A picture stands alone in its paragraph; the alt text may run over
+    // several lines, which is why this is matched after joining them.
+    const image = text.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (image) {
+      blocks.push(picture(image[1].replace(/\s+/g, " "), image[2]));
+      continue;
+    }
+
     blocks.push(
       new Paragraph({
-        children: runs(paragraph.join(" ")),
+        children: runs(text),
         spacing: { after: 180, line: 300 },
         alignment: AlignmentType.JUSTIFIED,
       }),
