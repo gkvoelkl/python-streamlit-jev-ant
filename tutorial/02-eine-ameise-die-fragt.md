@@ -20,10 +20,15 @@ TYPESAFE_API_KEY=ihr-schlüssel
 **Oder in die Seitenleiste** der laufenden Anwendung. Das ist der Weg für alle,
 die das Spiel später direkt im Netz benutzen: Jeder bringt seinen eigenen  Schlüssel mit.
 
-/* Screenshot der Seitenleiste mit dem Schlüsselfeld — den kann ich nicht
-   aufnehmen, das Browserfenster liefert hier keine Bilder. Bitte selbst
-   ablegen als tutorial/bilder/schluessel-seitenleiste.png, dann binde ich
-   ihn ein */
+![Die Seitenleiste mit der Überschrift „TypeSafe key", einem leeren Passwortfeld
+mit dem Hinweis „paste your key" und dem Auge zum Sichtbarmachen, darunter der
+Hinweis, dass der Schlüssel nirgends gespeichert
+wird](bilder/schluessel-seitenleiste.png)
+
+*Das Feld erscheint nur, wenn in `.env` kein Schlüssel steht — sonst zeigt die
+Seitenleiste bloß „Found in .env". Das Auge rechts macht das Eingefügte
+sichtbar, was nach einem missglückten Einfügen die einzige Möglichkeit ist,
+den Fehler zu sehen, ohne eine Anfrage dafür auszugeben.*
 
 ```python
 import os
