@@ -1,8 +1,9 @@
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next.
 
-Step 3: a colony. Eight ants instead of one, a board that comes from a file,
-and all eight asked at the same time. Nobody stands on anybody, and the answers
-are checked again when they are carried out.
+Step 4: carrying. An ant that walks past a fruit picks it up, an ant that comes
+home with one puts it in the stores, and five of them win the level. The
+colony has a job now — it is just very bad at it, because nobody has told the
+ants anything and they cannot see.
 
     uv run streamlit run app.py
 """
@@ -99,11 +100,18 @@ def start(level: dict) -> None:
 
     nest = level["nest"]
     st.session_state.ants = [
-        {"x": nest["x"] + i % nest["size"], "y": nest["y"] + i // nest["size"]}
+        {
+            "x": nest["x"] + i % nest["size"],
+            "y": nest["y"] + i // nest["size"],
+            # One fruit at a time, and which fruit it is never matters — so a
+            # flag, not an identity.
+            "carrying": False,
+        }
         for i in range(level["ants"])
     ]
     st.session_state.fruit = [tuple(cell) for cell in level["fruit"]]
     st.session_state.round = 0
+    st.session_state.stores = 0
     st.session_state.said = []
     st.session_state.failure = None
 
@@ -137,6 +145,48 @@ def free_directions(level: dict, ant: dict, taken: set[tuple[int, int]]) -> list
     return open_ways
 
 
+def in_nest(level: dict, x: int, y: int) -> bool:
+    """Is this cell part of the nest?"""
+    nest = level["nest"]
+    return (
+        nest["x"] <= x < nest["x"] + nest["size"]
+        and nest["y"] <= y < nest["y"] + nest["size"]
+    )
+
+
+def fruit_beside(ant: dict) -> tuple[int, int] | None:
+    """The first fruit on one of the eight neighbouring cells, if there is one.
+
+    Beside and not underneath: an ant never stands on a fruit, so picking one
+    up is something that happens from the next cell over.
+    """
+    for dx, dy in DIRECTIONS.values():
+        cell = (ant["x"] + dx, ant["y"] + dy)
+        if cell in st.session_state.fruit:
+            return cell
+    return None
+
+
+def pick_up_and_deliver(level: dict, ant: dict) -> None:
+    """What follows from where the ant now stands.
+
+    Neither of these is a decision the ant makes — they are consequences of
+    walking. That matters for the bill: the model is asked where an ant should
+    *go*, and picking up and putting down stay consequences. A question whose
+    answer is the same nearly every time is a request paid for and thrown away.
+    """
+    if ant["carrying"]:
+        if in_nest(level, ant["x"], ant["y"]):
+            ant["carrying"] = False
+            st.session_state.stores += 1
+        return
+
+    fruit = fruit_beside(ant)
+    if fruit is not None:
+        st.session_state.fruit.remove(fruit)
+        ant["carrying"] = True
+
+
 def question_for(level: dict, ant: dict, taken: set[tuple[int, int]]) -> tuple[dict, dict]:
     """The state and the question for one ant: everything a request needs.
 
@@ -151,7 +201,12 @@ def question_for(level: dict, ant: dict, taken: set[tuple[int, int]]) -> tuple[d
     besides.
     """
     ways = free_directions(level, ant, taken)
-    state = {"the ant is": "standing on open ground"}
+    state = {
+        "the ant is carrying": "a fruit" if ant["carrying"] else "nothing",
+        "the ant is": "in the nest"
+        if in_nest(level, ant["x"], ant["y"])
+        else "out on the board",
+    }
     choice = Choice(instructions=STEP_QUESTION, criteria=dict.fromkeys(ways))
     return state, {"step": choice}
 
@@ -208,6 +263,12 @@ def next_round(level: dict) -> None:
             ant["x"], ant["y"] = target
             taken.add(target)
 
+        # After the step, not before: a fruit picked up here is gone from
+        # `taken` for everybody who moves after this ant.
+        before = set(st.session_state.fruit)
+        pick_up_and_deliver(level, ant)
+        taken -= before - set(st.session_state.fruit)
+
     st.session_state.round += 1
 
 
@@ -219,14 +280,14 @@ def cell_disc(x: int, y: int) -> str:
     )
 
 
-def cell_text(x: int, y: int, glyph: str, size: float = 0.7) -> str:
-    """One glyph in the middle of one cell.
+def cell_text(x: int, y: int, glyph: str, size: float = 0.7, lift: float = 0.0) -> str:
+    """One glyph in a cell: middle by default, `lift` cells higher if asked.
 
     `text-anchor` and `dominant-baseline` do the centring, so no caller ever
     has to know how wide a glyph is — and emoji are all different widths.
     """
     return (
-        f'  <text x="{x * CELL + CELL / 2}" y="{y * CELL + CELL / 2}" '
+        f'  <text x="{x * CELL + CELL / 2}" y="{(y - lift) * CELL + CELL / 2}" '
         f'font-size="{CELL * size}" text-anchor="middle" '
         f'dominant-baseline="central">{glyph}</text>'
     )
@@ -251,8 +312,17 @@ def board(level: dict) -> str:
         f'fill="{NEST_FILL}" stroke="{NEST_EDGE}" stroke-width="2"/>'
     )
     fruit_svg = "\n".join(cell_text(x, y, "🍎") for x, y in st.session_state.fruit)
+    # A carried fruit is drawn small and high in the cell, so that a loaded ant
+    # can be told from an empty one across the board.
     ants_svg = "\n".join(
-        cell_disc(ant["x"], ant["y"]) + "\n" + cell_text(ant["x"], ant["y"], "🐜")
+        cell_disc(ant["x"], ant["y"])
+        + "\n"
+        + cell_text(ant["x"], ant["y"], "🐜")
+        + (
+            "\n" + cell_text(ant["x"], ant["y"], "🍎", size=0.45, lift=0.3)
+            if ant["carrying"]
+            else ""
+        )
         for ant in st.session_state.ants
     )
 
@@ -279,7 +349,7 @@ level = load_level()
 start(level)
 
 st.title("🐜 Jev Ants")
-st.caption(f"Step 3 — {level['name']}. {level['briefing']}")
+st.caption(f"Step 4 — {level['name']}. {level['briefing']}")
 
 # `st.image` and not `st.html`, which is the obvious thing to reach for and
 # silently draws nothing: it runs the string through a sanitiser that keeps
@@ -305,23 +375,37 @@ with st.sidebar:
             "Get one at console.typesafe.ai/keys."
         )
 
+won = st.session_state.stores >= level["target"]
+carried = sum(ant["carrying"] for ant in st.session_state.ants)
+
 st.write(
     f"Round **{st.session_state.round}** · "
-    f"**{len(st.session_state.ants)}** ants · "
-    f"**{len(st.session_state.fruit)}** fruits on the board"
+    f"**{st.session_state.stores}** of {level['target']} stored · "
+    f"**{carried}** carried · "
+    f"**{len(st.session_state.fruit)}** on the board"
 )
+
+if won:
+    st.success(
+        f"The stores are full — {level['target']} fruits home in "
+        f"{st.session_state.round} rounds."
+    )
 
 # Without a key nothing moves, and there is no mode that would. The game exists
 # to show what Jev decides; a board without it is an empty board.
 one, five, over = st.columns([1, 1, 5])
-if one.button("Next round", type="primary", disabled=not api_key()):
+ready = bool(api_key()) and not won
+
+if one.button("Next round", type="primary", disabled=not ready):
     with st.spinner("eight ants are asking…"):
         next_round(level)
     st.rerun()
 
-if five.button("Five rounds", disabled=not api_key()):
+if five.button("Five rounds", disabled=not ready):
     with st.spinner("asking…"):
         for _ in range(5):
+            if st.session_state.stores >= level["target"]:
+                break
             next_round(level)
     st.rerun()
 
