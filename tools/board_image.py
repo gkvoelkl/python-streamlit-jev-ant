@@ -15,6 +15,9 @@ emoji.
     --app    a different program to photograph, for the pictures a chapter
              needs of its own step: `--app steps/01_board.py`. Anything the
              chosen program has no buttons for is skipped.
+    --crop   a detail instead of the whole board, in cells: `--crop 7,3,10,9`
+             is ten by nine cells starting at (7, 3). For close-ups of the
+             nest, where a picture of the whole board says nothing.
 
 Without `--dice` it spends real requests — eight per round.
 
@@ -66,29 +69,44 @@ def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -
         button.click().run()
         return True
 
-    for _ in range(max(1, rounds // 5)):
-        # Whatever this step calls playing a round.
-        if not press("Five rounds"):
-            for _ in range(5):
-                if not (press("Next round") or press("Ask Jev for a step")):
-                    break
+    # Whatever this step calls playing a round. `--rounds 0` means none at
+    # all, which is how a picture of the starting position is taken.
+    played = 0
+    while played < rounds:
+        if rounds - played >= 5 and press("Five rounds"):
+            played += 5
+        elif press("Next round") or press("Ask Jev for a step"):
+            played += 1
+        else:
+            break
 
     # A picture is of the round that happened last, and a round in which every
     # answer was thrown away is eight grey dashes — true, but not what the
     # front of a tutorial should show. So play on, one round at a time, until
     # most of the colony has something to say.
-    if not dice and "ants" in app.session_state:
+    # Only from the step that draws labels on; before that there is nothing to
+    # wait for.
+    labelled = "ants" in app.session_state and "said" in app.session_state.ants[0]
+    if not dice and labelled:
         for _ in range(8):
             speaking = sum(ant["said"] is not None for ant in app.session_state.ants)
             if speaking >= len(app.session_state.ants) * 0.6:
                 break
             press("Next round")
 
-    if "ants" in app.session_state:
-        print(f"round {app.session_state.round}, {app.session_state.stores} stored, "
-              f"{app.session_state.requests} requests, "
-              f"{sum(a['said'] is not None for a in app.session_state.ants)} of "
-              f"{len(app.session_state.ants)} ants with a label")
+    # Reported out of whatever this step happens to keep — an early one has
+    # no stores and no requests to count.
+    kept = app.session_state
+    told = [f"round {kept.round}"] if "round" in kept else []
+    for key, label in (("stores", "stored"), ("requests", "requests")):
+        if key in kept:
+            told.append(f"{kept[key]} {label}")
+    if labelled:
+        told.append(
+            f"{sum(a['said'] is not None for a in kept.ants)} of "
+            f"{len(kept.ants)} ants with a label"
+        )
+    print(", ".join(told) or "nothing to play")
 
     return svg_of(app)
 
@@ -103,7 +121,7 @@ def svg_of(app: AppTest) -> str:
     return base64.b64decode(re.sub(r"^data:image/svg\+xml;base64,", "", source)).decode()
 
 
-def to_png(svg: str, out: Path, scale: int = 3) -> None:
+def to_png(svg: str, out: Path, scale: int = 3, crop: str | None = None) -> None:
     """SVG to PNG through QuickLook, cropped back to the board.
 
     `qlmanage` always writes into a square, with the picture in the top left
@@ -122,6 +140,16 @@ def to_png(svg: str, out: Path, scale: int = 3) -> None:
         square = Image.open(Path(work) / "board.svg.png")
         factor = square.width / width
         board = square.crop((0, 0, square.width, round(height * factor)))
+
+        if crop:
+            # In cells, because that is how the board is talked about
+            # everywhere else. CELL is 28 in the game.
+            x, y, w, h = (int(n) for n in crop.split(","))
+            cell = 28 * factor
+            board = board.crop(
+                (round(x * cell), round(y * cell), round((x + w) * cell), round((y + h) * cell))
+            )
+
         out.parent.mkdir(parents=True, exist_ok=True)
         board.save(out)
 
@@ -136,10 +164,12 @@ if __name__ == "__main__":
     parse.add_argument("--dice", action="store_true")
     parse.add_argument("--scale", type=int, default=3)
     parse.add_argument("--app", default="app.py")
+    parse.add_argument("--crop", help="x,y,w,h in cells")
     where = parse.parse_args()
 
     to_png(
         rendered_svg(where.order, where.rounds, where.dice, where.app),
         where.out if where.out.is_absolute() else ROOT / where.out,
         where.scale,
+        where.crop,
     )

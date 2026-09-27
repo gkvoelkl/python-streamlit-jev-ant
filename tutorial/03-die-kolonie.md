@@ -1,12 +1,21 @@
-# Schritt 3 — Die Kolonie
+# Schritt 3 — Die Ameisen-Kolonie
 
-**Ziel:** Acht Ameisen statt einer, ein Brett aus einer Datei, und alle acht
-werden gleichzeitig gefragt.
+**Ziel:** Acht Ameisen statt einer, das Spielfeld aus einer Datei lesen und für
+alle acht gleichzeitig einen Weg bei Jev erfragen.
 
-Das Prinzip aus Kapitel 2 bleibt unverändert. Was dazukommt, ist die Frage, wie
-man acht davon bedient, ohne dass eine Runde vier Sekunden dauert.
+![Das Brett von Schritt 3: acht Ameisen haben den Bau verlassen und verteilen
+sich, dazwischen liegen die acht Früchte](bilder/schritt-3-kolonie.png)
+
+*Nach fünf Runden. Die Früchte liegen herum, aber noch kann niemand etwas mit
+ihnen anfangen — das ist Kapitel 4.*
+
+Die Vorgehensweise aus Kapitel 2 bleibt unverändert. Was dazukommt, ist die Frage, 
+wie man acht Ameisen steuert, ohne dass eine Runde vier Sekunden dauert.
 
 ## Das Level als Datei
+
+Im ersten Level haben die Ameisen die Aufgabe möglichst ihr Futter (Früchte) in
+dem Ameisenbau zu bringen.
 
 `level1.json`:
 
@@ -30,12 +39,10 @@ man acht davon bedient, ohne dass eine Runde vier Sekunden dauert.
 }
 ```
 
-**Warum nicht im Code?** Weil es Daten sind und keine Regeln. Ein zweites Level
-ist so eine zweite Datei und keine zweite Programmfassung. Und an Zahlen, die in
-einer Datei stehen, kann man folgenlos drehen — was Sie am Ende des Kapitels tun
-sollten.
+Dies Beschreibung des Levels ist in einer Datei abgelegt, die zu Beginn das Python-Programm liest. Dadurch ist es möglich, das Spiel um beliebig viele
+Level zu erweitern.
 
-`COLUMNS` und `ROWS` verschwinden aus dem Code; die Maße kommen jetzt von hier.
+`COLUMNS` und `ROWS` verschwinden aus dem Programm, da sie aus der Level-Datei kommen. Dadurch können Level unterschiedlich groß sein.
 
 ```python
 def load_level() -> dict:
@@ -44,6 +51,12 @@ def load_level() -> dict:
 ```
 
 ## Acht Ameisen im Bau
+
+![Ausschnitt um den Bau: acht Ameisen sitzen in zwei Reihen zu vier in dem
+gelb umrandeten Quadrat](bilder/bau-start.png)
+
+*Die Startaufstellung: `i % size` und `i // size` verteilen die acht auf die
+ersten Reihen.*
 
 ```python
     nest = level["nest"]
@@ -57,12 +70,9 @@ def load_level() -> dict:
 
 `i % size` und `i // size` verteilen die acht auf die ersten Reihen des Baus.
 Dass sie dort starten, ist keine Platzierungslaune: Die Kolonie ist zu Hause und
-wartet auf einen Grund zu gehen. In Kapitel 6 wird daraus etwas Sichtbares.
+wartet auf einen Grund etwas zu unternehmen.
 
-Die Früchte liegen ab jetzt auf dem Brett, tun aber noch nichts — das ist
-Kapitel 4.
-
-## Wo steht schon jemand
+## Welches Feld ist bereits besetzt?
 
 ```python
 def taken_cells() -> set[tuple[int, int]]:
@@ -71,14 +81,13 @@ def taken_cells() -> set[tuple[int, int]]:
     )
 ```
 
-Ameisen und Früchte in **einer** Menge, weil sie für die Frage, die diese
-Funktion beantwortet, dasselbe sind: Darf hier jemand hintreten? Eine Ameise
-geht um eine Frucht herum, nicht darüber.
+Das Programm merkt sich in dem **Set taken**, auf welchem Feld (Cell) bereits eine Ameise oder eine Frucht sich befinden.
 
-Eine Menge und keine Liste, weil gleich sehr oft gefragt wird, ob ein bestimmtes
-Feld darin vorkommt.
+Ameisen und Früchte in **einer** Menge, weil sie für diese Frage beantwortet: 
 
-`free_directions` bekommt sie dazu:
+Darf hier jemand hintreten? Ist das Feld frei?
+
+`free_directions` bekommt das ****Set taken** zur Prüfung hinzu:
 
 ```python
 def free_directions(level: dict, ant: dict, taken: set[tuple[int, int]]) -> list[str]:
@@ -91,12 +100,12 @@ def free_directions(level: dict, ant: dict, taken: set[tuple[int, int]]) -> list
     return open_ways
 ```
 
-Damit ist die Auswahl, die das Modell bekommt, noch einen Schritt enger an der
-Wirklichkeit: kein Rand, und kein Feld, auf dem schon jemand steht.
+Damit ist die Auswahl, die das Modell Jev bekommt, noch einen Schritt enger an der
+Wirklichkeit: kein Rand und kein Feld, auf dem schon eine Ameise oder einen Frucht ist.
 
 ## Acht Anfragen auf einmal
 
-Hier lohnt sich `async` — und nur hier.
+An dieser Stelle lohnt sich `async`.
 
 ```python
 async def ask_everyone(payloads, key) -> list[object]:
@@ -107,9 +116,9 @@ async def ask_everyone(payloads, key) -> list[object]:
         )
 ```
 
-Acht Anfragen zu je einer halben Sekunde sind nacheinander vier Sekunden und
-nebeneinander deutlich unter einer. Gemessen: **rund 0,6 Sekunden für eine
-komplette Runde.** Eine Runde, die vier Sekunden dauert, sieht sich niemand an.
+Acht Anfragen, eine je Ameise, nacheinander zu je einer halben Sekunde sind in Summe vier Sekunden. Diese Anfragen gleichzeitg (asynchron) losgeschickt, bringen alle Anworten deutlich schneller.
+
+Gemessen: **rund 0,6 Sekunden für eine komplette Runde.** 
 
 `return_exceptions=True` sorgt dafür, dass das Pech einer Ameise nicht das der
 Kolonie ist: Eine gescheiterte Anfrage kommt als Ausnahmeobjekt zurück, statt
@@ -139,16 +148,11 @@ def next_round(level: dict) -> None:
 ```
 
 Erst **alle** fragen, dann alle handeln. Das hat eine Folge, die man leicht
-übersieht: Jede Antwort ist gegen **dasselbe** Brett entschieden worden. Zwei
-Ameisen können also dasselbe freie Feld wählen.
+übersieht: Jede Antwort wir auf Grundlage **des selben** Spielbretts entschieden 
 
-Deshalb die Prüfung `if target not in taken` beim Ausführen. Merksatz:
+Wenn zwei zufällig dasselbe Feld wählen, fängt dies die Prüfung `if target not in taken` beim Ausführen ab.
 
-> Eine Antwort ist ein Wunsch, kein Zug.
-
-Das gilt über dieses Programm hinaus. Sobald mehrere Anfragen parallel laufen,
-ist jede Antwort gegen einen Stand entschieden, der beim Eintreffen schon
-veraltet sein kann.
+> Eine Antwort ist ein Wunsch, aber noch kein Zug.
 
 ## Zeichnen
 
@@ -162,10 +166,14 @@ Der Bau bekommt eine **Umrandung** statt einer Füllung:
     )
 ```
 
-Er ist Boden wie jedes andere Feld — Ameisen laufen hindurch. Ein Klotz wäre das
-Einzige, wonach er nicht aussehen darf.
+![Derselbe Ausschnitt nach drei Runden: zwei Ameisen stehen noch im Bau, sechs
+sind heraus und stehen ringsum auf dem Boden](bilder/bau-durchlaessig.png)
 
-Und die Bewohner, Früchte als 🍎, Ameisen als 🐜 auf ihrem hellen Stein:
+*Drei Runden später. Man sieht, warum der Bau eine Umrandung und keine Füllung
+ist: Die Ameisen laufen hindurch und darüber hinaus. Ein ausgemalter Klotz sähe
+aus wie ein Hindernis.*
+
+Zur Darstellung der Spielelemente sind Emojis geeignet. Die Früchte sind 🍎 und die Ameisen sind 🐜. Die Ameisen erhalten zusätzlich einen hellen Hintergrund, damit sie auf dem Spielfeld besser zu erkennen sind.
 
 ```python
     fruit_svg = "\n".join(cell_text(x, y, "🍎") for x, y in st.session_state.fruit)
@@ -175,10 +183,7 @@ Und die Bewohner, Früchte als 🍎, Ameisen als 🐜 auf ihrem hellen Stein:
     )
 ```
 
-Emojis als Spielfiguren sind die kürzeste Lösung: keine Bilddateien, keine
-Pfade. Der helle Kreis darunter ist nötig, weil eine dunkle Ameise auf dunklem
-Boden kaum zu finden ist — und in Kapitel 7 liest sich das Etikett darüber
-besser gegen etwas Helles.
+Durch die Emojis als Spielfiguren spart man sich zusätzliche Bilddateien.
 
 ## Ausprobieren
 

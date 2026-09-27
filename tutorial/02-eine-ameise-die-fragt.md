@@ -253,8 +253,10 @@ desto kleiner wird er, bis auf 0 bei völliger Gleichverteilung.
 
 Das ist ein feiner, aber wichtiger Unterschied zu „wie sicher ist Jev, dass die
 Antwort **richtig** ist". Darüber sagt der Wert nichts. Er misst nur, wie klar
-eine Option herausragt. Ein Modell kann sich sehr klar sein und trotzdem
+eine Option herausragt. Ein Modell kann sich sehr sicher sein und trotzdem
 danebenliegen — dann ist die Konfidenz hoch und die Antwort falsch.
+
+### Konfidenz im Detail
 
 Die Dokumentation von TypeSafe gibt die Rechnung für drei Optionen an:
 `(3 × höchste Wahrscheinlichkeit − 1) ÷ 2`. Verallgemeinert, mit *n* Optionen:
@@ -275,7 +277,7 @@ heraus. 0,37 sind bei acht Möglichkeiten dreimal so viel wie Zufall, bei zwei
 Möglichkeiten dagegen weniger als die Hälfte. Genau das braucht dieses Spiel,
 denn die Zahl der Optionen ändert sich hier mit jedem Schritt.
 
-0,33 ist auf dem ersten Blich zwar wenig, aber eigentlich richtig.
+0,33 ist auf dem ersten Blick zwar wenig, aber eigentlich richtig.
 
 Fragen Sie sich, was die Ameise weiß: 
 
@@ -298,8 +300,8 @@ einem verkehrten Schritt anrichtet, ist ein verkehrter Schritt. Er kostet eine
 Runde und ist in der nächsten korrigierbar. Bei einer Überweisung oder einer
 Kündigung wären 0,9 zu niedrig.
 
-Diese 0,33 sind die Zahl, gegen die der Rest des Tutorials arbeitet. Kapitel 5
-gibt der Ameise die Möglichkeit mehr zu sehen, Kapitel 6 gibt der Königin eine Stimme. Beides sollte sie steigen lassen.
+Diese 0,33 sind die Zahl, die der Rest des Tutorials verbessern will. Kapitel 5
+gibt der Ameise die Möglichkeit mehr zu sehen, Kapitel 6 gibt der Königin eine Stimme. Beides sollte den Wert steigen lassen.
 
 ## Ausprobieren
 
@@ -310,5 +312,4 @@ gibt der Ameise die Möglichkeit mehr zu sehen, Kapitel 6 gibt der Königin eine
   Laufzeit, in Bildern.
 * Ändern Sie `STEP_QUESTION` in „Which way should it go? It is looking for food
   in the north." und sehen Sie sich die Konfidenz an.
-* Löschen Sie ein Zeichen aus dem Schlüssel in der Seitenleiste. Sie bekommen
-  `TypeSafeAuthenticationError` zu sehen statt eines Absturzes.
+
