@@ -29,14 +29,17 @@ Each step ends in a program that runs. The tags `step-1` … `step-8` are those 
 is one source of truth in practice).
 
 1. The board — a grid as SVG
-2. Colony and fruit — level 1 from JSON, drawn
-3. One round — a button, ants move, no two on a cell
-4. Carry and deliver — pick up, bring to the nest, stores, win at five
-5. The first request — `typesafe-sdk`, the key, one answer shown
-6. Jev decides — vision, options built at runtime, one `Choice` per ant
-7. The queen — a text field, and a colony that sleeps until the first order
-8. Seeing it — action and confidence per ant, a line with stores, requests, cost,
-   discarded answers
+2. One ant, and it asks — the key, one request per click, the ant moves
+3. The colony — level from JSON, eight ants, eight parallel requests
+4. Carrying and delivering — pick up, bring home, stores, win
+5. Eyes — vision, options with descriptions, the confidence floor, discards
+6. The queen — a text field, and a colony that sleeps until the first order
+7. Seeing it — action and confidence per ant, a line with stores, cost, discards
+8. What is the model worth? — a dice in the model's place, as a yardstick
+
+The model arrives in step 2 on purpose: it is what the tutorial is about, and
+everything after it is about what the model is shown and how it is asked. The
+dice is a measuring stick at the end, never a fallback.
 
 **Stop after every step** so the change can be tested by hand before the next one starts.
 
@@ -56,8 +59,9 @@ These are what make the demo a demo. Do not simplify them away.
 2. **Intents, not single steps.** Jev is asked what the ant should do, and the answer is
    carried out over more than one round where that makes sense.
 3. **No fallback.** When a request fails or the answer is rejected, that ant does nothing
-   this round. The random movement of steps 3 and 4 is *replaced* in step 6, not kept
-   underneath — a colony that worked without the model would hide what the model does.
+   this round. The dice of step 8 runs only when it is switched on by hand, and then the
+   model is not asked at all — a colony that fell back to it would hide what the model
+   does.
 4. **The colony sleeps until the queen's first order**, and no request goes out before it.
 5. **Confidence floor 0.22**, measured in the Bevy version. Note what `confidence` is: the
    distance from pure chance normalised by the number of options, not the top

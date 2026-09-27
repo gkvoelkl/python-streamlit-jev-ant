@@ -4,8 +4,9 @@ An ant colony where every ant asks [TypeSafe Jev](https://docs.typesafe.ai/intro
 what to do next. You are the queen, and your only control is a sentence.
 
 A small Python port of [rust-bevy-jev-ants](https://github.com/gkvoelkl/rust-bevy-jev-ants),
-built in eight steps — each one a program that runs. The tags `step-1` … `step-8`
-are those eight states, and `steps/` holds the same files to copy from.
+built in eight steps — each one a program that runs, and from step 2 on every
+step the ants take was decided by the model. The tags `step-1` … `step-8` are
+those eight states, and `steps/` holds the same files to copy from.
 
 ## Run it
 
@@ -17,7 +18,7 @@ uv run streamlit run app.py
 Without uv, `pip install -r requirements.txt` and then `streamlit run app.py`
 does the same thing with unpinned versions.
 
-From step 5 on you need a TypeSafe key from
+From step 2 on you need a TypeSafe key from
 [console.typesafe.ai](https://console.typesafe.ai/keys), either in `.env` as
 `TYPESAFE_API_KEY` or typed into the sidebar.
 
