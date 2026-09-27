@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="330" viewBox="0 0 520 330"
+     font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <rect width="520" height="330" fill="#1b1b21"/>
+
+  <!-- 3 x 3 Felder um die Ameise -->
+  <g stroke="#45454f" stroke-width="1">
+    <rect x="110" y="40" width="80" height="80" fill="#33333d"/>
+    <rect x="190" y="40" width="80" height="80" fill="#2b2b33"/>
+    <rect x="270" y="40" width="80" height="80" fill="#33333d"/>
+    <rect x="110" y="120" width="80" height="80" fill="#2b2b33"/>
+    <rect x="190" y="120" width="80" height="80" fill="#33333d"/>
+    <rect x="270" y="120" width="80" height="80" fill="#2b2b33"/>
+    <rect x="110" y="200" width="80" height="80" fill="#33333d"/>
+    <rect x="190" y="200" width="80" height="80" fill="#2b2b33"/>
+    <rect x="270" y="200" width="80" height="80" fill="#33333d"/>
+  </g>
+
+  <!-- die Ameise in der Mitte -->
+  <circle cx="230" cy="160" r="26" fill="#ded9cb"/>
+  <text x="230" y="160" font-size="32" text-anchor="middle" dominant-baseline="central">🐜</text>
+
+  <!-- Norden hervorgehoben -->
+  <rect x="190" y="40" width="80" height="80" fill="#7fd18b" fill-opacity="0.14"/>
+  <text x="230" y="70" fill="#7fd18b" font-size="14" text-anchor="middle" font-weight="600">north</text>
+  <text x="230" y="92" fill="#7fd18b" font-size="15" text-anchor="middle">(0, −1)</text>
+
+  <text x="150" y="70" fill="#c8ccd6" font-size="13" text-anchor="middle">north-west</text>
+  <text x="150" y="92" fill="#8b8b93" font-size="14" text-anchor="middle">(−1, −1)</text>
+  <text x="310" y="70" fill="#c8ccd6" font-size="13" text-anchor="middle">north-east</text>
+  <text x="310" y="92" fill="#8b8b93" font-size="14" text-anchor="middle">(1, −1)</text>
+
+  <text x="150" y="150" fill="#c8ccd6" font-size="13" text-anchor="middle">west</text>
+  <text x="150" y="172" fill="#8b8b93" font-size="14" text-anchor="middle">(−1, 0)</text>
+  <text x="310" y="150" fill="#c8ccd6" font-size="13" text-anchor="middle">east</text>
+  <text x="310" y="172" fill="#8b8b93" font-size="14" text-anchor="middle">(1, 0)</text>
+
+  <text x="150" y="230" fill="#c8ccd6" font-size="13" text-anchor="middle">south-west</text>
+  <text x="150" y="252" fill="#8b8b93" font-size="14" text-anchor="middle">(−1, 1)</text>
+  <text x="230" y="230" fill="#c8ccd6" font-size="13" text-anchor="middle">south</text>
+  <text x="230" y="252" fill="#8b8b93" font-size="14" text-anchor="middle">(0, 1)</text>
+  <text x="310" y="230" fill="#c8ccd6" font-size="13" text-anchor="middle">south-east</text>
+  <text x="310" y="252" fill="#8b8b93" font-size="14" text-anchor="middle">(1, 1)</text>
+
+  <text x="380" y="80" fill="#c8ccd6" font-size="14">Der Name ist für Jev,</text>
+  <text x="380" y="100" fill="#c8ccd6" font-size="14">das Zahlenpaar für</text>
+  <text x="380" y="120" fill="#c8ccd6" font-size="14">die Rechnung.</text>
+
+  <text x="380" y="168" fill="#7fd18b" font-size="14">Norden ist (0, −1),</text>
+  <text x="380" y="188" fill="#7fd18b" font-size="14">weil y nach unten</text>
+  <text x="380" y="208" fill="#7fd18b" font-size="14">zählt.</text>
+
+  <text x="110" y="305" fill="#8b8b93" font-size="14">
+    `DIRECTIONS` ist genau diese Tabelle: acht Namen, acht Versätze.
+  </text>
+</svg>

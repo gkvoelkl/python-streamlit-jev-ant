@@ -48,35 +48,47 @@ def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -
     if not app.button:
         return svg_of(app)
 
-    if dice:
+    if dice and app.toggle:
         app.toggle[0].set_value(True).run()
-    else:
+    elif not dice:
         if not (os.getenv("TYPESAFE_API_KEY") or "").strip():
             sys.exit("No TYPESAFE_API_KEY — either set one or pass --dice.")
-        app.text_input[0].set_value(order).run()
-        app.button[0].click().run()  # Say
+        # An early step has no queen to speak for, so there is no field and
+        # nothing to say.
+        if app.text_input:
+            app.text_input[0].set_value(order).run()
+            next(b for b in app.button if b.label == "Say").click().run()
 
-    def press(label: str) -> None:
-        next(b for b in app.button if b.label == label).click().run()
+    def press(label: str) -> bool:
+        button = next((b for b in app.button if b.label == label), None)
+        if button is None:
+            return False
+        button.click().run()
+        return True
 
     for _ in range(max(1, rounds // 5)):
-        press("Five rounds")
+        # Whatever this step calls playing a round.
+        if not press("Five rounds"):
+            for _ in range(5):
+                if not (press("Next round") or press("Ask Jev for a step")):
+                    break
 
     # A picture is of the round that happened last, and a round in which every
     # answer was thrown away is eight grey dashes — true, but not what the
     # front of a tutorial should show. So play on, one round at a time, until
     # most of the colony has something to say.
-    if not dice:
+    if not dice and "ants" in app.session_state:
         for _ in range(8):
             speaking = sum(ant["said"] is not None for ant in app.session_state.ants)
             if speaking >= len(app.session_state.ants) * 0.6:
                 break
             press("Next round")
 
-    print(f"round {app.session_state.round}, {app.session_state.stores} stored, "
-          f"{app.session_state.requests} requests, "
-          f"{sum(a['said'] is not None for a in app.session_state.ants)} of "
-          f"{len(app.session_state.ants)} ants with a label")
+    if "ants" in app.session_state:
+        print(f"round {app.session_state.round}, {app.session_state.stores} stored, "
+              f"{app.session_state.requests} requests, "
+              f"{sum(a['said'] is not None for a in app.session_state.ants)} of "
+              f"{len(app.session_state.ants)} ants with a label")
 
     return svg_of(app)
 

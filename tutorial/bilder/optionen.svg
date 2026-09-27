@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="360" viewBox="0 0 620 360"
+     font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="ok" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7fd18b"/>
+    </marker>
+  </defs>
+  <rect width="620" height="360" fill="#1b1b21"/>
+
+  <!-- links: mitten auf dem Brett -->
+  <text x="40" y="36" fill="#c8ccd6" font-size="16" font-weight="600">Mitten auf dem Brett</text>
+  <g stroke="#45454f" stroke-width="1">
+    <rect x="40" y="56" width="200" height="200" fill="#2b2b33"/>
+    <path d="M 40 122 h 200 M 40 189 h 200 M 106 56 v 200 M 173 56 v 200" stroke="#45454f"/>
+  </g>
+  <circle cx="140" cy="156" r="24" fill="#ded9cb"/>
+  <text x="140" y="156" font-size="30" text-anchor="middle" dominant-baseline="central">🐜</text>
+  <g stroke="#7fd18b" stroke-width="2.5" marker-end="url(#ok)">
+    <line x1="140" y1="132" x2="140" y2="96"/>
+    <line x1="140" y1="180" x2="140" y2="216"/>
+    <line x1="116" y1="156" x2="80" y2="156"/>
+    <line x1="164" y1="156" x2="200" y2="156"/>
+    <line x1="123" y1="139" x2="97" y2="113"/>
+    <line x1="157" y1="139" x2="183" y2="113"/>
+    <line x1="123" y1="173" x2="97" y2="199"/>
+    <line x1="157" y1="173" x2="183" y2="199"/>
+  </g>
+  <text x="140" y="290" fill="#7fd18b" font-size="22" text-anchor="middle" font-weight="600">8 Optionen</text>
+
+  <!-- rechts: am oberen Rand -->
+  <text x="340" y="36" fill="#c8ccd6" font-size="16" font-weight="600">Am oberen Rand</text>
+  <g stroke="#45454f" stroke-width="1">
+    <rect x="340" y="56" width="200" height="200" fill="#2b2b33"/>
+    <path d="M 340 122 h 200 M 340 189 h 200 M 406 56 v 200 M 473 56 v 200" stroke="#45454f"/>
+  </g>
+  <line x1="340" y1="56" x2="540" y2="56" stroke="#e08074" stroke-width="4"/>
+  <text x="340" y="46" fill="#e08074" font-size="13">Rand des Bretts — hier gibt es keine Felder</text>
+
+  <circle cx="440" cy="89" r="24" fill="#ded9cb"/>
+  <text x="440" y="89" font-size="30" text-anchor="middle" dominant-baseline="central">🐜</text>
+  <g stroke="#7fd18b" stroke-width="2.5" marker-end="url(#ok)">
+    <line x1="440" y1="113" x2="440" y2="149"/>
+    <line x1="416" y1="89" x2="380" y2="89"/>
+    <line x1="464" y1="89" x2="500" y2="89"/>
+    <line x1="423" y1="106" x2="397" y2="132"/>
+    <line x1="457" y1="106" x2="483" y2="132"/>
+  </g>
+  <g stroke="#e08074" stroke-width="2" opacity="0.8">
+    <line x1="428" y1="74" x2="452" y2="50"/>
+    <line x1="452" y1="74" x2="428" y2="50"/>
+    <line x1="395" y1="74" x2="419" y2="50"/>
+    <line x1="419" y1="74" x2="395" y2="50"/>
+    <line x1="461" y1="74" x2="485" y2="50"/>
+    <line x1="485" y1="74" x2="461" y2="50"/>
+  </g>
+  <text x="440" y="290" fill="#7fd18b" font-size="22" text-anchor="middle" font-weight="600">5 Optionen</text>
+
+  <text x="40" y="330" fill="#c8ccd6" font-size="15">
+    Was übrig bleibt, wird zu `criteria` — und nur daraus darf Jev wählen.
+  </text>
+  <text x="40" y="352" fill="#8b8b93" font-size="14">
+    Eine Antwort, die es nicht gibt, stand nie zur Wahl.
+  </text>
+</svg>

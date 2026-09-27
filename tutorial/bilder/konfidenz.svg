@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="450" viewBox="0 0 680 450"
+     font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <rect width="680" height="450" fill="#1b1b21"/>
+
+  <text x="40" y="32" fill="#c8ccd6" font-size="16" font-weight="600">
+    Eine echte Antwort: acht Optionen, acht Wahrscheinlichkeiten
+  </text>
+
+  <!-- der Abstand, um den es geht: über den Balken, nicht auf ihnen -->
+  <text x="417" y="56" fill="#7fd18b" font-size="13" text-anchor="middle">dieser Abstand zählt</text>
+  <line x1="295" y1="64" x2="540" y2="64" stroke="#7fd18b" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="295" y1="60" x2="295" y2="68" stroke="#7fd18b" stroke-width="1"/>
+  <line x1="540" y1="60" x2="540" y2="68" stroke="#7fd18b" stroke-width="1"/>
+
+  <!-- 1,00 entspricht 1000 px; Nulllinie bei x = 170 -->
+  <g font-size="14">
+    <rect x="170" y="80"  width="370" height="22" fill="#7fd18b"/>
+    <text x="160" y="96"  fill="#ded9cb" text-anchor="end" font-weight="600">north</text>
+    <text x="552" y="96"  fill="#7fd18b" font-weight="600">0,37</text>
+
+    <rect x="170" y="112" width="220" height="22" fill="#5b6d7a"/>
+    <text x="160" y="128" fill="#a9a9b4" text-anchor="end">east</text>
+    <text x="552" y="128" fill="#8b8b93">0,22</text>
+
+    <rect x="170" y="144" width="150" height="22" fill="#5b6d7a"/>
+    <text x="160" y="160" fill="#a9a9b4" text-anchor="end">south</text>
+    <text x="552" y="160" fill="#8b8b93">0,15</text>
+
+    <rect x="170" y="176" width="110" height="22" fill="#5b6d7a"/>
+    <text x="160" y="192" fill="#a9a9b4" text-anchor="end">west</text>
+    <text x="552" y="192" fill="#8b8b93">0,11</text>
+
+    <rect x="170" y="208" width="50" height="22" fill="#5b6d7a"/>
+    <text x="160" y="224" fill="#a9a9b4" text-anchor="end">south-west</text>
+    <text x="552" y="224" fill="#8b8b93">0,05</text>
+
+    <rect x="170" y="240" width="40" height="22" fill="#5b6d7a"/>
+    <text x="160" y="256" fill="#a9a9b4" text-anchor="end">south-east</text>
+    <text x="552" y="256" fill="#8b8b93">0,04</text>
+
+    <rect x="170" y="272" width="30" height="22" fill="#5b6d7a"/>
+    <text x="160" y="288" fill="#a9a9b4" text-anchor="end">north-west</text>
+    <text x="552" y="288" fill="#8b8b93">0,03</text>
+
+    <rect x="170" y="304" width="30" height="22" fill="#5b6d7a"/>
+    <text x="160" y="320" fill="#a9a9b4" text-anchor="end">north-east</text>
+    <text x="552" y="320" fill="#8b8b93">0,03</text>
+  </g>
+
+  <!-- die Zufallslinie -->
+  <line x1="295" y1="72" x2="295" y2="336" stroke="#c8b24a" stroke-width="2" stroke-dasharray="5 4"/>
+  <text x="295" y="356" fill="#c8b24a" font-size="13" text-anchor="middle">reiner Zufall: 1 / 8 = 0,125</text>
+
+  <text x="40" y="398" fill="#c8ccd6" font-size="15">
+    Konfidenz = (8 × 0,37 − 1) ÷ 7 = 0,29
+  </text>
+  <text x="40" y="422" fill="#8b8b93" font-size="14">
+    Allgemein: (Anzahl Optionen × höchste Wahrscheinlichkeit − 1) ÷ (Anzahl − 1).
+  </text>
+  <text x="40" y="442" fill="#8b8b93" font-size="14">
+    Gleichverteilt ergibt 0, alles auf einer Option ergibt 1.
+  </text>
+</svg>

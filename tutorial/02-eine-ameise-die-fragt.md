@@ -1,27 +1,29 @@
-# Schritt 2 — Eine Ameise, die fragt
+# Schritt 2 — Eine Ameise fragt Jev
 
-**Ziel:** Eine Ameise steht auf dem Brett. Sie drücken einen Knopf, und sie geht
-dorthin, wo **TypeSafe Jev** es sagt.
+**Ziel:** Eine Ameise steht auf dem Brett. Sie drücken einen Knopf, und die Ameise geht dorthin, wo **TypeSafe Jev** es sagt.
 
-Das ist der wichtigste Schritt des Tutorials, und er kommt bewusst früh. Alles,
-worum es geht, steht danach schon da — die sechs Kapitel danach handeln nur
-noch davon, was die Ameise gezeigt bekommt und wie man sie fragt.
+![Das Brett von Schritt 2 mit der einen Ameise, die auf dem Feld steht, auf das
+Jev sie geschickt hat](bilder/schritt-2-ameise.png)
 
-## Der Schlüssel
+*Eine Ameise, und jeder Schritt, den sie getan hat, kam von Jev.*
 
-Ab hier brauchen Sie einen von
-[console.typesafe.ai/keys](https://console.typesafe.ai/keys). Zwei Wege hinein:
+## Der API-KEY
 
-**In eine Datei `.env` neben `app.py`:**
+Anfragen bei Jev brachen Sie einen perönlichen **API-KEY**. Diesen bekommen Sie von der Web-Seite [console.typesafe.ai/keys](https://console.typesafe.ai/keys). 
+
+Entweder schreiben Sie diesen Schlüssel **in die Datei `.env`**.
 
 ```
 TYPESAFE_API_KEY=ihr-schlüssel
 ```
 
-Sie gehört nicht ins Repository; in `.gitignore` steht sie schon.
-
 **Oder in die Seitenleiste** der laufenden Anwendung. Das ist der Weg für alle,
-die das Spiel später im Netz benutzen: Jeder bringt seinen eigenen mit.
+die das Spiel später direkt im Netz benutzen: Jeder bringt seinen eigenen  Schlüssel mit.
+
+/* Screenshot der Seitenleiste mit dem Schlüsselfeld — den kann ich nicht
+   aufnehmen, das Browserfenster liefert hier keine Bilder. Bitte selbst
+   ablegen als tutorial/bilder/schluessel-seitenleiste.png, dann binde ich
+   ihn ein */
 
 ```python
 import os
@@ -36,14 +38,8 @@ def api_key() -> str:
     ).strip()
 ```
 
-Das Getippte gewinnt gegen die Datei — sonst könnte man einen veralteten
-Schlüssel in `.env` nicht übergehen. Und es liegt in `st.session_state`, also im
-Arbeitsspeicher dieser einen Sitzung: Tab zu, Schlüssel weg. `type="password"`
-im Feld macht Punkte statt Zeichen.
+Das Getippte hat Priorität gegen über der Datei `.env`
 
-**Was das kostet:** Eine Anfrage sind rund 350 Eingabe-Tokens, und eine Million
-davon kostet 0,042 Dollar. Sie können dieses Kapitel hundertmal durchklicken für
-weniger als einen Cent. In Kapitel 7 rechnet das Programm selbst mit.
 
 ## Die Ameise
 
@@ -62,10 +58,13 @@ Klick: Die Datei läuft wieder von oben nach unten durch, und alles, was in
 gewöhnlichen Variablen steht, ist weg.
 
 Was einen Klick überleben soll, muss in `st.session_state` — und darf nur
-geschrieben werden, **wenn es noch nicht da ist**. Genau das macht das
-`if "ant" in st.session_state: return`: Es verwandelt einen Neudurchlauf in ein
-Neuzeichnen statt in einen Neustart. Wer das übersieht, baut ein Spiel, das bei
-jedem Klick von vorn anfängt.
+geschrieben werden, **wenn es noch nicht da ist**. 
+
+Genau das macht
+
+`if "ant" in st.session_state: return`
+
+Es verwandelt einen Neudurchlauf in ein Neuzeichnen statt in einen Neustart. 
 
 ## Die acht Richtungen
 
@@ -84,12 +83,17 @@ DIRECTIONS = {
 
 y zählt nach unten (Kapitel 1), also ist Norden `(0, -1)`.
 
-Dass die Richtungen **Namen** haben und nicht durchnummeriert sind, ist keine
-Frage der Lesbarkeit. Diese Namen sind das, was dem Modell zur Auswahl gestellt
-wird und was es zurückgibt. `"north-east"` ist ein Wort, das ein Sprachmodell
+![Die acht Richtungen um eine Ameise herum, jede mit ihrem Namen und ihrem
+Versatz; Norden ist (0, −1), weil y nach unten
+zählt](bilder/richtungen.png)
+
+Dass die Richtungen **Namen** haben und nicht durchnummeriert sind, ist eine
+Frage der Lesbarkeit und der Kommunikaktion. Die Ameisen-Königin, der Spieler kann sagen: "Alle Ameisen bewegen sich nach Norden." Koordinaten würden hier nichts bringen.
+
+Darüber hinaus sind diese Namen das, was dem Modell Jev zur Auswahl gestellt wird und was es zurückgibt. `"north-east"` ist ein Wort, das ein Sprachmodell
 versteht; `(1, -1)` ist keines.
 
-## Was diese Ameise kann
+## Was diese Ameise aktuell tun kann
 
 ```python
 def free_directions(ant: dict) -> list[str]:
@@ -101,9 +105,14 @@ def free_directions(ant: dict) -> list[str]:
     return open_ways
 ```
 
-Zehn Zeilen, und sie sind der Grund, warum es dieses Spiel gibt. Merken Sie sich
-die Funktion; sie wächst noch, aber ihre Aufgabe bleibt: **Was kann diese eine
-Ameise gerade wirklich tun?** Vom Brett herunter ist keine Richtung.
+![Links eine Ameise mitten auf dem Brett mit acht Pfeilen, rechts dieselbe
+Ameise am oberen Rand mit nur fünf Pfeilen; drei Richtungen sind durchgestrichen,
+weil es dort keine Felder gibt](bilder/optionen.png)
+
+*Genau die grünen Pfeile werden zu `criteria`. Was durchgestrichen ist, bekommt
+Jev nie zu sehen.*
+
+Diese Funktion ermittelt, welche Nachbarfelder der Ameise frei und damit für den nächsten Schritt in Frage kommen. Zusätzlich gibt es eine Prüfung, ob nich der Rand des Spielfeldes erreicht ist.
 
 ## Die Frage
 
@@ -114,12 +123,9 @@ STEP_QUESTION = (
 )
 ```
 
-Ganz oben bei den Konstanten und nicht irgendwo mitten im Code — weil das
-Umformulieren dieses Textes die **eigentliche Arbeit** an einem solchen
-Programm ist. Sie werden ihn mehrfach ändern und zusehen, wie sich die Antworten
-ändern. Was man oft anfasst, soll leicht zu finden sein.
+Dies ist die grundsätzliche Frage, die sich bei jedem Schritt der Ameise stellt.
 
-## Die Anfrage
+## Die Anfrage an Jev
 
 ```python
 from typesafe_sdk import Choice, TypeSafeClient, TypeSafeError
@@ -137,7 +143,16 @@ def ask_jev(ant: dict) -> object:
     return client.system_one(state=state, questions=questions)
 ```
 
-Sieben Zeilen. Zwei davon sind der Kern.
+Eine Frage an Jev besteht immer aus:
+
+* **state** : Die Grundlage für Jevs Entscheidung. In diesem Beispiel die aktuelle Situation der Ameise.
+
+* **question** : Frage, die Jev beantworten soll. 
+
+Das Besondere bei Jev ist, dass er nicht wie Chat-Modelle mit Text antwortet,
+sondern man gibt ihm den Datentyp für die Antwort vor.
+
+**Choice** gibt einen Auswahl **criteria** vor, aus denen Jev eine Auswahl. Bei der Ameise sind die dies Richtungen, in die sie gehen kann.
 
 ### Die Auswahl entsteht zur Laufzeit
 
@@ -145,26 +160,18 @@ Sieben Zeilen. Zwei davon sind der Kern.
 criteria=dict.fromkeys(ways)
 ```
 
-`ways` kommt aus `free_directions`. Das ist **keine feste Liste von acht
-Richtungen**, sondern das, was diese Ameise jetzt kann. Eine Ameise am Rand
-bekommt den Rand nicht angeboten.
+`ways` kommt aus der Funktion `free_directions`. Das ist **keine feste Liste von acht Richtungen**, sondern das, was für die Ameise jetzt möglich. Eine Ameise am Rand bekommt den Rand nicht angeboten.
 
-Das Modell kann deshalb nichts Unmögliches antworten. Nicht, weil es klug genug
-wäre, es zu lassen — sondern weil das Unmögliche nie auf der Karte stand. Das
-ist gemeint, wenn von Typsicherheit die Rede ist, und es ist in Python eine
-Zeile.
+`dict.fromkeys(ways)` enthält `{"north": None, "east": None, …}`. Die Werte sind
+Beschreibungen, die man den Möglichkeiten mitgeben kann.
 
-`dict.fromkeys(ways)` baut `{"north": None, "east": None, …}`. Die Werte sind
-Beschreibungen, die man den Möglichkeiten mitgeben kann; hier sprechen die
-Namen für sich, ab Kapitel 5 werden sie gebraucht.
-
-### Der Zustand ist klein
+### Der Zustand **state** ist möglichst klein
 
 ```python
 state = {"the ant is": "standing on open ground"}
 ```
 
-Eine Angabe. Das ist keine Faulheit: Ein Zustand, der mit Unwesentlichem
+Eine Angabe. Das ist keine Faulheit: Ein Zustand **state**, der mit Unwesentlichem
 aufgefüllt ist, macht die Antwort **schlechter** — und kostet pro Wort Geld.
 Jede Zeile, die in den nächsten Kapiteln dazukommt, muss sich rechtfertigen.
 
@@ -198,16 +205,14 @@ def take_a_step() -> None:
 `answer.choices["step"]` — der Schlüssel ist derselbe, unter dem die Frage
 gestellt wurde. Darin: `choice`, `confidence` und `probabilities`.
 
-Alles, was das SDK an Unglück kennt, ist von `TypeSafeError` abgeleitet:
+Alles, was das SDK an Fehlern kennt, ist von `TypeSafeError` abgeleitet:
 falscher Schlüssel, überschrittenes Limit, Zeitüberschreitung. Der Klassenname
 steht mit in der Meldung, weil `TypeSafeAuthenticationError` etwas ganz anderes
 bedeutet als `TypeSafeRateLimitError`.
 
-**Und es gibt keinen Ersatz.** Scheitert die Anfrage, bleibt die Ameise stehen.
-Kein Zufallsschritt, keine Regel, die einspringt. Ein Spiel, das ohne das Modell
-weiterläuft, verbirgt genau das, was man sehen will.
+Scheitert die Anfrage, bleibt die Ameise stehen.
 
-## Die Antwort zeigen
+## Die Antwort zusätzlich anzeigen
 
 ```python
     chosen, sure, tokens = st.columns(3)
@@ -221,13 +226,12 @@ weiterläuft, verbirgt genau das, was man sehen will.
     )
 ```
 
-Das Balkendiagramm ist das, was man sich wirklich ansehen sollte. Eine klare
-Antwort ist ein hoher Balken; eine Ameise ohne Grund, etwas zu bevorzugen, sind
-acht ähnliche.
+Die Anworten von Jev sind zusätzlich in einem Balkendiagramm zu sehen. Eine klare
+Antwort ist ein hoher Balken.
 
-## Was herauskommt — und warum es enttäuschend aussieht
+## Eine Anwort von Jev
 
-Meine erste echte Anfrage:
+Eine Anwort auf eine echte Anfrage:
 
 | | |
 |---|---|
@@ -236,25 +240,61 @@ Meine erste echte Anfrage:
 | Konfidenz | **0,33** |
 | Eingabe-Tokens | 356 |
 
-0,33 ist wenig. Und das ist genau richtig.
+### Was Konfidenz wirklich misst
 
-Fragen Sie sich, was die Ameise weiß: Sie steht irgendwo, und sonst nichts. Sie sieht
-keine Frucht, weil es noch keine gibt. Niemand hat ihr etwas gesagt. Unter
-diesen Umständen ist eine Himmelsrichtung so gut wie die andere — und das
-Modell sagt das, indem es unsicher antwortet.
+Der Wert **Konfidenz** sagt, wie sich die Wahrscheinlichkeit über die Optionen
+verteilt: Liegt alles auf einer, ist er 1. Je gleichmäßiger sie sich verteilt,
+desto kleiner wird er, bis auf 0 bei völliger Gleichverteilung.
+
+Das ist ein feiner, aber wichtiger Unterschied zu „wie sicher ist Jev, dass die
+Antwort **richtig** ist". Darüber sagt der Wert nichts. Er misst nur, wie klar
+eine Option herausragt. Ein Modell kann sich sehr klar sein und trotzdem
+danebenliegen — dann ist die Konfidenz hoch und die Antwort falsch.
+
+Die Dokumentation von TypeSafe gibt die Rechnung für drei Optionen an:
+`(3 × höchste Wahrscheinlichkeit − 1) ÷ 2`. Verallgemeinert, mit *n* Optionen:
+
+> **Konfidenz = (n × höchste Wahrscheinlichkeit − 1) ÷ (n − 1)**
+
+An der Antwort oben nachgerechnet — acht Optionen, die höchste bei 0,37:
+`(8 × 0,37 − 1) ÷ 7 = 0,28`. Gemeldet hat Jev 0,29; der Rest ist Rundung, weil
+die Wahrscheinlichkeiten auf zwei Stellen kommen.
+
+![Die acht Wahrscheinlichkeiten einer echten Antwort als Balken, mit der Linie
+für den reinen Zufall bei 0,125 und der daraus berechneten
+Konfidenz](bilder/konfidenz.png)
+
+Der Teiler `n − 1` ist der Grund, warum man Konfidenzen **nicht** mit der
+höchsten Wahrscheinlichkeit verwechseln darf: Er rechnet die Zahl der Optionen
+heraus. 0,37 sind bei acht Möglichkeiten dreimal so viel wie Zufall, bei zwei
+Möglichkeiten dagegen weniger als die Hälfte. Genau das braucht dieses Spiel,
+denn die Zahl der Optionen ändert sich hier mit jedem Schritt.
+
+0,33 ist auf dem ersten Blich zwar wenig, aber eigentlich richtig.
+
+Fragen Sie sich, was die Ameise weiß: 
+
+Sie steht irgendwo, und sonst nichts. Sie sieht kein Ziel (z.B. eine Frucht), weil es keines gibt. Niemand hat ihr etwas gesagt. Unter diesen Umständen ist eine Himmelsrichtung so gut wie die andere — und das Modell sagt das, indem es mit einer
+Konfidenz von 0,33 antwortet.
 
 Eine hohe Konfidenz wäre hier das **schlechtere** Ergebnis: ein Modell, das sich
 sicher ist, ohne einen Grund zu haben.
 
-**Konfidenz ist nicht die höchste Wahrscheinlichkeit.** Sie misst, wie weit die
-Antwort vom reinen Zufall entfernt liegt, verrechnet mit der Zahl der
-Möglichkeiten. Bei acht Optionen ist Zufall 0,125 pro Stück. Das ist das
-richtige Maß, wenn die Zahl der Möglichkeiten von Zug zu Zug schwankt — und sie
-schwankt hier bei jedem Schritt.
+### Ab wann darf man einer Antwort folgen?
+
+TypeSafe empfiehlt drei Stufen: **unter 0,5** ist das Modell wirklich unsicher
+und man sollte nicht raten; **0,5 bis 0,9** heißt weitermachen, aber mit
+Vorsicht; **über 0,9** erst darf etwas Riskantes passieren. Welche Stufe gilt,
+hängt davon ab, was eine falsche Entscheidung anrichtet.
+
+Dieses Spiel legt die Schwelle in Kapitel 5 auf **0,22** — deutlich darunter.
+Das ist kein Widerspruch, sondern dieselbe Überlegung: Was eine Ameise mit
+einem verkehrten Schritt anrichtet, ist ein verkehrter Schritt. Er kostet eine
+Runde und ist in der nächsten korrigierbar. Bei einer Überweisung oder einer
+Kündigung wären 0,9 zu niedrig.
 
 Diese 0,33 sind die Zahl, gegen die der Rest des Tutorials arbeitet. Kapitel 5
-gibt der Ameise Augen, Kapitel 6 gibt der Königin eine Stimme. Beides sollte sie
-steigen lassen. Schreiben Sie sie sich auf.
+gibt der Ameise die Möglichkeit mehr zu sehen, Kapitel 6 gibt der Königin eine Stimme. Beides sollte sie steigen lassen.
 
 ## Ausprobieren
 
