@@ -1,0 +1,17 @@
+{
+  "name": "Fruit for the stores",
+  "briefing": "Eight ants, fruit scattered about, nothing in the way. Get five of them home.",
+
+  "columns": 24,
+  "rows": 16,
+
+  "nest": { "x": 10, "y": 6, "size": 4 },
+  "ants": 8,
+
+  "fruit": [
+    [3, 13], [5, 3], [18, 12], [20, 4],
+    [2, 7], [21, 8], [12, 1], [14, 14]
+  ],
+
+  "target": 5
+}
