@@ -28,9 +28,16 @@ werden:
 | Die Dokumentation | [docs.typesafe.ai](https://docs.typesafe.ai/introduction) |
 | Der Schlüssel | [console.typesafe.ai/keys](https://console.typesafe.ai/keys) |
 
-/* ScreenShot von Web-Seite TypeSafe einfügen — Chrome liefert hier gerade
-   keine Screenshots; Bild bitte selbst ablegen unter
-   tutorial/bilder/typesafe-website.png, dann binde ich es ein */
+![Die TypeSafe-Konsole nach der Anmeldung: links die Navigation mit Playground,
+Usage, API Keys, Billing und Documentation, rechts Beispiele für die
+Fragetypen Noul und Choice](bilder/typesafe-website.png)
+
+*Die Konsole unter [console.typesafe.ai](https://console.typesafe.ai). Den
+Schlüssel, den Sie ab Schritt 2 brauchen, holen Sie sich links unter **API
+Keys**; unter **Usage** sehen Sie später, was das Tutorial gekostet hat. Oben
+rechts im Bild stehen schon die beiden Fragetypen, um die es gehen wird:*
+`noul` *für ein Ja/Nein mit Wahrscheinlichkeit und* `choice` *für eine Auswahl
+— die zweite ist die, die jede Ameise stellt.*
 
 Jede Ameise stellt ihm einmal pro Runde eine Frage an Jev und die Antwort ist eine von genau eine der Möglichkeiten, die diese eine Ameise in
 diesem Moment wirklich zur Auswahl hat.
