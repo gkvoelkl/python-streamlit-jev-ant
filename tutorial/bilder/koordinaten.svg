@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="400" viewBox="0 0 560 400"
+     font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <pattern id="chequer" x="70" y="70" width="96" height="96" patternUnits="userSpaceOnUse">
+      <rect width="96" height="96" fill="#2b2b33"/>
+      <rect width="48" height="48" fill="#33333d"/>
+      <rect x="48" y="48" width="48" height="48" fill="#33333d"/>
+    </pattern>
+    <marker id="head" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c8b24a"/>
+    </marker>
+  </defs>
+
+  <rect width="560" height="400" fill="#1b1b21"/>
+  <rect x="70" y="70" width="384" height="240" fill="url(#chequer)"/>
+
+  <!-- die beiden Achsen -->
+  <line x1="70" y1="52" x2="446" y2="52" stroke="#c8b24a" stroke-width="2" marker-end="url(#head)"/>
+  <line x1="52" y1="70" x2="52" y2="302" stroke="#c8b24a" stroke-width="2" marker-end="url(#head)"/>
+  <text x="258" y="38" fill="#c8b24a" font-size="15" text-anchor="middle">x — nach rechts</text>
+  <text x="26" y="190" fill="#c8b24a" font-size="15" text-anchor="middle"
+        transform="rotate(-90 26 190)">y — nach unten</text>
+  <circle cx="70" cy="70" r="4" fill="#c8b24a"/>
+  <text x="62" y="64" fill="#c8b24a" font-size="14" text-anchor="end">(0, 0)</text>
+
+  <!-- Spaltennummern -->
+  <text x="94" y="64" fill="#8b8b93" font-size="13" text-anchor="middle">0</text>
+  <text x="142" y="64" fill="#8b8b93" font-size="13" text-anchor="middle">1</text>
+  <text x="190" y="64" fill="#8b8b93" font-size="13" text-anchor="middle">2</text>
+  <text x="238" y="64" fill="#8b8b93" font-size="13" text-anchor="middle">3</text>
+  <text x="286" y="64" fill="#8b8b93" font-size="13" text-anchor="middle">4</text>
+  <text x="334" y="64" fill="#ded9cb" font-size="13" text-anchor="middle" font-weight="600">5</text>
+  <text x="382" y="64" fill="#8b8b93" font-size="13" text-anchor="middle">6</text>
+  <text x="430" y="64" fill="#8b8b93" font-size="13" text-anchor="middle">7</text>
+
+  <!-- Zeilennummern -->
+  <text x="62" y="99" fill="#8b8b93" font-size="13" text-anchor="end">0</text>
+  <text x="62" y="147" fill="#8b8b93" font-size="13" text-anchor="end">1</text>
+  <text x="62" y="195" fill="#8b8b93" font-size="13" text-anchor="end">2</text>
+  <text x="62" y="243" fill="#ded9cb" font-size="13" text-anchor="end" font-weight="600">3</text>
+  <text x="62" y="291" fill="#8b8b93" font-size="13" text-anchor="end">4</text>
+
+  <!-- die vier Nachbarfelder mit ihrer Rechnung -->
+  <rect x="310" y="166" width="48" height="48" fill="#7fd18b" fill-opacity="0.13"/>
+  <text x="334" y="185" fill="#7fd18b" font-size="12" text-anchor="middle">Norden</text>
+  <text x="334" y="201" fill="#7fd18b" font-size="14" text-anchor="middle" font-weight="600">y − 1</text>
+
+  <text x="334" y="281" fill="#a9a9b4" font-size="12" text-anchor="middle">Süden</text>
+  <text x="334" y="297" fill="#a9a9b4" font-size="14" text-anchor="middle">y + 1</text>
+
+  <text x="286" y="233" fill="#a9a9b4" font-size="12" text-anchor="middle">Westen</text>
+  <text x="286" y="249" fill="#a9a9b4" font-size="14" text-anchor="middle">x − 1</text>
+
+  <text x="382" y="233" fill="#a9a9b4" font-size="12" text-anchor="middle">Osten</text>
+  <text x="382" y="249" fill="#a9a9b4" font-size="14" text-anchor="middle">x + 1</text>
+
+  <!-- die Ameise auf (5, 3) -->
+  <circle cx="334" cy="238" r="20" fill="#ded9cb"/>
+  <text x="334" y="238" font-size="26" text-anchor="middle" dominant-baseline="central">🐜</text>
+  <line x1="358" y1="226" x2="430" y2="200" stroke="#ded9cb" stroke-width="1"/>
+  <text x="436" y="197" fill="#ded9cb" font-size="15" font-weight="600">(5, 3)</text>
+  <text x="436" y="215" fill="#8b8b93" font-size="13">x = 5, y = 3</text>
+
+  <text x="70" y="345" fill="#c8ccd6" font-size="15">
+    Gezählt wird von links oben, wie SVG es tut.
+  </text>
+  <text x="70" y="368" fill="#8b8b93" font-size="14">
+    Der ganze Preis dafür steht im Bild: Norden ist oben, also y − 1.
+  </text>
+</svg>

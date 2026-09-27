@@ -1,13 +1,23 @@
 # Schritt 1 — Das Brett
 
-**Ziel:** Eine Streamlit-Seite, auf der ein Spielbrett zu sehen ist. Ein Gitter,
+**Ziel:** Eine Seite im Browser, auf der ein Spielbrett zu sehen ist. Ein Gitter,
 24 Felder breit, 16 hoch. Sonst nichts.
 
-Das klingt nach wenig für einen ganzen Schritt. Es ist aber genau deshalb ein
-eigener Schritt: Wenn später etwas nicht auf dem Bildschirm erscheint, wollen
-Sie wissen, dass es nicht am Zeichnen liegt.
+![Das Ergebnis von Schritt 1: ein dunkles Schachbrett aus 24 mal 16 Feldern im
+Browser, sonst nichts](bilder/schritt-1-brett.png)
 
-## Das Projekt anlegen
+*Mehr ist es nicht — und genau das ist der Sinn dieses Schrittes.*
+
+
+## Wenn Sie ein neues Projekt anlegen
+
+Die Bearbeitung von Python-Projekten erleichtert das Tool **uv** erheblich.
+Sie finden es unter [docs.astral.sh/uv](https://docs.astral.sh/uv/); installiert
+ist es mit einer Zeile:
+
+```sh
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
 ```sh
 mkdir python-streamlit-jev-ant
@@ -16,19 +26,18 @@ uv init --bare --name jev-ants --python 3.12
 uv add streamlit typesafe-sdk python-dotenv
 ```
 
-`uv init --bare` legt nur eine `pyproject.toml` an und sonst nichts — kein
-Beispielprogramm, das Sie gleich wieder löschen. `uv add` schreibt die drei
-Abhängigkeiten hinein und erzeugt `uv.lock` mit den genauen Versionen.
+* `uv init --bare` legt nur eine `pyproject.toml` mit der Beschreibung des
+  Projektes an.
 
-`typesafe-sdk` ist die Bibliothek, mit der ab dem nächsten Kapitel gefragt
-wird, `python-dotenv` liest den Schlüssel aus einer Datei. Beide kommen jetzt
-schon mit, damit die Umgebung sich nicht mehr ändert.
+*  `uv add` fügt die drei verwendeten Python-Module hinzu und erzeugt `uv.lock` mit den genauen Versionen.
 
-> **Ohne uv:** Legen Sie eine Datei `requirements.txt` mit den drei Zeilen
-> `streamlit`, `typesafe-sdk`, `python-dotenv` an und rufe
-> `pip install -r requirements.txt` auf.
+`streamlit` macht es möglich Browser-Oberflächen mit Python zu erstellen.
 
-## Die Seite
+`typesafe-sdk` ist die Bibliothek, die die Verbindung zum Modell Jev herstellt.
+
+`python-dotenv` liest den API-Schlüssel für Jev aus einer Datei, damit dieser nicht direkt im Programm steht.
+
+## Die erste Seite
 
 Legen Sie `app.py` an:
 
@@ -78,36 +87,32 @@ Starten:
 uv run streamlit run app.py
 ```
 
-Der Browser öffnet sich auf `http://localhost:8501` und zeigt ein dunkles
-Schachbrett.
+Der Browser öffnet sich auf `http://localhost:8501` und zeigt die Spielfläche.
 
 ## Warum SVG
 
-Das Brett besteht aus Rechtecken und später aus ein paar Zeichen darin. Genau
-dafür ist SVG da: Text, den der Browser als Bild zeichnet. Kein Canvas, keine
-Zeichenbibliothek, kein Bild, das irgendwo gespeichert werden müsste. Die
-Funktion `board()` gibt eine Zeichenkette zurück — mehr ist es nicht.
+Das Spielbrett besteht aus Quadraten und später kommen ein paar Figuren hinzu.
+Genau dafür ist SVG (**S**calable **V**ector **G**raphics, skalierbare
+Vektorgrafik) besonders geeignet: Aus Linien, Flächen und Texten Bilder im Browser zu zeichnen. SVG ist ein Teil von
+HTML, ein Text, der das Bild beschreibt.
 
-Die Alternative wären 384 einzelne HTML-Kästchen oder ein Diagramm aus
-Matplotlib. Beides geht, beides ist mehr Arbeit, und spätestens wenn über jeder
-Ameise ein kleines Etikett stehen soll (Schritt 7), ist SVG das Einfachere:
-Dort ist eine Position einfach ein Koordinatenpaar.
+Deshalb sind keine zusätzlichen JavaScript-Zeichenbibliotheken und keine
+Bilddateien nötig, die das Programm beim Start erst nachladen müsste.
+
+Die Funktion `board()` gibt eine Zeichenkette zurück — mehr ist nicht nötig.
 
 ## Warum ein `pattern` und keine Schleife
 
-Das Naheliegende wäre eine doppelte Schleife über alle 24 × 16 Felder, die für
-jedes ein `<rect>` schreibt. Stattdessen steht dort ein `<pattern>`: Zwei
-Quadrate werden **einmal** beschrieben, und der Browser wiederholt sie über die
-ganze Fläche.
+Das Naheliegende beim Erstellen des Spielfelds wäre eine doppelte Schleife über alle 24 × 16 Felder, die für jedes ein einzelnes Rechteck (in SVG `<rect>`) schreibt. 
 
-Das spart nicht nur Zeilen. Es sorgt dafür, dass ab dem nächsten Schritt jedes
-einzelne Element im SVG etwas **bedeutet** — der Bau, eine Frucht, eine Ameise.
-Der Fußboden ist eine Zeile und steht nicht mehr im Weg.
+Stattdessen verwendet das Programm ein `<pattern>`: Zwei Quadrate werden **einmal** beschrieben, und der Browser wiederholt sie über die ganze Fläche.
 
-## Stolperstein: `st.html()` zeichnet nichts
 
-Das Naheliegende für eine Zeichenkette voll SVG wäre `st.html()`. Der Aufruf
-funktioniert, wirft keinen Fehler — und auf der Seite ist **nichts** zu sehen.
+## Tipp: `st.image()` und nicht `st.html()` zum Zeichnen in Streamlit verwenden
+
+Um eine Zeichenkette mit SVG auszugeben, wäre `st.html()` das Naheliegende —
+SVG ist schließlich ein Teil von HTML. Der Aufruf funktioniert auch und wirft
+keinen Fehler, aber auf der Seite ist **nichts** zu sehen.
 
 Der Grund: Streamlit schickt die Zeichenkette durch einen Filter, der HTML
 durchlässt und SVG entfernt. Übrig bleibt ein leerer Block. Keine Meldung, kein
@@ -116,21 +121,20 @@ Eintrag in der Browserkonsole, nichts.
 Richtig ist `st.image()`. Es nimmt SVG als Zeichenkette direkt an und ist genau
 dafür gedacht.
 
-> Es gäbe noch `st.components.v1.html()`. Das funktioniert auch, packt das
-> Brett aber in einen Iframe, dessen Höhe man von Hand angeben muss — und die
-> müsste man dann jedes Mal mitpflegen, wenn das Brett sich ändert.
+## Dark Mode
 
-## Ein dunkles Thema
+Ein schwarzes Brett auf weißem Hintergrund passt nicht.
 
-Ein schwarzes Brett auf weißer Seite sieht aus wie ein Loch im Bildschirm.
-Zwei Zeilen in `.streamlit/config.toml` beheben das:
+Zwei Zeilen in `.streamlit/config.toml` der Streamlit-Konfigurationsdatei beheben das:
 
 ```toml
 [theme]
 base = "dark"
 ```
 
-Diese Datei wird nur beim Start gelesen — Streamlit also einmal neu starten.
+Diese Datei wird nur beim Start gelesen — nach einer Änderung daran also
+Streamlit neu starten. `base = "dark"` schaltet die Darstellung auf den Dark
+Mode um.
 
 ## Koordinaten: y zeigt nach unten
 
@@ -140,6 +144,13 @@ zwei Koordinatensysteme in einem Programm dieser Größe lohnen sich nicht.
 
 Das kostet genau eine Kleinigkeit, gleich im nächsten Kapitel: Norden ist
 `y - 1`.
+
+![Das Koordinatensystem: der Nullpunkt liegt links oben, x zählt nach rechts und
+y nach unten; die Ameise steht auf (5, 3), darüber liegt Norden mit y minus
+1](bilder/koordinaten.png)
+
+*Die Zahlen am Rand sind die Spalten und Zeilen. Die Ameise steht auf (5, 3);
+die vier Nachbarfelder zeigen, wie sich das rechnet.*
 
 ## Ausprobieren
 

@@ -12,6 +12,9 @@ emoji.
 
     --dice   plays with the dice instead of the model: no key, no requests, no
              cost. Good for pictures where the labels do not matter.
+    --app    a different program to photograph, for the pictures a chapter
+             needs of its own step: `--app steps/01_board.py`. Anything the
+             chosen program has no buttons for is skipped.
 
 Without `--dice` it spends real requests — eight per round.
 
@@ -34,11 +37,16 @@ from streamlit.testing.v1 import AppTest
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def rendered_svg(order: str, rounds: int, dice: bool) -> str:
+def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -> str:
     """Plays the game and returns the board as it stands afterwards."""
     os.chdir(ROOT)
-    app = AppTest.from_file(str(ROOT / "app.py"), default_timeout=120)
+    app = AppTest.from_file(str(ROOT / program), default_timeout=120)
     app.run()
+
+    # An early step has no buttons to press and nothing to play; its board is
+    # what it draws on the first run.
+    if not app.button:
+        return svg_of(app)
 
     if dice:
         app.toggle[0].set_value(True).run()
@@ -70,8 +78,15 @@ def rendered_svg(order: str, rounds: int, dice: bool) -> str:
           f"{sum(a['said'] is not None for a in app.session_state.ants)} of "
           f"{len(app.session_state.ants)} ants with a label")
 
-    # `st.image` hands the SVG to the page as a data URI; this is the same
-    # string the browser draws.
+    return svg_of(app)
+
+
+def svg_of(app: AppTest) -> str:
+    """The board out of the rendered page.
+
+    `st.image` hands the SVG to the page as a data URI; this is the same string
+    the browser draws.
+    """
     source = next(e for e in app.main if type(e).__name__ == "Image").value[0]
     return base64.b64decode(re.sub(r"^data:image/svg\+xml;base64,", "", source)).decode()
 
@@ -108,10 +123,11 @@ if __name__ == "__main__":
     parse.add_argument("--rounds", type=int, default=10)
     parse.add_argument("--dice", action="store_true")
     parse.add_argument("--scale", type=int, default=3)
+    parse.add_argument("--app", default="app.py")
     where = parse.parse_args()
 
     to_png(
-        rendered_svg(where.order, where.rounds, where.dice),
+        rendered_svg(where.order, where.rounds, where.dice, where.app),
         where.out if where.out.is_absolute() else ROOT / where.out,
         where.scale,
     )

@@ -212,9 +212,24 @@ function convert(markdown) {
     // reported on the console, so an unanswered one is noticed without
     // ending up in front of a reader.
     if (line.trimStart().startsWith("/*")) {
+      const start = i;
       const note = [];
       while (i < lines.length && !lines[i].includes("*/")) note.push(lines[i++]);
-      note.push(lines[i++] ?? "");
+
+      // A note nobody closed would otherwise swallow everything down to the
+      // next `*/` — headings, code, whole sections — and the document would
+      // come out short with nothing to say why. So it ends at the blank line
+      // instead, and says so loudly.
+      if (i >= lines.length) {
+        i = start;
+        note.length = 0;
+        while (i < lines.length && lines[i].trim()) note.push(lines[i++]);
+        console.warn(`  !! note not closed with */ at line ${start + 1} — only`
+          + ` its own paragraph was left out, check the chapter`);
+      } else {
+        note.push(lines[i++]);
+      }
+
       console.warn(`  ! open note: ${note.join(" ").replace(/\/\*|\*\//g, "").trim().slice(0, 70)}`);
       continue;
     }
