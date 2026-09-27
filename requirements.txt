@@ -1,0 +1,8 @@
+# For anyone with pip and no uv. The versions live in `pyproject.toml` and
+# `uv.lock`; these three names are the same list, unpinned and readable.
+#
+# Streamlit Community Cloud reads `uv.lock` first and never gets here, so this
+# file is for people, not for the deployment.
+streamlit
+typesafe-sdk
+python-dotenv

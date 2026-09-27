@@ -1,0 +1,4 @@
+# A dark page, because the board is dark and a bright frame around it makes
+# the game look like a hole in the screen.
+[theme]
+base = "dark"
