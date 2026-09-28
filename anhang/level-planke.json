@@ -1,0 +1,109 @@
+{
+  "name": "The plank and the river",
+  "briefing": "Fruit is piled up in the north-west corner, behind a river no ant can wade. A plank lies far to the south-east, long enough to bridge it. No ant can see both at once. Get five fruits home.",
+  "columns": 30,
+  "rows": 20,
+  "nest": {
+    "x": 13,
+    "y": 8,
+    "size": 4
+  },
+  "ants": 8,
+  "water": [
+    [
+      7,
+      0
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      7,
+      2
+    ],
+    [
+      7,
+      3
+    ],
+    [
+      7,
+      4
+    ],
+    [
+      7,
+      5
+    ],
+    [
+      7,
+      6
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      4,
+      6
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      1,
+      6
+    ],
+    [
+      0,
+      6
+    ]
+  ],
+  "fruit": [
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      2
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      6,
+      1
+    ],
+    [
+      4,
+      4
+    ]
+  ],
+  "plank": [
+    22,
+    15
+  ],
+  "target": 5
+}
