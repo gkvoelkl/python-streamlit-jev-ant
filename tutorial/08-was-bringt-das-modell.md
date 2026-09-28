@@ -176,10 +176,26 @@ Acht Schritte, ein Spiel. Was jetzt dasteht:
   — jeder bringt seinen eigenen mit. Weil Streamlit die Anfrage auf dem Server
   stellt, gibt es kein CORS-Problem; die Rust-Fassung dieses Spiels brauchte
   dafür einen eigenen Proxy.
-* **Ein zweites Level.** Eine zweite JSON-Datei, mehr braucht es nicht. In der
-  Rust-Fassung gibt es eins mit einem Fluss und einer Planke, die zwei Ameisen
-  gemeinsam tragen müssen — Koordination ohne Absprache ist der interessanteste
-  Teil des Ganzen.
+* **Ein zweites Level** liegt schon dabei: `level2.json`. Mehr als eine zweite
+  Datei war nicht nötig; gespielt wird es, indem Sie in `app.py` eine Zeile
+  ändern:
+
+  ```python
+  LEVEL_FILE = "level2.json"
+  ```
+
+  ![Level 2 zu Beginn: der Bau mit acht Ameisen unten rechts, alle acht Früchte
+  weit oben links, dazwischen ein leeres Brett](bilder/level-2.png)
+
+  Der Bau steht im Südosten, das ganze Obst im Nordwesten — 13 bis 17 Felder
+  entfernt, bei einer Sichtweite von drei. Ohne einen Satz der Königin sucht
+  die Kolonie ein leeres Brett ab. Mit „Das Obst liegt weit im Nordwesten, geht
+  dorthin" hat sie eine Richtung. Das ist dasselbe Level wie das erste, nur
+  ohne die Möglichkeit, durch Herumlaufen Glück zu haben.
+
+* **Ein Hindernis.** In der Rust-Fassung gibt es ein Level mit einem Fluss und
+  einer Planke, die zwei Ameisen gemeinsam tragen müssen — Koordination ohne
+  Absprache ist der interessanteste Teil des Ganzen.
 * **Absichten statt Einzelschritten.** Statt jede Runde „welche Richtung?" zu
   fragen, einmal „hol die Frucht im Nordosten" fragen und die Ameise mehrere
   Runden daran arbeiten lassen. Das spart den Großteil der Anfragen.

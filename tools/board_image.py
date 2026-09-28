@@ -18,6 +18,8 @@ emoji.
     --crop   a detail instead of the whole board, in cells: `--crop 7,3,10,9`
              is ten by nine cells starting at (7, 3). For close-ups of the
              nest, where a picture of the whole board says nothing.
+    --carrier  crops around the first ant that is carrying something, which is
+             otherwise a needle in a board.
 
 Without `--dice` it spends real requests — eight per round.
 
@@ -27,6 +29,7 @@ part of the game.
 
 import argparse
 import base64
+import json
 import os
 import re
 import subprocess
@@ -38,10 +41,11 @@ from PIL import Image
 from streamlit.testing.v1 import AppTest
 
 ROOT = Path(__file__).resolve().parent.parent
+LEVEL_FILE = "level1.json"
 
 
-def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -> str:
-    """Plays the game and returns the board as it stands afterwards."""
+def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py"):
+    """Plays the game and returns the board and the state it ended in."""
     os.chdir(ROOT)
     app = AppTest.from_file(str(ROOT / program), default_timeout=120)
     app.run()
@@ -49,7 +53,7 @@ def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -
     # An early step has no buttons to press and nothing to play; its board is
     # what it draws on the first run.
     if not app.button:
-        return svg_of(app)
+        return svg_of(app), app.session_state
 
     if dice and app.toggle:
         app.toggle[0].set_value(True).run()
@@ -57,8 +61,10 @@ def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -
         if not (os.getenv("TYPESAFE_API_KEY") or "").strip():
             sys.exit("No TYPESAFE_API_KEY — either set one or pass --dice.")
         # An early step has no queen to speak for, so there is no field and
-        # nothing to say.
-        if app.text_input:
+        # nothing to say — and with no rounds to play there is no point in
+        # waking the colony, which would put grey dashes over a picture of the
+        # starting position.
+        if rounds and app.text_input:
             app.text_input[0].set_value(order).run()
             next(b for b in app.button if b.label == "Say").click().run()
 
@@ -87,7 +93,9 @@ def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -
     # Only from the step that draws labels on; before that there is nothing to
     # wait for.
     labelled = "ants" in app.session_state and "said" in app.session_state.ants[0]
-    if not dice and labelled:
+    # Not when no rounds were asked for: a picture of the starting position is
+    # a picture of the starting position.
+    if rounds and not dice and labelled:
         for _ in range(8):
             speaking = sum(ant["said"] is not None for ant in app.session_state.ants)
             if speaking >= len(app.session_state.ants) * 0.6:
@@ -108,7 +116,7 @@ def rendered_svg(order: str, rounds: int, dice: bool, program: str = "app.py") -
         )
     print(", ".join(told) or "nothing to play")
 
-    return svg_of(app)
+    return svg_of(app), app.session_state
 
 
 def svg_of(app: AppTest) -> str:
@@ -165,11 +173,35 @@ if __name__ == "__main__":
     parse.add_argument("--scale", type=int, default=3)
     parse.add_argument("--app", default="app.py")
     parse.add_argument("--crop", help="x,y,w,h in cells")
+    parse.add_argument("--carrier", action="store_true",
+                       help="crop around the first ant carrying something")
     where = parse.parse_args()
 
+    svg, state = rendered_svg(where.order, where.rounds, where.dice, where.app)
+
+    crop = where.crop
+    if where.carrier:
+        carrying = [a for a in state.ants if a.get("carrying")]
+        if not carrying:
+            sys.exit("No ant is carrying anything — play more rounds.")
+        # One with room around it: at the edge the fruit on its back would be
+        # cut off, which is the one thing the picture is of.
+        level = json.loads((ROOT / LEVEL_FILE).read_text(encoding="utf-8"))
+        room = [
+            a
+            for a in carrying
+            # The fruit sits a third of a cell above the ant, so one row of
+            # margin is enough; three columns keep the crop from running off
+            # the side.
+            if 3 <= a["x"] < level["columns"] - 3 and 1 <= a["y"] < level["rows"] - 1
+        ]
+        loaded = (room or carrying)[0]
+        crop = f"{max(0, loaded['x'] - 3)},{max(0, loaded['y'] - 2)},7,5"
+        print(f"carrier at ({loaded['x']}, {loaded['y']}), cropping {crop}")
+
     to_png(
-        rendered_svg(where.order, where.rounds, where.dice, where.app),
+        svg,
         where.out if where.out.is_absolute() else ROOT / where.out,
         where.scale,
-        where.crop,
+        crop,
     )

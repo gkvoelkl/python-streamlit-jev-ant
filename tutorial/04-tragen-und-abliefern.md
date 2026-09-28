@@ -1,13 +1,19 @@
 # Schritt 4 — Tragen und abliefern
 
 **Ziel:** Eine Ameise, die an einer Frucht vorbeikommt, nimmt sie auf. Kommt sie
-damit in den Bau, wandert die Frucht in den Vorrat. Fünf Früchte gewinnen das
-Level.
+damit in den Bau, wandert die Frucht in den Vorrat. Sobald fünf Früchte im Bau sind, ist das Level gewonnen.
+
+![Das Brett von Schritt 4 nach 25 Runden: mehrere Ameisen stehen am oberen
+Rand, eine davon trägt eine Frucht, zwei sitzen im Bau, die Früchte liegen
+unberührt](bilder/schritt-4-tragen.png)
+
+*Fünfundzwanzig Runden, kein einziges Stück im Vorrat. Woran das liegt, steht
+weiter unten — und es ist aufschlussreicher, als es aussieht.*
 
 Damit ist das Spiel vollständig — es gibt ein Ziel, einen Weg dorthin und ein
-Ende. Und es ist mühsam anzusehen: Jev entscheidet zwar jeden Schritt, aber die
-Ameisen sehen nicht und niemand sagt ihnen etwas. Sie stolpern in Früchte
-und in den Bau. Genau daran arbeiten die beiden nächsten Kapitel.
+Ende. Jev entscheidet zwar jeden Schritt, aber die Ameisen sehen nicht und niemand sagt ihnen etwas. Sie stolpern in Früchte und in den Bau. 
+
+Daran arbeiten die beiden nächsten Kapitel.
 
 ## Eine Ameise trägt etwas
 
@@ -21,17 +27,17 @@ In `start()` bekommt jede Ameise ein Feld dazu:
         }
 ```
 
-Ein Wahrheitswert, keine Fruchtkennung. Eine Ameise trägt höchstens eine
-Frucht, und welche es ist, spielt nie eine Rolle — Früchte sind austauschbar.
-Das ist die Art Vereinfachung, die man treffen darf, solange sie stimmt.
+Eine Ameise trägt höchstens eine Frucht, und welche es ist, spielt nie eine
+Rolle. Daher genügt der Wahrheitswert `carrying` — eine Kennung wäre eine
+Angabe, die nie jemand liest.
 
-Dazu der Vorratszähler:
+Dazu der Vorratszähler, wie viele Früchte bereits im Bau sind:
 
 ```python
     st.session_state.stores = 0
 ```
 
-## Wo ist der Bau, wo ist Obst
+## Wo ist der Bau? Wo ist Obst?
 
 ```python
 def in_nest(level: dict, x: int, y: int) -> bool:
@@ -51,7 +57,7 @@ def fruit_beside(ant: dict) -> tuple[int, int] | None:
 ```
 
 **Daneben, nicht darunter.** Eine Ameise steht nie auf einer Frucht — das
-verhindert `taken_cells()` seit Schritt 3. Aufgenommen wird also immer vom
+verhindert `taken_cells()` seit Schritt 3. Aufgenommen wird also immer von einem
 Nachbarfeld aus. Deshalb geht `fruit_beside` die acht Richtungen durch, dieselben
 wie beim Laufen.
 
@@ -104,9 +110,12 @@ Die Zeile zieht aus `taken` genau die Felder ab, die dieser Aufnahmevorgang
 geleert hat. Beachten Sie auch, dass `pick_up_and_deliver` **nach** dem Laufen
 aufgerufen wird, nicht davor: Was zählt, ist, wo die Ameise jetzt steht.
 
-Und aus dem `continue` von vorher wird ein `if ways:` — eine Ameise, die nicht
-laufen kann, weil ringsum alles besetzt ist, kann trotzdem etwas aufnehmen
-oder abliefern.
+Ein Nebeneffekt, der später noch eine Rolle spielt: Scheitert die Anfrage einer
+Ameise, springt die Schleife mit `continue` weiter — und überspringt damit auch
+`pick_up_and_deliver`. Diese Ameise nimmt in der Runde also nicht einmal eine
+Frucht auf, neben der sie steht. Eine Ameise, die nur nicht laufen **konnte**,
+weil das Zielfeld besetzt war, nimmt dagegen auf. In Kapitel 5, wo die
+verworfenen Antworten ein eigenes Thema werden, wird das begradigt.
 
 ## Die Frucht auf dem Rücken
 
@@ -138,6 +147,13 @@ Und in `board()` bekommt eine tragende Ameise eine kleine Frucht darüber:
 Kleiner und höher, damit man beladene von leeren Ameisen über das ganze Brett
 hinweg unterscheiden kann. Genau hier zahlt sich SVG aus: „ein bisschen höher"
 ist `y - 0.3`, nicht ein CSS-Rätsel.
+
+![Nahaufnahme: zwei Ameisen nebeneinander unterhalb des Baus, die rechte trägt
+eine kleine Frucht auf dem Rücken](bilder/ameise-mit-frucht.png)
+
+*Links leer, rechts beladen, darüber die gelbe Kante des Baus. Der Unterschied
+muss über das ganze Brett hinweg erkennbar sein, nicht nur in der
+Nahaufnahme.*
 
 ## Vorrat und Sieg
 
@@ -173,31 +189,52 @@ if five.button("Five rounds", disabled=not ready):
 
 ## Warum es so zäh ist
 
-Sehen Sie eine Weile zu, dann sehen Sie das Muster: Eine Frucht ist schnell
-aufgenommen — acht Ameisen decken viel Fläche ab, und sie müssen nur daneben
-geraten. Zurück in den Bau zu finden, ist das Problem. Der Bau sind 16 von 384
-Feldern, und eine Ameise, die nicht weiß, wo er liegt, findet ihn nur zufällig.
+Eine Frucht ist schnell aufgenommen — acht Ameisen decken viel Fläche ab, und
+sie müssen nur daneben geraten. Zurück in den Bau zu finden, ist das Problem.
+Der Bau sind 16 von 384 Feldern, und eine Ameise, die nicht weiß, wo er liegt,
+findet ihn nur durch Zufall.
 
-Sie werden fast alle Ameisen beladen herumirren sehen.
+Beim Zusehen kommt aber noch etwas heraus, das ich nicht erwartet hatte. Nach
+fünfundzwanzig Runden stand die Kolonie so da:
 
-Das ist kein Fehler im Programm und auch keiner des Modells. Es ist eine Frage,
-die mit nichts zu beantworten ist: Im Zustand steht nicht, wo der Bau liegt, und
-im Sichtfeld — das es noch gar nicht gibt — auch nicht. **Kapitel 5 gibt der
-Ameise Augen**, und dort wird aus dem Herumirren ein Heimweg.
+```
+Ameise 1: (17,  0)        Ameise 5: (14,  0)
+Ameise 2: ( 6,  0) trägt  Ameise 6: (11, 10)
+Ameise 3: (21,  0)        Ameise 7: (18,  0)
+Ameise 4: (22,  0)        Ameise 8: (13, 10)
+```
 
-Wie schlecht „zäh" genau ist, messen wir in Kapitel 8 gegen einen Würfel. Für
-den Moment reicht das Gefühl.
+**Sechs von acht kleben am oberen Rand.** `y = 0`, quer über das ganze Brett
+verteilt.
+
+Das ist kein Herumirren, das ist eine Richtung. Erinnern Sie sich an die erste
+Runde aus Kapitel 3: Vier von acht Ameisen wählten `north`, alle mit niedriger
+Konfidenz. Wenn nichts eine Richtung von der anderen unterscheidet, hat das
+Modell trotzdem eine leichte Vorliebe — und acht Ameisen, die alle derselben
+leichten Vorliebe folgen, landen nach fünfundzwanzig Runden gemeinsam an der
+Wand.
+
+Weder ein Fehler im Programm noch einer des Modells. Es ist die ehrliche
+Antwort auf eine Frage ohne Anhaltspunkte. Im Zustand steht nicht, wo der Bau
+liegt, es steht nicht darin, wo Obst liegt, und ein Sichtfeld gibt es noch gar
+nicht. Gefragt wird trotzdem — achtmal pro Runde, und bezahlt wird auch.
+
+Merken Sie sich das Bild für den Vergleich. **In Kapitel 5 lernen die Ameisen
+zu sehen**, und dort wird aus dem Herumirren ein Heimweg; in Kapitel 6 bekommt
+die Königin eine Stimme, und dann ist die leichte Vorliebe des Modells nicht
+mehr das Stärkste im Zustand.
 
 ## Ausprobieren
 
 * Drücken Sie „Five rounds" ein paarmal. Bald tragen die meisten Ameisen eine
   Frucht, und im Vorrat liegt kaum etwas.
+
 * Sehen Sie sich eine beladene Ameise genau an: die Frucht sitzt klein über ihr.
-* Halten Sie durch bis fünf — es dauert, und es kostet: acht Anfragen pro Runde.
-  Die Erfolgsmeldung nennt die Rundenzahl; merken Sie sie sich für Kapitel 8.
+
 * Setzen Sie in `level1.json` den Bau probeweise auf `"size": 10` und drücken
   Sie „Start over". Mit einem riesigen Bau ist das Spiel plötzlich leicht. Das ist kein
   Balancing-Tipp, sondern die Bestätigung, woran es liegt: am Heimfinden.
+  
 * Sehen Sie sich den Zustand an, der jetzt verschickt wird — er hat zwei Zeilen
   bekommen (`carrying`, `in the nest`). Jede davon war eine Entscheidung. Was
   fehlt, ist alles, was die Ameise *sieht*.
