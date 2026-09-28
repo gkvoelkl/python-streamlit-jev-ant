@@ -147,6 +147,11 @@ def next_round(level: dict) -> None:
     st.session_state.round += 1
 ```
 
+![Ablauf einer Runde: erst ein Bild des Bretts, dann für jede der acht Ameisen
+eine Frage, alle Anfragen gleichzeitig über asyncio.gather, dann die Antworten
+nacheinander ausführen mit der Prüfung, ob das Zielfeld noch frei
+ist](bilder/runde.png)
+
 Erst **alle** fragen, dann alle handeln. Das hat eine Folge, die man leicht
 übersieht: Jede Antwort wir auf Grundlage **des selben** Spielbretts entschieden 
 

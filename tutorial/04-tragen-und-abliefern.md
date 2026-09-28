@@ -4,9 +4,9 @@
 damit in den Bau, wandert die Frucht in den Vorrat. Fünf Früchte gewinnen das
 Level.
 
-Damit ist das Spiel vollständig — es hat ein Ziel, einen Weg dorthin und ein
+Damit ist das Spiel vollständig — es gibt ein Ziel, einen Weg dorthin und ein
 Ende. Und es ist mühsam anzusehen: Jev entscheidet zwar jeden Schritt, aber die
-Ameisen sind blind und niemand hat ihnen etwas gesagt. Sie stolpern in Früchte
+Ameisen sehen nicht und niemand sagt ihnen etwas. Sie stolpern in Früchte
 und in den Bau. Genau daran arbeiten die beiden nächsten Kapitel.
 
 ## Eine Ameise trägt etwas

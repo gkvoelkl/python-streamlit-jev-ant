@@ -35,7 +35,23 @@ def render(svg: Path) -> None:
         square = Image.open(Path(work) / f"{svg.name}.png")
         factor = square.width / width
         out = svg.with_suffix(".png")
-        square.crop((0, 0, square.width, round(height * factor))).save(out)
+        picture = square.crop((0, 0, square.width, round(height * factor)))
+        picture.save(out)
+
+        # QuickLook does not place the drawing exactly where the viewBox says,
+        # so anything close to the bottom edge is cut off — silently, which
+        # cost me one diagram's last box. Leave the last lines empty.
+        background = picture.getpixel((4, 4))
+        drawn = [
+            y
+            for y in range(picture.height)
+            if any(picture.getpixel((x, y)) != background for x in range(0, picture.width, 7))
+        ]
+        air = picture.height - (max(drawn) if drawn else 0)
+        if air < 20:
+            print(f"   ! {out.name}: only {air} px below the last thing drawn — "
+                  f"something is probably cut off, give the SVG more height")
+
         print(f"{out.name} — {out.stat().st_size // 1024} KB")
 
 
