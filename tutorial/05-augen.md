@@ -2,6 +2,12 @@
 
 **Ziel:** Die Ameise sieht, was um sie herum los ist und dazu ein Schwellenwert, unter dem eine Antwort verworfen wird.
 
+![Das Brett von Schritt 5 nach zwölf Runden: die Ameisen verteilt, zwei tragen
+eine Frucht, der Boden ist um den Bau herum grün von der Duftspur](bilder/schritt-5-sehen.png)
+
+*Zwölf Runden, drei Früchte im Vorrat. Das Grün ist die Spur — sie entsteht
+weiter unten in diesem Kapitel.*
+
 Bis hierher hat Jev mehr oder weniger geraten, weil im Zustand (state) nichts stand, woraus sich etwas schließen ließe. Das ändert sich jetzt — und die Kolonie fängt an zu arbeiten.
 
 ## Entfernung und Richtung in Worten
@@ -60,11 +66,13 @@ def vision(level: dict, ant: dict) -> list[str]:
 
 Die Ameise sieht in jede Richtung drei Felder weit, und das ist nicht viel — mit Absicht. Die Königin überblickt später (Kapitel 6) das ganze Brett und die einzelne Ameise nicht. Dieser Unterschied ist es, der die Kommandos der Königin später wertvoll macht.
 
-Der Bau wird genannt, wenn er in Sichtweite ist, und nur einer Ameise, die
-etwas trägt. Eine Zeit lang stand er hier aus **jeder** Entfernung — eine
-Abkürzung, die das Problem aus Kapitel 4 löste, aber eine Ameise wissen ließ,
-was sie nicht wissen kann. Weiter unten wird sie durch das ersetzt, was echte
-Ameisen wirklich haben: eine Spur.
+![Das Sichtfeld: ein Fenster von sieben mal sieben Feldern um die Ameise, eine
+Frucht drei Felder entfernt liegt darin, eine vier Felder entfernte nicht
+mehr](bilder/sichtweite.png)
+
+Der Bau wird genannt, wenn er in Sichtweite ist und nur einer Ameise, die
+etwas trägt. Weiter unten wird sie durch das ergänzt, was echte
+Ameisen wirklich haben: eine Duftspur.
 
 Und im Zustand:
 
@@ -74,8 +82,7 @@ Und im Zustand:
 
 ## Die Auswahl sagt jetzt etwas
 
-Bisher war die Auswahl eine Liste von Namen. Jetzt bekommt jede Richtung eine
-Beschreibung — wenn es etwas zu beschreiben gibt:
+Bisher war die Auswahl für die Antwort eine Liste von Namen. Jetzt bekommt jede Richtung eine Beschreibung — wenn es etwas zu beschreiben gibt:
 
 ```python
 def options(level, ant, taken) -> dict[str, str | None]:
@@ -106,7 +113,6 @@ def options(level, ant, taken) -> dict[str, str | None]:
     return {way: towards.get(way) for way in ways}
 ```
 
-Dieses eine Wörterbuch ist der Kern des Kapitels.
 
 Die **Schlüssel** sind die offenen Richtungen, wie seit Kapitel 2. Die **Werte**
 sagen, wohin es dort ginge, und sie entstehen in jeder Runde neu aus dem, was
@@ -116,7 +122,48 @@ keine Beschreibung — das ist ehrlich, es gibt nichts darüber zu sagen.
 Erinnern Sie sich an `dict.fromkeys(ways)` aus Kapitel 2: Dort standen überall
 `None`. Jetzt stehen dort Sätze. Am Typ hat sich nichts geändert.
 
-## Eine Schwelle
+### Ein echtes Beispiel
+
+Das hier ist mitgeschnitten aus einem laufenden Spiel, Runde 5. Die Ameise sieht
+eine Frucht und eine Kollegin:
+
+```json
+"the ant can see": [
+  "a fruit, 3 cells to the north-west",
+  "another ant, 2 cells to the south-west"
+]
+```
+
+Und das bekommt sie zur Auswahl:
+
+```json
+{
+  "north":      null,
+  "north-east": null,
+  "east":       null,
+  "south-east": null,
+  "south":      null,
+  "south-west": null,
+  "west":       null,
+  "north-west": "towards a fruit, 3 cells to the north-west"
+}
+```
+
+Acht Richtungen, eine davon beschriftet. Die anderen sieben stehen ohne
+Kommentar da, weil es über sie nichts zu sagen gibt — und genau das ist die
+Information: Es gibt nur einen Grund, und er zeigt nach Nordwesten.
+
+Dieselbe Ameise zwei Runden später, jetzt mit Frucht auf dem Rücken:
+
+```json
+"the ant can see": ["a clear smell of the colony, 1 cell to the south-east"]
+```
+
+```json
+{ "south-east": "the smell of the colony gets clearer", ... }
+```
+
+## Eine Schwellwert
 
 ```python
 MIN_CONFIDENCE = 0.22
@@ -145,29 +192,41 @@ Drei Arten, eine Antwort abzulehnen — und alle drei werden **gezählt**, nicht
 stillschweigend überspielt. Ein aufklappbarer Bereich unter dem Brett zeigt sie
 mit Begründung.
 
-`MIN_CONFIDENCE = 0.22` ist gemessen, nicht geraten; die Zahl stammt aus der
-Rust-Fassung dieses Spiels. Sie ist niedriger, als man vermuten würde, und das
-liegt daran, was Konfidenz misst: den auf die Zahl der Optionen normierten
-Abstand zum reinen Zufall. Bei acht Möglichkeiten ist 0,22 bereits ein
-erkennbarer Vorzug.
+Aufgeklappt sieht das so aus — sechs Zeilen aus einem echten Lauf:
+
+```
+· north-east at 0.18
+· north-west at 0.18
+· north-east at 0.16
+· north at 0.15
+· north-east at 0.13
+· north at 0.17
+```
+
+Alle knapp unter der Schwelle, und alle zeigen nach Norden. Das ist kein
+Zufall, sondern dieselbe leichte Vorliebe des Modells, die in Kapitel 4 die
+halbe Kolonie an den oberen Rand geschoben hat. Wenn nichts für eine Richtung
+spricht, kommt sie durch — und die Schwelle fängt sie ab.
+
+`MIN_CONFIDENCE = 0.22` ist gemessen, nicht geraten. Sie ist niedriger, als man vermuten würde, und das liegt daran, was Konfidenz misst: den auf die Zahl der Optionen normierten Abstand zum reinen Zufall. Bei acht Möglichkeiten ist 0,22 bereits ein erkennbarer Vorzug.
+
+![Die Konfidenzskala von 0 bis 1 mit der Schwelle bei 0,22 und der Umrechnung:
+bei acht Optionen entspricht das einer höchsten Wahrscheinlichkeit von
+0,32](bilder/schwelle.png)
 
 Die zweite Prüfung — `step.choice not in offered` — ist die Rückversicherung
 gegen den Fall, dass das Modell etwas nennt, was nie angeboten wurde. Sie hat
 bei mir noch nie ausgelöst; genau das ist der Punkt der ganzen Konstruktion.
 Aber man prüft, statt zu vertrauen.
 
-**Es gibt weiterhin keinen Rückfall auf Regeln.** Eine abgelehnte Antwort heißt:
-Diese Ameise tut in dieser Runde nichts und wird nächste Runde wieder gefragt.
+Eine abgelehnte Antwort heißt: Diese Ameise tut in dieser Runde nichts und wird nächste Runde wieder gefragt.
 
 ## Die Spur nach Hause
 
-Bis hierher weiß eine Ameise mit Frucht nur dann, wo der Bau liegt, wenn er in
-Sichtweite ist — also auf drei Feldern von 384. Das reicht nicht. Echte Ameisen
-lösen das nicht mit Augen, sondern mit **Duft**: Sie hinterlassen eine Spur, und
-der Rückweg ist die Richtung, in der sie stärker wird.
+Bis hierher weiß eine Ameise mit Frucht nur dann, wo ihr Ameisenbau liegt, wenn er in Sichtweite ist — also auf drei Feldern von 384. Das reicht nicht. 
 
-Genau das kommt jetzt dazu, mit den Zahlen, die die Rust-Fassung dieses Spiels
-gemessen hat:
+Echte Ameisen verwenden nicht nur die Augen, sondern die **Duftspur**: Sie hinterlassen eine Spur, und der Rückweg ist die Richtung, in der sie stärker wird.
+
 
 ```python
 SCENT_DEPOSIT = 1.0        # was eine suchende Ameise hinterlässt
@@ -178,8 +237,6 @@ SCENT_THRESHOLD = 0.05     # darunter gilt ein Feld als geruchlos
 
 ### Gelegt wird beim Suchen, nicht beim Tragen
 
-Das ist die Stelle, an der man es falsch herum bauen kann, und es sieht falsch
-herum sogar plausibler aus.
 
 ```python
 def lay_scent(level: dict, ant: dict) -> None:
@@ -196,18 +253,24 @@ def lay_scent(level: dict, ant: dict) -> None:
     st.session_state.scent[cell] = max(st.session_state.scent.get(cell, 0.0), amount)
 ```
 
-Nur eine **suchende** Ameise markiert den Boden, und die Marke ist umso
-schwächer, je weiter sie vom Bau weg ist. Damit hat das Feld eine Form: Sein
-Gipfel liegt im Bau. **Bergauf ist heimwärts.**
+![Ausschnitt um den Bau nach achtzehn Runden: der Boden ringsum ist grün
+gefärbt, am stärksten dicht am Bau, eine Ameise trägt gerade eine Frucht
+heran](bilder/spur-nahaufnahme.png)
 
-Jede Ameise zählt dafür ihre eigenen Schritte seit dem Bau mit — `since_nest`,
-zurückgesetzt, sobald sie wieder drinsteht.
+*Die Straßen der Kolonie. Je näher am Bau, desto stärker der Duft — deshalb
+führt bergauf nach Hause.*
+
+Nur eine **suchende** Ameise markiert den Boden, und die Marke ist umso
+schwächer, je weiter sie vom Bau weg ist. Damit hat das Feld eine Form: Der
+höchste Wert ist im Bau. **Bergauf ist heimwärts.**
+
+Jede Ameise zählt dafür ihre eigenen Schritte seit dem Bau mit — `since_nest`.
+Dies setzt das Programm zurück, sobald sie wieder drinsteht.
 
 ### Die stärkste Ablage gewinnt, sie summieren sich nicht
 
-`max(...)` statt `+=`, und das ist keine Kleinigkeit. Würden sich die Ablagen
-addieren, dann schlügen hundert schwache Spuren weit draußen eine starke am Bau
-— und die Steigung zeigte vom Bau **weg**. Der Verkehr zählt trotzdem, nur
+Besser ist `max(...)` statt `+=`. 
+Würden sich die Ablagen addiert, dann schlügen hundert schwache Spuren weit draußen eine starke am Bau. Der Verkehr zählt trotzdem, nur
 anders: Ein oft begangener Weg wird oft neu markiert und überlebt dadurch das
 Verdunsten.
 
@@ -281,13 +344,7 @@ selbst erarbeitet, Feld für Feld.
 Und die dritte Zeile zeigt, dass hier wirklich etwas passiert: Ohne beides
 kommt die Kolonie nicht ins Ziel.
 
-> Ein Wort zur Bescheidenheit dieser Zahlen: Es sind Einzelläufe, und das Brett
-> ist klein. Die Rust-Fassung hat auf einem Brett mit 2048 Feldern **+111 %**
-> gemessen und auf einem kleinen nur +11 % — dort ist der Bau von einem Viertel
-> des Bretts aus zu sehen, und wer ihn sieht, braucht keine Spur. Der
-> Mechanismus ist nicht schwach, das Brett ist zu klein, um ihn zu brauchen.
-
-## Die Frage sagt jetzt beides
+## Die Frage sagt jetzt mehr
 
 Der Text hat sich mitverändert:
 
@@ -301,58 +358,23 @@ Der Text hat sich mitverändert:
 Vorher stand dort nur, was die Kolonie im Großen tut. Jetzt steht da, was eine
 Ameise mit leeren Händen tun soll.
 
-## Der Fehler, der mich das gelehrt hat
-
-Meine erste Fassung nannte den Bau **immer** im Sichtfeld, auch einer Ameise mit
-leeren Händen. Technisch lief alles: Anfragen gingen raus, Antworten kamen an,
-nichts stürzte ab. Nach 22 Runden stand da:
-
-> Round 22 · **0 of 5 stored** · 0 being carried · 8 left on the board
-
-Null. Alle acht Ameisen saßen zusammengedrängt im Bau.
-
-Die Ursache: Für das Modell war der Bau das einzige Ding im Zustand, das nach
-einer Anweisung klang — die Frage sagte ja, dass die Kolonie Früchte dorthin
-bringt. Also ging jede Ameise dorthin. Und wer im Bau steht, sieht keine Frucht
-mehr.
-
-Zwei Änderungen, beide oben schon zu sehen: Der Bau steht nur noch im Zustand,
-wenn die Ameise trägt. Und die Frage nennt beide Aufgaben.
-
-**Was im Zustand steht, ist das Verhalten.** Das ist die Lektion dieses
-Kapitels, und sie ist mehr wert als der Code darin.
-
-## Was jetzt passiert
-
-Dieselbe Kolonie, dasselbe Level, nach den Änderungen:
-
-> Round 15 · **3 of 5 stored** · 3 carried · 2 on the board · 120 decisions from
-> Jev, 28 discarded
-
-Aus dem Herumirren von Kapitel 4 ist eine Kolonie geworden, die liefert. Und die
-verworfenen Antworten (28 von 120) haben fast alle dieselbe Form:
-
-```
-· west at 0.19
-· north at 0.18
-· south at 0.15
-```
-
-Knapp unter der Schwelle, alle von Ameisen, die gerade nichts sehen. Kein Mangel
-des Modells — wer nichts sieht, hat keinen Grund für eine Richtung. Diese Zahl
-fällt, sobald jemand etwas sagt. Das ist Kapitel 6.
 
 ## Ausprobieren
 
 * Sehen Sie einer einzelnen Ameise zu, wenn eine Frucht in ihr Sichtfeld kommt.
+
 * Klappen Sie die verworfenen Antworten auf. Wer verwirft — die Ameisen im Gedränge
   oder die im Freien?
+
 * Setzen Sie `VISION_RADIUS` auf 1. Die Kolonie wird deutlich schlechter, und die
   Zahl der Verwürfe steigt.
+
 * Setzen Sie `VISION_RADIUS` auf 8. Wird sie besser? Und was passiert mit der
   Tokenzahl?
+
 * Setzen Sie `MIN_CONFIDENCE` auf 0.0: Jetzt wird jede Antwort angenommen, auch die
   geratene. Wird die Kolonie schneller oder langsamer?
+  
 * Nehmen Sie den Satz über das Ausschwärmen aus `STEP_QUESTION` heraus und
   fangen Sie neu an. Es lohnt sich, das einmal selbst gesehen zu haben.
 

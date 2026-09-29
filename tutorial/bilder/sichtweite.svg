@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="420" viewBox="0 0 760 420"
+     font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <pattern id="chequer" x="30" y="50" width="96" height="96" patternUnits="userSpaceOnUse">
+      <rect width="96" height="96" fill="#2b2b33"/>
+      <rect width="48" height="48" fill="#33333d"/>
+      <rect x="48" y="48" width="48" height="48" fill="#33333d"/>
+    </pattern>
+  </defs>
+  <rect width="760" height="420" fill="#1b1b21"/>
+
+  <text x="30" y="34" fill="#c8ccd6" font-size="16" font-weight="600">
+    VISION_RADIUS = 3 — was die Ameise in der Mitte wahrnimmt
+  </text>
+
+  <!-- 9 x 7 Felder, damit auch etwas außerhalb liegt -->
+  <rect x="30" y="50" width="432" height="336" fill="url(#chequer)"/>
+
+  <!-- das Sichtfenster: 7 x 7 um die Mitte (4,3) -->
+  <rect x="78" y="50" width="336" height="336" fill="#7fd18b" fill-opacity="0.09"
+        stroke="#7fd18b" stroke-width="2"/>
+  <text x="246" y="404" fill="#7fd18b" font-size="13" text-anchor="middle">
+    sieben mal sieben Felder — drei in jede Richtung
+  </text>
+
+  <!-- die Ameise in der Mitte (Feld 4,3) -->
+  <circle cx="246" cy="218" r="20" fill="#ded9cb"/>
+  <text x="246" y="218" font-size="26" text-anchor="middle" dominant-baseline="central">🐜</text>
+
+  <!-- Frucht drinnen: 3 nach Nordwesten -->
+  <text x="102" y="74" font-size="26" text-anchor="middle" dominant-baseline="central">🍎</text>
+  <text x="102" y="104" fill="#7fd18b" font-size="12" text-anchor="middle">3 Felder</text>
+
+  <!-- zweite Ameise drinnen: 2 nach Südwesten -->
+  <circle cx="150" cy="314" r="18" fill="#ded9cb"/>
+  <text x="150" y="314" font-size="22" text-anchor="middle" dominant-baseline="central">🐜</text>
+  <text x="150" y="344" fill="#7fd18b" font-size="12" text-anchor="middle">2 Felder</text>
+
+  <!-- Frucht draußen -->
+  <text x="438" y="122" font-size="26" text-anchor="middle" dominant-baseline="central">🍎</text>
+  <text x="438" y="152" fill="#e08074" font-size="12" text-anchor="middle">4 Felder</text>
+  <text x="438" y="168" fill="#e08074" font-size="12" text-anchor="middle">— zu weit</text>
+
+  <!-- was daraus im Zustand wird -->
+  <text x="500" y="90" fill="#c8ccd6" font-size="14" font-weight="600">Im Zustand steht dann:</text>
+  <rect x="500" y="104" width="236" height="86" rx="5" fill="#26332a" stroke="#45454f"/>
+  <text x="514" y="126" fill="#7fd18b" font-size="12" font-family="Consolas, monospace">a fruit,</text>
+  <text x="514" y="144" fill="#7fd18b" font-size="12" font-family="Consolas, monospace">3 cells to the north-west</text>
+  <text x="514" y="166" fill="#7fd18b" font-size="12" font-family="Consolas, monospace">another ant,</text>
+  <text x="514" y="184" fill="#7fd18b" font-size="12" font-family="Consolas, monospace">2 cells to the south-west</text>
+
+  <text x="500" y="222" fill="#8b8b93" font-size="13">Die Frucht vier Felder weiter</text>
+  <text x="500" y="240" fill="#8b8b93" font-size="13">kommt nicht vor. Für diese</text>
+  <text x="500" y="258" fill="#8b8b93" font-size="13">Ameise gibt es sie nicht.</text>
+
+  <text x="500" y="296" fill="#c8ccd6" font-size="13">Gemessen wird in Schritten,</text>
+  <text x="500" y="314" fill="#c8ccd6" font-size="13">nicht in Luftlinie: schräg ist</text>
+  <text x="500" y="332" fill="#c8ccd6" font-size="13">genauso weit wie gerade.</text>
+  <text x="500" y="356" fill="#8b8b93" font-size="13">Darum ist das Sichtfeld ein</text>
+  <text x="500" y="374" fill="#8b8b93" font-size="13">Quadrat und kein Kreis.</text>
+</svg>

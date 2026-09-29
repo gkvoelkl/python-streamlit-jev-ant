@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="380" viewBox="0 0 760 380"
+     font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <rect width="760" height="380" fill="#1b1b21"/>
+
+  <text x="40" y="34" fill="#c8ccd6" font-size="16" font-weight="600">
+    Die Konfidenzskala, und wo dieses Spiel den Schnitt macht
+  </text>
+
+  <!-- die Skala: 0 bis 1 auf 600 px, Nullpunkt bei x = 60 -->
+  <rect x="60" y="70" width="132" height="44" fill="#3a2a2c"/>
+  <rect x="192" y="70" width="228" height="44" fill="#e08074" fill-opacity="0.55"/>
+  <rect x="420" y="70" width="150" height="44" fill="#e3c45c" fill-opacity="0.55"/>
+  <rect x="570" y="70" width="90" height="44" fill="#7fd18b" fill-opacity="0.6"/>
+  <rect x="60" y="70" width="600" height="44" fill="none" stroke="#45454f"/>
+
+  <text x="126" y="98" fill="#8b8b93" font-size="13" text-anchor="middle">verworfen</text>
+  <text x="306" y="98" fill="#1b1b21" font-size="13" text-anchor="middle" font-weight="600">angenommen, knapp</text>
+  <text x="495" y="98" fill="#1b1b21" font-size="13" text-anchor="middle" font-weight="600">deutlich</text>
+  <text x="615" y="98" fill="#1b1b21" font-size="13" text-anchor="middle" font-weight="600">sicher</text>
+
+  <!-- Achse -->
+  <g fill="#8b8b93" font-size="12" text-anchor="middle">
+    <text x="60" y="134">0,0</text>
+    <text x="420" y="134">0,60</text>
+    <text x="570" y="134">0,85</text>
+    <text x="660" y="134">1,0</text>
+  </g>
+
+  <!-- die Schwelle -->
+  <line x1="192" y1="58" x2="192" y2="126" stroke="#c8b24a" stroke-width="2"/>
+  <text x="192" y="50" fill="#c8b24a" font-size="14" text-anchor="middle" font-weight="600">
+    MIN_CONFIDENCE = 0,22
+  </text>
+
+  <text x="60" y="176" fill="#c8ccd6" font-size="14" font-weight="600">
+    Warum so niedrig?
+  </text>
+  <text x="60" y="200" fill="#c8ccd6" font-size="14">
+    Weil Konfidenz den Abstand zum Zufall misst, nicht die Wahrscheinlichkeit.
+  </text>
+
+  <!-- Umrechnung -->
+  <rect x="60" y="218" width="600" height="72" rx="5" fill="#26262e" stroke="#45454f"/>
+  <text x="76" y="244" fill="#c8ccd6" font-size="14">
+    Bei acht Optionen ist reiner Zufall 1/8 = 0,125 je Option.
+  </text>
+  <text x="76" y="272" fill="#7fd18b" font-size="14">
+    Konfidenz 0,22 heißt: die gewählte Option liegt bei 0,32 — zweieinhalbmal Zufall.
+  </text>
+
+  <text x="60" y="322" fill="#8b8b93" font-size="13">
+    Die Dokumentation von TypeSafe rät zu 0,5 und für Riskantes zu 0,9. Das gilt
+  </text>
+  <text x="60" y="340" fill="#8b8b93" font-size="13">
+    für Entscheidungen mit Folgen. Was hier schiefgeht, ist ein verkehrter Schritt,
+  </text>
+  <text x="60" y="358" fill="#8b8b93" font-size="13">
+    und der ist in der nächsten Runde korrigiert.
+  </text>
+</svg>
