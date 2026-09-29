@@ -1,8 +1,8 @@
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next.
 
-Step 6: the queen. One sentence, typed by the player, goes into the state of
-every ant, and each of them reads it for itself. Until it is said the colony
-sleeps in the nest and not a single request goes out.
+Step 7: seeing it. Over every ant stands what it chose and how sure it was, in
+three colours, and under the board stands what the colony has cost. A game
+about what a model decides has to show the deciding.
 
     uv run streamlit run app.py
 """
@@ -83,6 +83,32 @@ SCENT_TINT = "#4f8f5c"
 NEST_FILL = "#3a3a2a"
 NEST_EDGE = "#c8b24a"
 
+# Three bands for how sure an answer was. The thresholds are read off the
+# screen, not computed: green means the model had a reason, yellow means it had
+# a slight preference, red means it barely cleared MIN_CONFIDENCE and the ant
+# is as good as guessing. Grey is an ant that did nothing — no answer, or one
+# that was thrown away.
+SURE = [(0.85, "#7fd18b"), (0.60, "#e3c45c"), (0.0, "#e08074")]
+UNSURE = "#8b8b93"
+
+# What a million input tokens cost, in dollars. Measured against the price list
+# of the Bevy version of this game; check it before quoting it at anyone.
+USD_PER_MILLION_TOKENS = 0.042
+
+# North becomes N, north-east NE. Written out, a label is wider than the three
+# cells around it and the board turns into a wall of text.
+SHORT = {
+    "north": "N",
+    "north-east": "NE",
+    "east": "E",
+    "south-east": "SE",
+    "south": "S",
+    "south-west": "SW",
+    "west": "W",
+    "north-west": "NW",
+}
+
+
 # The question the ant is asked. It is a text, not code, and rewording it is
 # the actual work in a project like this — so it sits here on its own, where it
 # can be changed without reading the program.
@@ -146,6 +172,9 @@ def start(level: dict) -> None:
             # Steps since this ant was last in the nest. It decides how much
             # scent it leaves: the further from home, the fainter the mark.
             "since_nest": 0,
+            # What Jev last said about this ant, for the label above it:
+            # (direction, confidence), or None when nothing was acted on.
+            "said": None,
         }
         for i in range(level["ants"])
     ]
@@ -527,11 +556,10 @@ def next_round(level: dict) -> None:
     answers = asyncio.run(ask_everyone(payloads, api_key()))
 
     st.session_state.requests += len(payloads)
-    st.session_state.said = []
 
     for ant, (_, question), answer in zip(st.session_state.ants, payloads, answers):
         way = accepted(answer, question["step"].criteria)
-        st.session_state.said.append(
+        ant["said"] = (
             (way, answer.choices["step"].confidence) if way is not None else None
         )
 
@@ -584,6 +612,34 @@ def cell_text(x: int, y: int, glyph: str, size: float = 0.7, lift: float = 0.0) 
     )
 
 
+def colour_of(confidence: float) -> str:
+    """Which of the three bands a confidence falls into."""
+    for floor, colour in SURE:
+        if confidence >= floor:
+            return colour
+    return UNSURE
+
+
+def label(ant: dict) -> str:
+    """What this ant was told to do, written above it.
+
+    Grey and a dash for an ant that did nothing this round. That is worth
+    drawing rather than leaving blank: a colony where half the labels are grey
+    is saying something about the question, not about the ants.
+    """
+    if ant["said"] is None:
+        text, colour = "—", UNSURE
+    else:
+        way, confidence = ant["said"]
+        text, colour = f"{SHORT[way]} {confidence:.2f}", colour_of(confidence)
+
+    return (
+        f'  <text x="{ant["x"] * CELL + CELL / 2}" y="{ant["y"] * CELL - CELL * 0.15}" '
+        f'font-size="{CELL * 0.38}" font-family="system-ui, sans-serif" '
+        f'fill="{colour}" text-anchor="middle">{text}</text>'
+    )
+
+
 def board(level: dict) -> str:
     """The whole board as a single SVG.
 
@@ -625,6 +681,12 @@ def board(level: dict) -> str:
         for ant in st.session_state.ants
     )
 
+    # Last, so that no ant is ever drawn over a label. They are the reason the
+    # board is being looked at.
+    labels_svg = "\n".join(
+        label(ant) for ant in st.session_state.ants if st.session_state.awake
+    )
+
     return f"""
 <svg width="{width}" height="{height}" viewBox="0 0 {width} {height}"
      xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The board">
@@ -641,6 +703,7 @@ def board(level: dict) -> str:
 {nest_svg}
 {fruit_svg}
 {ants_svg}
+{labels_svg}
 </svg>
 """
 
@@ -649,7 +712,7 @@ level = load_level()
 start(level)
 
 st.title("🐜 Jev Ants")
-st.caption(f"Step 6 — {level['name']}. {level['briefing']}")
+st.caption(f"Step 7 — {level['name']}. {level['briefing']}")
 
 # `st.image` and not `st.html`, which is the obvious thing to reach for and
 # silently draws nothing: it runs the string through a sanitiser that keeps
@@ -712,14 +775,33 @@ if hush.button("Say nothing", width="stretch", disabled=not st.session_state.ord
 won = st.session_state.stores >= level["target"]
 carried = sum(ant["carrying"] for ant in st.session_state.ants)
 
-st.write(
+cost = st.session_state.tokens * USD_PER_MILLION_TOKENS / 1_000_000
+asked = st.session_state.requests
+thrown = len(st.session_state.discarded)
+
+# The colony first and the meter second. The stores are the game; the tokens
+# and the dollars are how it is measured.
+colony, meter = st.columns(2)
+colony.write(
     f"Round **{st.session_state.round}** · "
     f"**{st.session_state.stores}** of {level['target']} stored · "
     f"**{carried}** carried · "
-    f"**{len(st.session_state.fruit)}** on the board · "
-    f"**{st.session_state.requests}** decisions from Jev, "
-    f"**{len(st.session_state.discarded)}** discarded"
+    f"**{len(st.session_state.fruit)}** on the board"
 )
+meter.write(
+    f"**{asked}** decisions from Jev, **{thrown}** discarded"
+    + (f" (**{thrown / asked:.0%}**)" if asked else "")
+    # The dollar signs are escaped: a pair of them is LaTeX to Streamlit's
+    # markdown, and "$0.0020 a round" came out as a formula.
+    + f" · {st.session_state.tokens:,} tokens · **\\${cost:.4f}**"
+)
+
+if st.session_state.awake:
+    st.caption(
+        "Above each ant: what Jev chose and how sure it was. "
+        ":green[green from 0.85] · :orange[yellow from 0.60] · "
+        ":red[red down to 0.22] · grey means the ant did nothing this round."
+    )
 
 if won:
     st.success(
@@ -764,13 +846,3 @@ if st.session_state.discarded:
         # but a badly put question, and this is where you notice.
         for reason in st.session_state.discarded[-12:]:
             st.write(f"· {reason}")
-
-if st.session_state.said:
-    # What each ant was told this round. It is a list for now; in step 7 it
-    # moves onto the board itself, where it belongs.
-    st.caption(
-        " · ".join(
-            f"{number}: {said[0]} {said[1]:.2f}" if said else f"{number}: —"
-            for number, said in enumerate(st.session_state.said, start=1)
-        )
-    )
