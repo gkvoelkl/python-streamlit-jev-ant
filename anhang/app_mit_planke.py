@@ -43,6 +43,28 @@ VISION_RADIUS = 3
 # learning that it exists, so nobody ever walks over to pick it up.
 PLANK_VISIBLE_FROM = 8
 
+# --- The trail home ------------------------------------------------------
+#
+# A searching ant marks the ground behind it, and the mark is weaker the
+# further it has come from the nest. The strongest mark wins on a cell, so the
+# peak of the whole field is the nest itself — and walking uphill is walking
+# home. This is the one thing in the game an ant knows that it cannot see.
+#
+# The numbers are the ones the Bevy version measured its way to.
+
+# What a searching ant leaves on the cell it just left, before the decay below.
+SCENT_DEPOSIT = 1.0
+
+# What is left of that with every step since the ant was last in the nest.
+SCENT_STEP_DECAY = 0.88
+
+# Rounds for a trail to fade to half. Evaporation is not decoration: it is how
+# the colony forgets a way that leads nowhere any more.
+SCENT_HALF_LIFE = 12.0
+
+# Below this a cell counts as unscented, so old trails stop being offered.
+SCENT_THRESHOLD = 0.05
+
 # Answers below this are thrown away and the ant does nothing that round. The
 # number is measured, not guessed — it comes from the Bevy version of this
 # game. Mind what `confidence` means: how far the answer sits from pure chance,
@@ -72,6 +94,7 @@ FLOOR_LIGHT = "#33333d"
 # Ants are dark and so is the floor. A pale disc under each one turns it into a
 # game piece that can be found at a glance.
 ANT_DISC = "#ded9cb"
+SCENT_TINT = "#4f8f5c"
 NEST_FILL = "#3a3a2a"
 NEST_EDGE = "#c8b24a"
 WATER = "#24506b"
@@ -170,6 +193,9 @@ def start(level: dict) -> None:
             # A word rather than a flag, because there are two things now and
             # because this is what goes into the state as it stands.
             "holding": None,
+            # Steps since this ant was last in the nest. It decides how much
+            # scent it leaves: the further from home, the fainter the mark.
+            "since_nest": 0,
             # What Jev last said about this ant, for the label above it:
             # (direction, confidence), or None when nothing was acted on.
             "said": None,
@@ -182,6 +208,9 @@ def start(level: dict) -> None:
     # was laid across the water.
     st.session_state.plank = tuple(level["plank"]) if level.get("plank") else None
     st.session_state.bridge = None
+    # How strongly each cell smells of the colony. Sparse on purpose — most
+    # of the board never carries a trail, and the cells that do are few.
+    st.session_state.scent = {}
     st.session_state.round = 0
     st.session_state.stores = 0
     # What the queen said, and whether she has said anything at all. The
@@ -404,8 +433,16 @@ def vision(level: dict, ant: dict) -> list[str]:
     # plank to the nest — the same trap as in step 5, in a new coat.
     if ant["holding"] == "a fruit":
         nx, ny = nearest_nest_cell(level, ant)
-        if (nx, ny) != (ant["x"], ant["y"]):
+        near = steps_away(nx - ant["x"], ny - ant["y"])
+        if 0 < near <= VISION_RADIUS:
             seen.append(f"the nest, {phrase(nx - ant['x'], ny - ant['y'])}")
+
+        way = uphill(ant)
+        if way:
+            seen.append(
+                f"a {describe_scent(way[1])} smell of the colony, "
+                f"1 cell to the {way[0]}"
+            )
     elif ant["holding"] == "the plank":
         water = nearest_water(ant)
         if water:
@@ -441,9 +478,14 @@ def options(level: dict, ant: dict, taken: set[tuple[int, int]]) -> dict[str, st
 
     if ant["holding"] == "a fruit":
         nx, ny = nearest_nest_cell(level, ant)
+        near = steps_away(nx - ant["x"], ny - ant["y"])
         home = direction_of(nx - ant["x"], ny - ant["y"])
-        if home:
+        if home and 0 < near <= VISION_RADIUS:
             towards[home] = f"towards the nest, {phrase(nx - ant['x'], ny - ant['y'])}"
+
+        way = uphill(ant)
+        if way and way[0] not in towards:
+            towards[way[0]] = f"the smell of the colony gets {describe_scent(way[1])}er"
     elif ant["holding"] == "the plank":
         water = water_beside(ant) or nearest_water(ant)
         if water:
@@ -474,6 +516,69 @@ def options(level: dict, ant: dict, taken: set[tuple[int, int]]) -> dict[str, st
                 )
 
     return {way: towards.get(way) for way in ways} | extra
+
+
+def describe_scent(strength: float) -> str:
+    """How a trail is put to an ant: a word, never a number.
+
+    A number would promise a precision the field does not have, and the model
+    reads words better than it reads 0.41.
+    """
+    if strength >= 0.7:
+        return "strong"
+    return "clear" if strength >= 0.3 else "faint"
+
+
+def lay_scent(level: dict, ant: dict) -> None:
+    """What a searching ant leaves behind on the cell it stands on.
+
+    Only a **searching** ant marks the ground, and the mark is weaker the
+    further it has come from the nest. That is what gives the field a shape:
+    its peak is the nest, so uphill is homeward.
+
+    The strongest mark wins; they do not add up. Adding looks right and is
+    wrong — a hundred faint traces out in the open would then outweigh one
+    strong mark near the nest, and the slope would point away from home.
+    Traffic still counts, only differently: a path walked again is marked
+    again and so outlives evaporation.
+    """
+    if in_nest(level, ant["x"], ant["y"]):
+        ant["since_nest"] = 0
+    else:
+        ant["since_nest"] += 1
+
+    if ant["holding"]:
+        return
+
+    cell = (ant["x"], ant["y"])
+    amount = SCENT_DEPOSIT * SCENT_STEP_DECAY ** ant["since_nest"]
+    st.session_state.scent[cell] = max(st.session_state.scent.get(cell, 0.0), amount)
+
+
+def evaporate() -> None:
+    """One round of time passing. What falls under the threshold is dropped."""
+    factor = 0.5 ** (1 / SCENT_HALF_LIFE)
+    st.session_state.scent = {
+        cell: strength * factor
+        for cell, strength in st.session_state.scent.items()
+        if strength * factor >= SCENT_THRESHOLD
+    }
+
+
+def uphill(ant: dict) -> tuple[str, float] | None:
+    """The neighbouring cell that smells strongest, if it beats this one.
+
+    Standing on the peak gives `None`, and that is not a failure: the peak is
+    at the nest, and an ant standing there has arrived.
+    """
+    here = st.session_state.scent.get((ant["x"], ant["y"]), 0.0)
+    best = None
+    for name, (dx, dy) in DIRECTIONS.items():
+        strength = st.session_state.scent.get((ant["x"] + dx, ant["y"] + dy), 0.0)
+        if strength >= SCENT_THRESHOLD and strength > here:
+            if best is None or strength > best[1]:
+                best = (name, strength)
+    return best
 
 
 def question_for(level: dict, ant: dict, taken: set[tuple[int, int]]) -> tuple[dict, dict]:
@@ -636,6 +741,10 @@ def next_round(level: dict) -> None:
         pick_up_and_deliver(level, ant)
         taken -= before - set(st.session_state.fruit)
 
+        # Marked after the step, so the trail records where the ant went.
+        lay_scent(level, ant)
+
+    evaporate()
     st.session_state.round += 1
 
 
@@ -702,6 +811,14 @@ def board(level: dict) -> str:
 
     # The nest is floor like any other cell, so it gets an outline rather than
     # a solid block: a wall is the one thing it must not look like.
+    # The trail, tinted into the floor. It is ground, not an object, so it is
+    # drawn under everything and never brighter than the ants.
+    scent_svg = "\n".join(
+        f'  <rect x="{x * CELL}" y="{y * CELL}" width="{CELL}" height="{CELL}" '
+        f'fill="{SCENT_TINT}" fill-opacity="{min(0.55, strength * 0.55):.2f}"/>'
+        for (x, y), strength in st.session_state.scent.items()
+    )
+
     nest_svg = (
         f'  <rect x="{nest["x"] * CELL}" y="{nest["y"] * CELL}" '
         f'width="{nest["size"] * CELL}" height="{nest["size"] * CELL}" '
@@ -762,6 +879,7 @@ def board(level: dict) -> str:
     </pattern>
   </defs>
   <rect width="{width}" height="{height}" fill="url(#chequer)"/>
+{scent_svg}
 {water_svg}
 {plank_svg}
 {nest_svg}

@@ -1,11 +1,8 @@
-# Schritt 5 — Augen
+# Schritt 5 — Sehen
 
-**Ziel:** Die Ameise erfährt, was um sie herum liegt, und die Auswahl, die sie
-bekommt, sagt ihr, wohin es dort ginge. Dazu eine Schwelle, unter der eine
-Antwort verworfen wird.
+**Ziel:** Die Ameise sieht, was um sie herum los ist und dazu ein Schwellenwert, unter dem eine Antwort verworfen wird.
 
-Bis hierher hat Jev geraten, weil im Zustand nichts stand, woraus sich etwas
-schließen ließe. Das ändert sich jetzt — und die Kolonie fängt an zu arbeiten.
+Bis hierher hat Jev mehr oder weniger geraten, weil im Zustand (state) nichts stand, woraus sich etwas schließen ließe. Das ändert sich jetzt — und die Kolonie fängt an zu arbeiten.
 
 ## Entfernung und Richtung in Worten
 
@@ -30,10 +27,9 @@ def phrase(dx: int, dy: int) -> str:
 `steps_away` misst in Schritten, nicht in Luftlinie: Ein Diagonalschritt bringt
 genauso weit wie ein gerader, also zählt der größere der beiden Abstände.
 
-`phrase` erzeugt Sätze wie `2 cells to the north-east`. **Relativ, niemals
-absolut.** Die Ameise erfährt, was um sie herum liegt — nicht, wo sie auf einem
-Gitter steht, das sie nicht überblickt. Eine Koordinate wäre eine Angabe, mit
-der sie nichts anfangen kann, und Token kostet sie auch.
+`phrase` erzeugt Sätze wie `2 cells to the north-east`. Immer **Relativ, niemals absolut.** 
+
+Die Ameise erfährt, was um sie herum liegt — nicht, wo sie im Spielfeld steht. Eine Koordinate wäre eine Angabe, mit der sie nichts anfangen kann.
 
 ## Das Sichtfeld
 
@@ -62,9 +58,7 @@ def vision(level: dict, ant: dict) -> list[str]:
     return seen
 ```
 
-Drei Felder weit, und das ist wenig — mit Absicht. Die Königin sieht in
-Kapitel 6 das ganze Brett und die Ameise nicht. Dieser Unterschied ist es, der
-ihren Satz später wertvoll macht.
+Die Ameise sieht in jede Richtung drei Felder weit, und das ist nicht viel — mit Absicht. Die Königin überblickt später (Kapitel 6) das ganze Brett und die einzelne Ameise nicht. Dieser Unterschied ist es, der die Kommandos der Königin später wertvoll macht.
 
 Der Bau ist die Ausnahme: Er wird aus **jeder** Entfernung genannt, aber nur
 einer Ameise, die etwas trägt. Echte Ameisen finden über ihre eigenen Schritte
