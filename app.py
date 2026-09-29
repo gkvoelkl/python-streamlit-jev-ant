@@ -1,8 +1,9 @@
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next.
 
-Step 7: seeing it. Over every ant stands what it chose and how sure it was, in
-three colours, and under the board stands what the colony has cost. A game
-about what a model decides has to show the deciding.
+Step 8: what is the model worth? A switch in the sidebar replaces Jev with a
+dice, so the same colony on the same board can be watched deciding both ways.
+It is not a fallback — nothing falls back to it when a request fails. It is a
+measuring stick, and it is chosen by hand.
 
     uv run streamlit run app.py
 """
@@ -10,6 +11,7 @@ about what a model decides has to show the deciding.
 import asyncio
 import json
 import os
+import random
 
 import streamlit as st
 from dotenv import load_dotenv
@@ -192,6 +194,8 @@ def start(level: dict) -> None:
     st.session_state.requests = 0
     st.session_state.tokens = 0
     st.session_state.discarded = []
+    # Who decides. Off means Jev; on means nobody is asked at all.
+    st.session_state.dice = False
     st.session_state.said = []
 
 
@@ -543,40 +547,65 @@ def accepted(answer: object, offered: dict[str, str | None]) -> str | None:
     return step.choice
 
 
-def next_round(level: dict) -> None:
-    """One round: ask every ant, then do what came back.
-
-    Asked first, all at once, and acted on afterwards. That means every answer
-    was decided against the same board — so two ants can pick the same empty
-    cell, and the check when the step is taken is what keeps them apart. An
-    answer is a wish, not a move.
-    """
-    taken = taken_cells()
+def decide_with_jev(level: dict, taken: set[tuple[int, int]]) -> list[str | None]:
+    """One direction per ant, from the model. `None` for an ant that got none."""
     payloads = [question_for(level, ant, taken) for ant in st.session_state.ants]
+    st.session_state.requests += len(payloads)
     answers = asyncio.run(ask_everyone(payloads, api_key()))
 
-    st.session_state.requests += len(payloads)
-
+    ways = []
     for ant, (_, question), answer in zip(st.session_state.ants, payloads, answers):
         way = accepted(answer, question["step"].criteria)
         ant["said"] = (
             (way, answer.choices["step"].confidence) if way is not None else None
         )
+        ways.append(way)
+    return ways
 
-        if way is None:
-            before = set(st.session_state.fruit)
-            pick_up_and_deliver(level, ant)
-            taken -= before - set(st.session_state.fruit)
-            continue
 
-        dx, dy = DIRECTIONS[way]
-        target = (ant["x"] + dx, ant["y"] + dy)
-        # Checked again here, because the board has moved on since the question
-        # was asked.
-        if target not in taken:
-            taken.discard((ant["x"], ant["y"]))
-            ant["x"], ant["y"] = target
-            taken.add(target)
+def decide_with_dice(level: dict, taken: set[tuple[int, int]]) -> list[str | None]:
+    """One direction per ant, drawn at random from the ones on offer.
+
+    The same options the model would have been given, chosen blindly. That is
+    what makes it a fair yardstick: the difference between this and Jev is the
+    choosing, not what there was to choose from.
+
+    It is not a safety net. Nothing switches to it when a request fails — an
+    ant with no usable answer does nothing, as before. It runs only when the
+    switch in the sidebar is on, and then the model is not asked at all.
+    """
+    ways = []
+    for ant in st.session_state.ants:
+        open_ways = free_directions(level, ant, taken)
+        ant["said"] = None
+        ways.append(random.choice(open_ways) if open_ways else None)
+    return ways
+
+
+def next_round(level: dict) -> None:
+    """One round: decide for every ant, then do what was decided.
+
+    Decided first, all of them, and acted on afterwards. That means every
+    answer was reached against the same board — so two ants can pick the same
+    empty cell, and the check when the step is taken is what keeps them apart.
+    An answer is a wish, not a move.
+
+    Who decides is one line. That is the whole of `DecisionSource` from the
+    Bevy version of this game, in a language that does not need the trait.
+    """
+    taken = taken_cells()
+    decide = decide_with_dice if st.session_state.dice else decide_with_jev
+
+    for ant, way in zip(st.session_state.ants, decide(level, taken)):
+        if way is not None:
+            dx, dy = DIRECTIONS[way]
+            target = (ant["x"] + dx, ant["y"] + dy)
+            # Checked again here, because the board has moved on since the
+            # question was asked.
+            if target not in taken:
+                taken.discard((ant["x"], ant["y"]))
+                ant["x"], ant["y"] = target
+                taken.add(target)
 
         # After the step, not before: a fruit picked up here is gone from
         # `taken` for everybody who moves after this ant.
@@ -712,7 +741,7 @@ level = load_level()
 start(level)
 
 st.title("🐜 Jev Ants")
-st.caption(f"Step 7 — {level['name']}. {level['briefing']}")
+st.caption(f"Step 8 — {level['name']}. {level['briefing']}")
 
 # `st.image` and not `st.html`, which is the obvious thing to reach for and
 # silently draws nothing: it runs the string through a sanitiser that keeps
@@ -737,6 +766,23 @@ with st.sidebar:
             "Used for this session only and stored nowhere. "
             "Get one at console.typesafe.ai/keys."
         )
+
+    # Outside the branch above, not inside it: the switch has nothing to do
+    # with whether a key was found, and hiding it from anyone who has one in
+    # `.env` is exactly backwards.
+    st.divider()
+    st.subheader("Who decides")
+    st.session_state.dice = st.toggle(
+        "A dice instead of Jev",
+        value=st.session_state.dice,
+        help=(
+            "Draws blindly from the same options the model would have been "
+            "given. Nothing is asked and nothing is paid. It is a yardstick, "
+            "not a fallback."
+        ),
+    )
+    if st.session_state.dice:
+        st.caption("Nobody is being asked. Watch how long five fruits take now.")
 
 # --- The queen -------------------------------------------------------------
 
@@ -789,14 +835,15 @@ colony.write(
     f"**{len(st.session_state.fruit)}** on the board"
 )
 meter.write(
-    f"**{asked}** decisions from Jev, **{thrown}** discarded"
+    ("**A dice** is deciding · " if st.session_state.dice else "")
+    + f"**{asked}** decisions from Jev, **{thrown}** discarded"
     + (f" (**{thrown / asked:.0%}**)" if asked else "")
     # The dollar signs are escaped: a pair of them is LaTeX to Streamlit's
     # markdown, and "$0.0020 a round" came out as a formula.
     + f" · {st.session_state.tokens:,} tokens · **\\${cost:.4f}**"
 )
 
-if st.session_state.awake:
+if st.session_state.awake and not st.session_state.dice:
     st.caption(
         "Above each ant: what Jev chose and how sure it was. "
         ":green[green from 0.85] · :orange[yellow from 0.60] · "
@@ -812,7 +859,9 @@ if won:
 # Without a key nothing moves, and there is no mode that would. The game exists
 # to show what Jev decides; a board without it is an empty board.
 one, five, over = st.columns([1, 1, 5])
-ready = bool(api_key()) and st.session_state.awake and not won
+# With the dice there is nothing to pay for and nobody to wake: it runs without
+# a key and without an order, which is what makes it usable as a yardstick.
+ready = (st.session_state.dice or (bool(api_key()) and st.session_state.awake)) and not won
 
 if one.button("Next round", type="primary", disabled=not ready):
     with st.spinner("eight ants are asking…"):
@@ -831,7 +880,9 @@ if over.button("Start over"):
     st.session_state.clear()
     st.rerun()
 
-if not api_key():
+if st.session_state.dice:
+    pass
+elif not api_key():
     st.info("No key yet — the colony cannot ask anyone, so nothing moves.")
 elif not st.session_state.awake:
     st.info(
