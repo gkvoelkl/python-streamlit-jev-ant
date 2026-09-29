@@ -1,9 +1,8 @@
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next.
 
-Step 5: eyes. The ant is told what lies around it, and the options it is given
-say where they would lead. Under both sits a floor: an answer that is barely
-better than a coin toss is thrown away and counted, and the ant does nothing
-that round.
+Step 6: the queen. One sentence, typed by the player, goes into the state of
+every ant, and each of them reads it for itself. Until it is said the colony
+sleeps in the nest and not a single request goes out.
 
     uv run streamlit run app.py
 """
@@ -93,7 +92,8 @@ STEP_QUESTION = (
     "can see, and where it sees none it keeps going into open ground, away from "
     "the nest and away from the other ants, because ground another ant is "
     "already walking has nothing left on it. An ant carrying a fruit takes it "
-    "to the nest. Which way should this ant go now?"
+    "to the nest. If the ant queen has said something, it applies to this ant too "
+    "and comes before the rest. Which way should this ant go now?"
 )
 
 st.set_page_config(page_title="Jev Ants", page_icon="🐜", layout="wide")
@@ -155,6 +155,11 @@ def start(level: dict) -> None:
     st.session_state.scent = {}
     st.session_state.round = 0
     st.session_state.stores = 0
+    # What the queen said, and whether she has said anything at all. The
+    # second is not "is the order empty": once woken the colony stays awake,
+    # and taking the order back is not the same as sending it to bed.
+    st.session_state.order = ""
+    st.session_state.awake = False
     st.session_state.requests = 0
     st.session_state.tokens = 0
     st.session_state.discarded = []
@@ -440,6 +445,13 @@ def question_for(level: dict, ant: dict, taken: set[tuple[int, int]]) -> tuple[d
     besides.
     """
     state = {
+        # First, because it is the one thing in here that the ant is meant to
+        # weigh everything else against.
+        **(
+            {"the ant queen says": st.session_state.order}
+            if st.session_state.order
+            else {}
+        ),
         "the ant is carrying": "a fruit" if ant["carrying"] else "nothing",
         "the ant is": "in the nest"
         if in_nest(level, ant["x"], ant["y"])
@@ -637,7 +649,7 @@ level = load_level()
 start(level)
 
 st.title("🐜 Jev Ants")
-st.caption(f"Step 5 — {level['name']}. {level['briefing']}")
+st.caption(f"Step 6 — {level['name']}. {level['briefing']}")
 
 # `st.image` and not `st.html`, which is the obvious thing to reach for and
 # silently draws nothing: it runs the string through a sanitiser that keeps
@@ -663,6 +675,40 @@ with st.sidebar:
             "Get one at console.typesafe.ai/keys."
         )
 
+# --- The queen -------------------------------------------------------------
+
+# The form's name and the keys in `st.session_state` share one namespace, so
+# this is `order_form` and not `order`: a widget called `order` would make
+# `st.session_state.order` a value Streamlit owns and refuses to let us set.
+with st.form("order_form", clear_on_submit=True, border=False):
+    field, say = st.columns([6, 1])
+    draft = field.text_input(
+        "The queen says",
+        placeholder="say something to the colony",
+        label_visibility="collapsed",
+    )
+    # A form submits on Enter as well as on the button, which is what a field
+    # you type a sentence into should do.
+    if say.form_submit_button("Say", width="stretch") and draft.strip():
+        st.session_state.order = draft.strip()
+        # The first order wakes the colony, and it stays awake from then on.
+        st.session_state.awake = True
+        st.rerun()
+
+spoken, hush = st.columns([6, 1])
+if st.session_state.order:
+    spoken.caption(f"The colony has been told: **{st.session_state.order}**")
+elif st.session_state.awake:
+    spoken.caption("The queen has taken her order back. Every ant decides for itself.")
+else:
+    spoken.caption("The colony is asleep in the nest. Nothing is asked until you speak.")
+
+if hush.button("Say nothing", width="stretch", disabled=not st.session_state.order):
+    # Withdraws the order. It does not put the colony back to sleep — there is
+    # no way back to a state that has never been interrupted.
+    st.session_state.order = ""
+    st.rerun()
+
 won = st.session_state.stores >= level["target"]
 carried = sum(ant["carrying"] for ant in st.session_state.ants)
 
@@ -684,7 +730,7 @@ if won:
 # Without a key nothing moves, and there is no mode that would. The game exists
 # to show what Jev decides; a board without it is an empty board.
 one, five, over = st.columns([1, 1, 5])
-ready = bool(api_key()) and not won
+ready = bool(api_key()) and st.session_state.awake and not won
 
 if one.button("Next round", type="primary", disabled=not ready):
     with st.spinner("eight ants are asking…"):
@@ -705,6 +751,12 @@ if over.button("Start over"):
 
 if not api_key():
     st.info("No key yet — the colony cannot ask anyone, so nothing moves.")
+elif not st.session_state.awake:
+    st.info(
+        "Nobody has been asked anything yet. Before the first order there is no "
+        "question worth the money: an ant that sees nothing and has been told "
+        "nothing has no reason to prefer one direction over another."
+    )
 
 if st.session_state.discarded:
     with st.expander(f"{len(st.session_state.discarded)} answers thrown away"):
