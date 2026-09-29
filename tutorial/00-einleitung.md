@@ -11,7 +11,9 @@ entschieden hat und wie sicher — grün bei hoher, rot bei knapper
 Zuversicht](bilder/das-spiel.png)
 
 *So sieht es am Ende von Schritt 7 aus. Über jeder Ameise steht, wofür Jev sich
-entschieden hat und wie sicher es sich war.*
+entschieden hat und wie sicher es sich war — und die grünen Felder sind die
+Duftspur, die die Kolonie beim Suchen hinterlässt. Sie ist am Bau am stärksten,
+und bergauf ist heimwärts.*
 
 Kein Klicken, keine Tasten, keine Joy-Stick. Sie tippen ein „Holt die Früchte aus
 dem Norden", und jede Ameise entscheidet für sich, was das für sie bedeutet.

@@ -378,18 +378,13 @@ def nearest_nest_cell(level: dict, ant: dict) -> tuple[int, int]:
 def vision(level: dict, ant: dict) -> list[str]:
     """What this ant can see, as sentences.
 
-    Fruit and other ants within `VISION_RADIUS`, and — only for an ant that is
-    carrying something — the nest, at any distance. Real ants find their way
-    home by counting their own steps, and this port has no pheromone trails to
-    do the job instead; without it a loaded ant would be as lost as a random
-    one.
+    Fruit, other ants and the nest within `VISION_RADIUS`, the river and the
+    plank, and for a loaded ant the trail home.
 
-    Only when carrying, and that is not a detail. Told where home is, an ant
-    with empty hands walks there: the question says the colony brings fruit to
-    the nest, so the nest is the thing in the state that sounds like an
-    instruction. The first version of this function mentioned it always, and
-    the whole colony sat at home for twenty-two rounds without touching a
-    single fruit. What is in the state *is* the behaviour.
+    Each load hears only about its own destination. Told where the nest is, an
+    ant with empty hands walks there; told where the nest is while carrying the
+    plank, it carries the plank there. Both happened, and both cost a whole
+    afternoon. What is in the state *is* the behaviour.
     """
     seen = []
 

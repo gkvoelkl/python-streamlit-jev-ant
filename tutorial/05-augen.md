@@ -60,10 +60,11 @@ def vision(level: dict, ant: dict) -> list[str]:
 
 Die Ameise sieht in jede Richtung drei Felder weit, und das ist nicht viel — mit Absicht. Die Königin überblickt später (Kapitel 6) das ganze Brett und die einzelne Ameise nicht. Dieser Unterschied ist es, der die Kommandos der Königin später wertvoll macht.
 
-Der Bau ist die Ausnahme: Er wird aus **jeder** Entfernung genannt, aber nur
-einer Ameise, die etwas trägt. Echte Ameisen finden über ihre eigenen Schritte
-heim, und diese Fassung hat keine Pheromonspuren, die die Arbeit übernehmen
-könnten. Ohne diese Ausnahme bliebe das Problem aus Kapitel 4 bestehen.
+Der Bau wird genannt, wenn er in Sichtweite ist, und nur einer Ameise, die
+etwas trägt. Eine Zeit lang stand er hier aus **jeder** Entfernung — eine
+Abkürzung, die das Problem aus Kapitel 4 löste, aber eine Ameise wissen ließ,
+was sie nicht wissen kann. Weiter unten wird sie durch das ersetzt, was echte
+Ameisen wirklich haben: eine Spur.
 
 Und im Zustand:
 
@@ -83,9 +84,14 @@ def options(level, ant, taken) -> dict[str, str | None]:
 
     if ant["carrying"]:
         nx, ny = nearest_nest_cell(level, ant)
+        near = steps_away(nx - ant["x"], ny - ant["y"])
         home = direction_of(nx - ant["x"], ny - ant["y"])
-        if home:
+        if home and 0 < near <= VISION_RADIUS:
             towards[home] = f"towards the nest, {phrase(nx - ant['x'], ny - ant['y'])}"
+
+        way = uphill(ant)          # die Spur, siehe weiter unten
+        if way and way[0] not in towards:
+            towards[way[0]] = f"the smell of the colony gets {describe_scent(way[1])}er"
     else:
         visible = [
             (steps_away(x - ant["x"], y - ant["y"]), x, y)
@@ -152,6 +158,134 @@ Aber man prüft, statt zu vertrauen.
 
 **Es gibt weiterhin keinen Rückfall auf Regeln.** Eine abgelehnte Antwort heißt:
 Diese Ameise tut in dieser Runde nichts und wird nächste Runde wieder gefragt.
+
+## Die Spur nach Hause
+
+Bis hierher weiß eine Ameise mit Frucht nur dann, wo der Bau liegt, wenn er in
+Sichtweite ist — also auf drei Feldern von 384. Das reicht nicht. Echte Ameisen
+lösen das nicht mit Augen, sondern mit **Duft**: Sie hinterlassen eine Spur, und
+der Rückweg ist die Richtung, in der sie stärker wird.
+
+Genau das kommt jetzt dazu, mit den Zahlen, die die Rust-Fassung dieses Spiels
+gemessen hat:
+
+```python
+SCENT_DEPOSIT = 1.0        # was eine suchende Ameise hinterlässt
+SCENT_STEP_DECAY = 0.88    # ... mal diesem Wert je Schritt seit dem Bau
+SCENT_HALF_LIFE = 12.0     # Runden, bis eine Spur auf die Hälfte verblasst
+SCENT_THRESHOLD = 0.05     # darunter gilt ein Feld als geruchlos
+```
+
+### Gelegt wird beim Suchen, nicht beim Tragen
+
+Das ist die Stelle, an der man es falsch herum bauen kann, und es sieht falsch
+herum sogar plausibler aus.
+
+```python
+def lay_scent(level: dict, ant: dict) -> None:
+    if in_nest(level, ant["x"], ant["y"]):
+        ant["since_nest"] = 0
+    else:
+        ant["since_nest"] += 1
+
+    if ant["carrying"]:
+        return
+
+    cell = (ant["x"], ant["y"])
+    amount = SCENT_DEPOSIT * SCENT_STEP_DECAY ** ant["since_nest"]
+    st.session_state.scent[cell] = max(st.session_state.scent.get(cell, 0.0), amount)
+```
+
+Nur eine **suchende** Ameise markiert den Boden, und die Marke ist umso
+schwächer, je weiter sie vom Bau weg ist. Damit hat das Feld eine Form: Sein
+Gipfel liegt im Bau. **Bergauf ist heimwärts.**
+
+Jede Ameise zählt dafür ihre eigenen Schritte seit dem Bau mit — `since_nest`,
+zurückgesetzt, sobald sie wieder drinsteht.
+
+### Die stärkste Ablage gewinnt, sie summieren sich nicht
+
+`max(...)` statt `+=`, und das ist keine Kleinigkeit. Würden sich die Ablagen
+addieren, dann schlügen hundert schwache Spuren weit draußen eine starke am Bau
+— und die Steigung zeigte vom Bau **weg**. Der Verkehr zählt trotzdem, nur
+anders: Ein oft begangener Weg wird oft neu markiert und überlebt dadurch das
+Verdunsten.
+
+### Verdunsten
+
+```python
+def evaporate() -> None:
+    factor = 0.5 ** (1 / SCENT_HALF_LIFE)
+    st.session_state.scent = {
+        cell: strength * factor
+        for cell, strength in st.session_state.scent.items()
+        if strength * factor >= SCENT_THRESHOLD
+    }
+```
+
+Das ist keine Kosmetik, sondern das Gedächtnis der Kolonie: So vergisst sie
+einen Weg, der nichts mehr bringt. Und weil alles unter der Schwelle wegfällt,
+bleibt das Wörterbuch klein — auf einem 24 × 16-Brett sind es selten mehr als
+achtzig Felder.
+
+### Bergauf
+
+```python
+def uphill(ant: dict) -> tuple[str, float] | None:
+    here = st.session_state.scent.get((ant["x"], ant["y"]), 0.0)
+    best = None
+    for name, (dx, dy) in DIRECTIONS.items():
+        strength = st.session_state.scent.get((ant["x"] + dx, ant["y"] + dy), 0.0)
+        if strength >= SCENT_THRESHOLD and strength > here:
+            if best is None or strength > best[1]:
+                best = (name, strength)
+    return best
+```
+
+Auf dem Gipfel gibt es nichts mehr hinauf, und `uphill` gibt `None` zurück. Das
+ist kein Fehlschlag: Der Gipfel ist der Bau, und wer dort steht, ist angekommen.
+
+### Als Satz, nicht als Zahl
+
+```python
+def describe_scent(strength: float) -> str:
+    if strength >= 0.7:
+        return "strong"
+    return "clear" if strength >= 0.3 else "faint"
+```
+
+Im Zustand steht dann:
+
+```
+a clear smell of the colony, 1 cell to the north-west
+```
+
+Eine Zahl wie 0,41 würde eine Genauigkeit versprechen, die das Feld nicht hat,
+und Wörter liest das Modell ohnehin besser. Dieselbe Überlegung wie beim
+Sichtfeld: gesagt wird, was die Ameise *merkt*, nicht, was im Speicher steht.
+
+### Was es bringt
+
+Drei Fassungen, derselbe Befehl, je zwei Läufe:
+
+| | Runden bis fünf Früchte |
+|---|---|
+| **Spur** | 16 · 17 |
+| Abkürzung (Bau von überall sichtbar) | 18 · 16 |
+| weder Spur noch Abkürzung | 2 von 5 nach 40 Runden — nicht geschafft |
+
+Die Spur ist **so gut wie perfekte Information**. Sie holt genau das ein, was
+die Abkürzung einfach geschenkt hat — nur dass die Kolonie es sich diesmal
+selbst erarbeitet, Feld für Feld.
+
+Und die dritte Zeile zeigt, dass hier wirklich etwas passiert: Ohne beides
+kommt die Kolonie nicht ins Ziel.
+
+> Ein Wort zur Bescheidenheit dieser Zahlen: Es sind Einzelläufe, und das Brett
+> ist klein. Die Rust-Fassung hat auf einem Brett mit 2048 Feldern **+111 %**
+> gemessen und auf einem kleinen nur +11 % — dort ist der Bau von einem Viertel
+> des Bretts aus zu sehen, und wer ihn sieht, braucht keine Spur. Der
+> Mechanismus ist nicht schwach, das Brett ist zu klein, um ihn zu brauchen.
 
 ## Die Frage sagt jetzt beides
 
@@ -221,3 +355,15 @@ fällt, sobald jemand etwas sagt. Das ist Kapitel 6.
   geratene. Wird die Kolonie schneller oder langsamer?
 * Nehmen Sie den Satz über das Ausschwärmen aus `STEP_QUESTION` heraus und
   fangen Sie neu an. Es lohnt sich, das einmal selbst gesehen zu haben.
+
+* Sehen Sie dem Brett beim Grünwerden zu: Die Spur wächst dort am stärksten,
+  wo viele Ameisen gehen, und der hellste Fleck liegt im Bau.
+
+* Setzen Sie `SCENT_HALF_LIFE` auf 2 Runden. Die Spur verdunstet, bevor
+  jemand sie brauchen kann — und die Kolonie ist wieder so hilflos wie in der
+  dritten Zeile der Tabelle oben.
+
+* Tauschen Sie in `lay_scent` das `max(...)` gegen `+=`. Die Ablagen summieren
+  sich dann, der Gipfel wandert aus dem Bau heraus dorthin, wo am meisten
+  Verkehr ist — und die Trägerinnen laufen in die falsche Richtung. Das ist der
+  lehrreichste Fehler, den man in diesem Programm bauen kann.
