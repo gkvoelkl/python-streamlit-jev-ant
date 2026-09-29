@@ -105,5 +105,6 @@
     22,
     15
   ],
-  "target": 5
+  "target": 5,
+  "scent_half_life": 30
 }

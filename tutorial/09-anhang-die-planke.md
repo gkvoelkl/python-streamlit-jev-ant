@@ -4,6 +4,10 @@ Das Spiel der acht Schritte, um drei Dinge erweitert: **Wasser**, das keine
 Ameise durchquert, eine **Planke**, die eine Ameise aufheben kann, und einen
 **Übergang**, der dort entsteht, wo sie abgelegt wird.
 
+Alles andere ist unverändert übernommen, die Duftspur aus Kapitel 5
+eingeschlossen — eine Ameise mit Frucht findet hier genauso über den Geruch nach
+Hause wie auf dem ersten Brett.
+
 Das Level ist das zweite aus der Rust-Fassung dieses Spiels, mit gespiegeltem y.
 
 Das fertige Programm liegt unter `anhang/app_mit_planke.py`, das Level daneben
@@ -179,14 +183,36 @@ das herausfinden können.
 
 ## Wo dieser Anhang an seine Grenze kommt
 
-Und dann wird es zäh. Zwei volle Durchläufe:
+Und dann wird es zäh. Vier volle Durchläufe, in der Reihenfolge, in der ich sie
+gefahren habe:
 
-| | Brücke | Vorrat nach 70–80 Runden | Kosten |
+| | Brücke ab | Vorrat | Kosten |
 |---|---|---|---|
-| Übergang nur aus drei Feldern sichtbar | Runde 30 | 1 von 5 | 0,016 $ |
-| Übergang als Wahrzeichen | Runde 25 | 1 von 5 | 0,015 $ |
+| Übergang nur aus drei Feldern sichtbar | Runde 30 | 1 von 5 nach 80 Runden | 0,016 $ |
+| Übergang als Wahrzeichen | Runde 25 | 1 von 5 nach 70 Runden | 0,015 $ |
+| dazu die Duftspur, Halbwertszeit 12 | Runde 25 | **0** von 5 nach 60 Runden | 0,013 $ |
+| Halbwertszeit 30 | Runde 30 | **0** von 5 nach 60 Runden | 0,012 $ |
 
-Eine Frucht. Das Rätsel ist gelöst, der Abtransport nicht.
+Eine Frucht, dann keine. Das Rätsel ist gelöst, der Abtransport nicht — und mit
+der Duftspur wird er sogar schlechter.
+
+Das ist erklärbar und ehrlicherweise zu erwarten gewesen. Auf dem ersten Brett
+ist die Spur so gut wie perfekte Information (Kapitel 5). Hier ist der Heimweg
+dreimal so lang und führt durch **ein** Feld — und eine Spur, die niemand
+auffrischt, weil gerade niemand denselben Weg geht, ist verblasst, bevor die
+Trägerin zurück ist.
+
+Meine erste Vermutung war deshalb die Halbwertszeit. Sie steht jetzt im Level
+statt im Code:
+
+```json
+  "scent_half_life": 30
+```
+
+Gebracht hat es **nichts** — Zeile vier der Tabelle. Die Einstellmöglichkeit ist
+trotzdem geblieben, weil die Überlegung dahinter stimmt: Wie lange eine Spur
+halten muss, hängt daran, wie weit die Kolonie läuft. Nur war sie hier nicht
+das Problem.
 
 Der Grund ist keine Schwäche des Modells, sondern der Bauart dieses Ports:
 **Jeder einzelne Schritt ist eine eigene Frage.** Eine Ameise, die Obst holen
@@ -211,3 +237,7 @@ lohnt — und dieser Anhang ist der Beweis, dass er nicht theoretisch ist.
 * Legen Sie ein zweites Wasserfeld dazu, sodass der Fluss an einer Stelle zwei
   Felder breit ist. Was passiert, wenn die Planke dort gelegt wird? (Und jetzt
   wissen Sie, wofür die Rust-Fassung `nearest_crossing` hat.)
+
+* Sehen Sie dem Brett zu, nachdem die Brücke liegt: Wo wird es grün? Die Spur
+  zeigt, welchen Weg die Kolonie tatsächlich nimmt — und wie schnell er wieder
+  verblasst, wenn niemand ihn benutzt.

@@ -106,27 +106,39 @@ Mitte 80% 154 bis 383
 | | Runden bis fünf Früchte |
 |---|---|
 | Würfel (Median aus 200 Läufen) | **237** |
-| Jev, ohne Befehl | ~20 |
-| Jev, mit einem brauchbaren Befehl | ~15–20 |
+| Jev, mit einem brauchbaren Befehl | **16 · 17** |
 
-Etwa **zwölfmal** schneller. Und es kostet in derselben Zeit rund 160 Anfragen,
-also etwa einen Fünftel-Cent.
+Rund **vierzehnmal** schneller, für etwa 130 Anfragen — einen Sechstel-Cent.
+
+Eine Zeile aus der alten Tabelle ist verschwunden, und das aus einem guten
+Grund: „Jev ohne Befehl" gibt es nicht mehr. Seit Kapitel 6 schläft die Kolonie,
+bis Sie etwas sagen.
 
 Der Grund für den großen Abstand ist nicht, dass das Modell geschickter wählt,
 wenn eine Frucht danebenliegt — das tut ein Würfel in einem Achtel der Fälle
-auch. Der Abstand entsteht beim **Heimweg**. Eine tragende Ameise, der im
-Zustand steht, wo der Bau liegt, geht dorthin. Ein Würfel findet 16 von 384
-Feldern durch Herumlaufen.
+auch. Der Abstand entsteht beim **Heimweg**. Eine tragende Ameise folgt der
+Duftspur bergauf und kommt an; ein Würfel müsste 16 von 384 Feldern durch
+Herumlaufen treffen.
+
+Und jetzt kommt die Feinheit, die diesen Vergleich erst scharf macht: **Die
+Würfel-Kolonie legt dieselbe Spur.** `lay_scent` hängt am Laufen, nicht am
+Entscheiden, also duftet ihr Brett genauso. Sie kann die Spur nur nicht lesen,
+denn dazu müsste jemand aus dem Angebotenen etwas auswählen.
+
+Die Spur ist also nicht das, was den Unterschied macht. Sie ist nur die
+Information — und der Unterschied ist, dass eine Seite sie verwerten kann und
+die andere nicht.
 
 Merken Sie sich den allgemeinen Teil davon: Der Nutzen lag nicht dort, wo die
-Entscheidung schwierig aussah, sondern dort, wo eine **Information** im Zustand
-stand, die der Zufall nicht verwerten kann.
+Entscheidung schwierig aussah, sondern dort, wo eine **Information** vorlag,
+die der Zufall nicht verwerten kann.
 
 ## Drei Einschränkungen, die dazugehören
 
 **Die Zahlen sind nicht gleichwertig gemessen.** 237 ist ein Median aus
-zweihundert Läufen. Die ~20 für Jev sind Einzelläufe, weil jeder davon
-Hunderte von Anfragen kostet. Bei der Streuung des Würfels (97 bis 523!) sollte
+zweihundert Läufen mit `baseline.py`, das weder eine Spur legt noch eine liest.
+Die 16 und 17 für Jev sind zwei Einzelläufe, weil jeder davon über hundert
+Anfragen kostet. Bei der Streuung des Würfels (97 bis 523!) sollte
 man auch beim Modell mehrere Läufe machen, bevor man eine Zahl ernst nimmt.
 
 **Ein Würfel ist eine niedrige Latte.** Die faire Gegenprobe wäre nicht der

@@ -58,8 +58,15 @@ SCENT_DEPOSIT = 1.0
 # What is left of that with every step since the ant was last in the nest.
 SCENT_STEP_DECAY = 0.88
 
-# Rounds for a trail to fade to half. Evaporation is not decoration: it is how
-# the colony forgets a way that leads nowhere any more.
+# Rounds for a trail to fade to half, and the default for a small board.
+# Evaporation is not decoration: it is how the colony forgets a way that leads
+# nowhere any more.
+#
+# It has to be long enough for the journey the colony actually makes. On this
+# board the way home is three times as long as on level 1 and runs through a
+# single crossing, and at twelve rounds the trail was gone before the carrier
+# got back — nought fruits in sixty rounds. So the level may say otherwise:
+# `scent_half_life` in the JSON.
 SCENT_HALF_LIFE = 12.0
 
 # Below this a cell counts as unscented, so old trails stop being offered.
@@ -211,6 +218,7 @@ def start(level: dict) -> None:
     # How strongly each cell smells of the colony. Sparse on purpose — most
     # of the board never carries a trail, and the cells that do are few.
     st.session_state.scent = {}
+    st.session_state.half_life = float(level.get("scent_half_life", SCENT_HALF_LIFE))
     st.session_state.round = 0
     st.session_state.stores = 0
     # What the queen said, and whether she has said anything at all. The
@@ -552,7 +560,7 @@ def lay_scent(level: dict, ant: dict) -> None:
 
 def evaporate() -> None:
     """One round of time passing. What falls under the threshold is dropped."""
-    factor = 0.5 ** (1 / SCENT_HALF_LIFE)
+    factor = 0.5 ** (1 / st.session_state.half_life)
     st.session_state.scent = {
         cell: strength * factor
         for cell, strength in st.session_state.scent.items()
