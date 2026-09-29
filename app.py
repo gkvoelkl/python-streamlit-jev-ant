@@ -1,9 +1,9 @@
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next.
 
-Step 4: carrying. An ant that walks past a fruit picks it up, an ant that comes
-home with one puts it in the stores, and five of them win the level. The
-colony has a job now — it is just very bad at it, because nobody has told the
-ants anything and they cannot see.
+Step 5: eyes. The ant is told what lies around it, and the options it is given
+say where they would lead. Under both sits a floor: an answer that is barely
+better than a coin toss is thrown away and counted, and the ant does nothing
+that round.
 
     uv run streamlit run app.py
 """
@@ -24,6 +24,38 @@ load_dotenv()
 CELL = 28
 
 LEVEL_FILE = "level1.json"
+
+# How far an ant sees, in cells. Small on purpose: an ant that saw the whole
+# board would need nobody to tell it anything.
+VISION_RADIUS = 3
+
+# --- The trail home ------------------------------------------------------
+#
+# A searching ant marks the ground behind it, and the mark is weaker the
+# further it has come from the nest. The strongest mark wins on a cell, so the
+# peak of the whole field is the nest itself — and walking uphill is walking
+# home. This is the one thing in the game an ant knows that it cannot see.
+#
+# The numbers are the ones the Bevy version measured its way to.
+
+# What a searching ant leaves on the cell it just left, before the decay below.
+SCENT_DEPOSIT = 1.0
+
+# What is left of that with every step since the ant was last in the nest.
+SCENT_STEP_DECAY = 0.88
+
+# Rounds for a trail to fade to half. Evaporation is not decoration: it is how
+# the colony forgets a way that leads nowhere any more.
+SCENT_HALF_LIFE = 12.0
+
+# Below this a cell counts as unscented, so old trails stop being offered.
+SCENT_THRESHOLD = 0.05
+
+# Answers below this are thrown away and the ant does nothing that round. The
+# number is measured, not guessed — it comes from the Bevy version of this
+# game. Mind what `confidence` means: how far the answer sits from pure chance,
+# scaled by the number of options, not the highest probability.
+MIN_CONFIDENCE = 0.22
 
 # Positions are counted from the top left, x to the right and y *downwards*,
 # because that is how SVG counts and a second coordinate system in a program
@@ -48,6 +80,7 @@ FLOOR_LIGHT = "#33333d"
 # Ants are dark and so is the floor. A pale disc under each one turns it into a
 # game piece that can be found at a glance.
 ANT_DISC = "#ded9cb"
+SCENT_TINT = "#4f8f5c"
 NEST_FILL = "#3a3a2a"
 NEST_EDGE = "#c8b24a"
 
@@ -55,8 +88,12 @@ NEST_EDGE = "#c8b24a"
 # the actual work in a project like this — so it sits here on its own, where it
 # can be changed without reading the program.
 STEP_QUESTION = (
-    "An ant of a colony is standing on a board and has to decide where to go "
-    "next. Which way should it go?"
+    "An ant of the colony has to decide which way to go next. The colony lives "
+    "on fruit. An ant with empty hands searches: it walks towards any fruit it "
+    "can see, and where it sees none it keeps going into open ground, away from "
+    "the nest and away from the other ants, because ground another ant is "
+    "already walking has nothing left on it. An ant carrying a fruit takes it "
+    "to the nest. Which way should this ant go now?"
 )
 
 st.set_page_config(page_title="Jev Ants", page_icon="🐜", layout="wide")
@@ -106,14 +143,22 @@ def start(level: dict) -> None:
             # One fruit at a time, and which fruit it is never matters — so a
             # flag, not an identity.
             "carrying": False,
+            # Steps since this ant was last in the nest. It decides how much
+            # scent it leaves: the further from home, the fainter the mark.
+            "since_nest": 0,
         }
         for i in range(level["ants"])
     ]
     st.session_state.fruit = [tuple(cell) for cell in level["fruit"]]
+    # How strongly each cell smells of the colony. Sparse on purpose — most
+    # of the board never carries a trail, and the cells that do are few.
+    st.session_state.scent = {}
     st.session_state.round = 0
     st.session_state.stores = 0
+    st.session_state.requests = 0
+    st.session_state.tokens = 0
+    st.session_state.discarded = []
     st.session_state.said = []
-    st.session_state.failure = None
 
 
 def taken_cells() -> set[tuple[int, int]]:
@@ -187,27 +232,221 @@ def pick_up_and_deliver(level: dict, ant: dict) -> None:
         ant["carrying"] = True
 
 
+def steps_away(dx: int, dy: int) -> int:
+    """How many steps apart two cells are when moving diagonally counts as one.
+
+    A diagonal step covers as much ground as a straight one here, so the
+    distance is the larger of the two offsets, not their sum.
+    """
+    return max(abs(dx), abs(dy))
+
+
+def direction_of(dx: int, dy: int) -> str | None:
+    """Which of the eight directions roughly points at an offset."""
+    step = ((dx > 0) - (dx < 0), (dy > 0) - (dy < 0))
+    for name, offset in DIRECTIONS.items():
+        if offset == step:
+            return name
+    return None
+
+
+def phrase(dx: int, dy: int) -> str:
+    """"2 cells to the north-east" — how far and which way, in words.
+
+    Relative and never absolute. The ant is told what lies around it, not where
+    it stands on a grid it cannot see, because a coordinate is a fact it has no
+    way of using.
+    """
+    away = steps_away(dx, dy)
+    return f"{away} cell{'' if away == 1 else 's'} to the {direction_of(dx, dy)}"
+
+
+def nearest_nest_cell(level: dict, ant: dict) -> tuple[int, int]:
+    """The corner or edge of the nest closest to this ant."""
+    nest = level["nest"]
+    return (
+        min(max(ant["x"], nest["x"]), nest["x"] + nest["size"] - 1),
+        min(max(ant["y"], nest["y"]), nest["y"] + nest["size"] - 1),
+    )
+
+
+def vision(level: dict, ant: dict) -> list[str]:
+    """What this ant can see, as sentences.
+
+    Fruit and other ants within `VISION_RADIUS`, and — only for an ant that is
+    carrying something — the nest, at any distance. Real ants find their way
+    home by counting their own steps, and this port has no pheromone trails to
+    do the job instead; without it a loaded ant would be as lost as a random
+    one.
+
+    Only when carrying, and that is not a detail. Told where home is, an ant
+    with empty hands walks there: the question says the colony brings fruit to
+    the nest, so the nest is the thing in the state that sounds like an
+    instruction. The first version of this function mentioned it always, and
+    the whole colony sat at home for twenty-two rounds without touching a
+    single fruit. What is in the state *is* the behaviour.
+    """
+    seen = []
+
+    for x, y in st.session_state.fruit:
+        dx, dy = x - ant["x"], y - ant["y"]
+        if steps_away(dx, dy) <= VISION_RADIUS:
+            seen.append(f"a fruit, {phrase(dx, dy)}")
+
+    for other in st.session_state.ants:
+        dx, dy = other["x"] - ant["x"], other["y"] - ant["y"]
+        if other is not ant and steps_away(dx, dy) <= VISION_RADIUS:
+            seen.append(f"another ant, {phrase(dx, dy)}")
+
+    # The nest only when it is actually in sight. Before the trail existed it
+    # was named from anywhere, which was a shortcut with a note attached: real
+    # ants do not know where home is, they follow what the colony left on the
+    # ground. Now they can, so the shortcut goes.
+    if ant["carrying"]:
+        nx, ny = nearest_nest_cell(level, ant)
+        near = steps_away(nx - ant["x"], ny - ant["y"])
+        if 0 < near <= VISION_RADIUS:
+            seen.append(f"the nest, {phrase(nx - ant['x'], ny - ant['y'])}")
+
+        # And the trail, which is the whole point: a sense, not a sight.
+        way = uphill(ant)
+        if way:
+            seen.append(
+                f"a {describe_scent(way[1])} smell of the colony, "
+                f"1 cell to the {way[0]}"
+            )
+
+    return seen
+
+
+def options(level: dict, ant: dict, taken: set[tuple[int, int]]) -> dict[str, str | None]:
+    """What this ant may choose from, and what lies that way.
+
+    The keys are the directions that are actually open — `free_directions` from
+    step 3. The values say what the ant would be heading towards, and they are
+    written fresh every round out of what it sees. A direction with nothing
+    interesting in it gets no description, and that is honest: there is nothing
+    to say about it.
+
+    This is the whole idea in one dictionary. The model is not trusted to avoid
+    impossible answers; it is never shown one.
+    """
+    ways = free_directions(level, ant, taken)
+    towards: dict[str, str] = {}
+
+    if ant["carrying"]:
+        nx, ny = nearest_nest_cell(level, ant)
+        near = steps_away(nx - ant["x"], ny - ant["y"])
+        home = direction_of(nx - ant["x"], ny - ant["y"])
+        if home and 0 < near <= VISION_RADIUS:
+            towards[home] = f"towards the nest, {phrase(nx - ant['x'], ny - ant['y'])}"
+
+        # Uphill, for an ant that cannot see the nest from here. It is offered
+        # as what it is — a smell that grows stronger, not a route.
+        way = uphill(ant)
+        if way and way[0] not in towards:
+            towards[way[0]] = f"the smell of the colony gets {describe_scent(way[1])}er"
+    else:
+        visible = [
+            (steps_away(x - ant["x"], y - ant["y"]), x, y)
+            for x, y in st.session_state.fruit
+            if steps_away(x - ant["x"], y - ant["y"]) <= VISION_RADIUS
+        ]
+        for _, x, y in sorted(visible):
+            way = direction_of(x - ant["x"], y - ant["y"])
+            if way:
+                towards.setdefault(
+                    way, f"towards a fruit, {phrase(x - ant['x'], y - ant['y'])}"
+                )
+
+    return {way: towards.get(way) for way in ways}
+
+
+def describe_scent(strength: float) -> str:
+    """How a trail is put to an ant: a word, never a number.
+
+    A number would promise a precision the field does not have, and the model
+    reads words better than it reads 0.41.
+    """
+    if strength >= 0.7:
+        return "strong"
+    return "clear" if strength >= 0.3 else "faint"
+
+
+def lay_scent(level: dict, ant: dict) -> None:
+    """What a searching ant leaves behind on the cell it stands on.
+
+    Only a **searching** ant marks the ground, and the mark is weaker the
+    further it has come from the nest. That is what gives the field a shape:
+    its peak is the nest, so uphill is homeward.
+
+    The strongest mark wins; they do not add up. Adding looks right and is
+    wrong — a hundred faint traces out in the open would then outweigh one
+    strong mark near the nest, and the slope would point away from home.
+    Traffic still counts, only differently: a path walked again is marked
+    again and so outlives evaporation.
+    """
+    if in_nest(level, ant["x"], ant["y"]):
+        ant["since_nest"] = 0
+    else:
+        ant["since_nest"] += 1
+
+    if ant["carrying"]:
+        return
+
+    cell = (ant["x"], ant["y"])
+    amount = SCENT_DEPOSIT * SCENT_STEP_DECAY ** ant["since_nest"]
+    st.session_state.scent[cell] = max(st.session_state.scent.get(cell, 0.0), amount)
+
+
+def evaporate() -> None:
+    """One round of time passing. What falls under the threshold is dropped."""
+    factor = 0.5 ** (1 / SCENT_HALF_LIFE)
+    st.session_state.scent = {
+        cell: strength * factor
+        for cell, strength in st.session_state.scent.items()
+        if strength * factor >= SCENT_THRESHOLD
+    }
+
+
+def uphill(ant: dict) -> tuple[str, float] | None:
+    """The neighbouring cell that smells strongest, if it beats this one.
+
+    Standing on the peak gives `None`, and that is not a failure: the peak is
+    at the nest, and an ant standing there has arrived.
+    """
+    here = st.session_state.scent.get((ant["x"], ant["y"]), 0.0)
+    best = None
+    for name, (dx, dy) in DIRECTIONS.items():
+        strength = st.session_state.scent.get((ant["x"] + dx, ant["y"] + dy), 0.0)
+        if strength >= SCENT_THRESHOLD and strength > here:
+            if best is None or strength > best[1]:
+                best = (name, strength)
+    return best
+
+
 def question_for(level: dict, ant: dict, taken: set[tuple[int, int]]) -> tuple[dict, dict]:
     """The state and the question for one ant: everything a request needs.
 
-    The **criteria** are the directions this ant can actually take. They are
-    not a fixed list of eight: an ant at the edge is not offered the edge, an
-    ant with a neighbour in the way is not offered that neighbour. The model
-    therefore cannot answer something impossible — the impossible was never on
-    the menu.
+    The **criteria** come from `options`: the directions this ant can take, each
+    with what lies that way. Not a fixed list of eight — an ant at the edge is
+    not offered the edge — so the model cannot answer something impossible.
+
+    The **state** now includes what the ant sees, which is the change this step
+    is about.
 
     The **state** is only what concerns this one ant. A state padded with
     things that do not matter makes the answer worse, and costs money per token
     besides.
     """
-    ways = free_directions(level, ant, taken)
     state = {
         "the ant is carrying": "a fruit" if ant["carrying"] else "nothing",
         "the ant is": "in the nest"
         if in_nest(level, ant["x"], ant["y"])
         else "out on the board",
+        "the ant can see": vision(level, ant) or ["nothing at all"],
     }
-    choice = Choice(instructions=STEP_QUESTION, criteria=dict.fromkeys(ways))
+    choice = Choice(instructions=STEP_QUESTION, criteria=options(level, ant, taken))
     return state, {"step": choice}
 
 
@@ -230,6 +469,39 @@ async def ask_everyone(payloads: list[tuple[dict, dict]], key: str) -> list[obje
         )
 
 
+def accepted(answer: object, offered: dict[str, str | None]) -> str | None:
+    """The direction to act on, or `None` with a reason written down.
+
+    Three ways an answer is refused, and all three are counted rather than
+    quietly patched over:
+
+    * the request failed — `asyncio.gather` handed back the exception itself;
+    * the answer names something that was never offered;
+    * the answer is barely better than a coin toss.
+
+    There is no fallback. A refused answer means this ant does nothing this
+    round, and it will be asked again in the next one. A colony that kept
+    working on rules whenever the model faltered would hide exactly what this
+    game is built to show.
+    """
+    if isinstance(answer, BaseException):
+        st.session_state.discarded.append(type(answer).__name__)
+        return None
+
+    step = answer.choices["step"]
+    st.session_state.tokens += answer.usage.input_tokens
+
+    if step.choice not in offered:
+        st.session_state.discarded.append(f"{step.choice} was never offered")
+        return None
+
+    if step.confidence < MIN_CONFIDENCE:
+        st.session_state.discarded.append(f"{step.choice} at {step.confidence:.2f}")
+        return None
+
+    return step.choice
+
+
 def next_round(level: dict) -> None:
     """One round: ask every ant, then do what came back.
 
@@ -242,19 +514,22 @@ def next_round(level: dict) -> None:
     payloads = [question_for(level, ant, taken) for ant in st.session_state.ants]
     answers = asyncio.run(ask_everyone(payloads, api_key()))
 
+    st.session_state.requests += len(payloads)
     st.session_state.said = []
-    st.session_state.failure = None
 
-    for ant, answer in zip(st.session_state.ants, answers):
-        if isinstance(answer, BaseException):
-            st.session_state.failure = f"{type(answer).__name__}: {answer}"
-            st.session_state.said.append(None)
+    for ant, (_, question), answer in zip(st.session_state.ants, payloads, answers):
+        way = accepted(answer, question["step"].criteria)
+        st.session_state.said.append(
+            (way, answer.choices["step"].confidence) if way is not None else None
+        )
+
+        if way is None:
+            before = set(st.session_state.fruit)
+            pick_up_and_deliver(level, ant)
+            taken -= before - set(st.session_state.fruit)
             continue
 
-        step = answer.choices["step"]
-        st.session_state.said.append((step.choice, step.confidence))
-
-        dx, dy = DIRECTIONS[step.choice]
+        dx, dy = DIRECTIONS[way]
         target = (ant["x"] + dx, ant["y"] + dy)
         # Checked again here, because the board has moved on since the question
         # was asked.
@@ -269,6 +544,10 @@ def next_round(level: dict) -> None:
         pick_up_and_deliver(level, ant)
         taken -= before - set(st.session_state.fruit)
 
+        # Marked after the step, so the trail records where the ant went.
+        lay_scent(level, ant)
+
+    evaporate()
     st.session_state.round += 1
 
 
@@ -306,6 +585,14 @@ def board(level: dict) -> str:
 
     # The nest is floor like any other cell, so it gets an outline rather than
     # a solid block: a wall is the one thing it must not look like.
+    # The trail, tinted into the floor. It is ground, not an object, so it is
+    # drawn under everything and never brighter than the ants.
+    scent_svg = "\n".join(
+        f'  <rect x="{x * CELL}" y="{y * CELL}" width="{CELL}" height="{CELL}" '
+        f'fill="{SCENT_TINT}" fill-opacity="{min(0.55, strength * 0.55):.2f}"/>'
+        for (x, y), strength in st.session_state.scent.items()
+    )
+
     nest_svg = (
         f'  <rect x="{nest["x"] * CELL}" y="{nest["y"] * CELL}" '
         f'width="{nest["size"] * CELL}" height="{nest["size"] * CELL}" '
@@ -338,6 +625,7 @@ def board(level: dict) -> str:
     </pattern>
   </defs>
   <rect width="{width}" height="{height}" fill="url(#chequer)"/>
+{scent_svg}
 {nest_svg}
 {fruit_svg}
 {ants_svg}
@@ -349,7 +637,7 @@ level = load_level()
 start(level)
 
 st.title("🐜 Jev Ants")
-st.caption(f"Step 4 — {level['name']}. {level['briefing']}")
+st.caption(f"Step 5 — {level['name']}. {level['briefing']}")
 
 # `st.image` and not `st.html`, which is the obvious thing to reach for and
 # silently draws nothing: it runs the string through a sanitiser that keeps
@@ -382,7 +670,9 @@ st.write(
     f"Round **{st.session_state.round}** · "
     f"**{st.session_state.stores}** of {level['target']} stored · "
     f"**{carried}** carried · "
-    f"**{len(st.session_state.fruit)}** on the board"
+    f"**{len(st.session_state.fruit)}** on the board · "
+    f"**{st.session_state.requests}** decisions from Jev, "
+    f"**{len(st.session_state.discarded)}** discarded"
 )
 
 if won:
@@ -416,16 +706,19 @@ if over.button("Start over"):
 if not api_key():
     st.info("No key yet — the colony cannot ask anyone, so nothing moves.")
 
-if st.session_state.failure:
-    st.error(st.session_state.failure)
+if st.session_state.discarded:
+    with st.expander(f"{len(st.session_state.discarded)} answers thrown away"):
+        # Worth reading rather than hiding. Most of them are not a weak model
+        # but a badly put question, and this is where you notice.
+        for reason in st.session_state.discarded[-12:]:
+            st.write(f"· {reason}")
 
 if st.session_state.said:
-    # What each ant was told this round. It is a list for now; in a later step
-    # it moves onto the board itself, where it belongs.
+    # What each ant was told this round. It is a list for now; in step 7 it
+    # moves onto the board itself, where it belongs.
     st.caption(
         " · ".join(
-            f"{number}: {choice} {confidence:.2f}" if choice else f"{number}: —"
+            f"{number}: {said[0]} {said[1]:.2f}" if said else f"{number}: —"
             for number, said in enumerate(st.session_state.said, start=1)
-            for choice, confidence in [said or (None, 0)]
         )
     )
