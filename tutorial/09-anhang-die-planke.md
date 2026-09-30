@@ -1,4 +1,4 @@
-# Anhang — Die Planke und der Fluss
+# Anhang A — Die Planke und der Fluss
 
 Das Spiel der acht Schritte, um drei Dinge erweitert: **Wasser**, das keine
 Ameise durchquert, eine **Planke**, die eine Ameise aufheben kann, und einen

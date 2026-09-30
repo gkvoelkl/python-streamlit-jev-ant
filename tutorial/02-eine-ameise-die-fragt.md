@@ -43,8 +43,14 @@ def api_key() -> str:
     ).strip()
 ```
 
-Das Getippte hat Priorität gegen über der Datei `.env`
+Das Getippte hat Vorrang vor der Datei `.env` — sonst könnten Sie einen
+veralteten Schlüssel dort nicht übergehen.
 
+> **Es geht auch ohne Schlüssel.** Seit Ollama 0.35 beantwortet ein lokal
+> laufendes Modell dieselben Anfragen: keine Kosten, kein Netz, und keine Zeile
+> Code anders — nur drei Zeilen in `.env`. Wie das geht, steht in **Anhang B**.
+> Wenn Sie das Tutorial lieber so durcharbeiten wollen, richten Sie es dort ein
+> und kommen hierher zurück; alles Weitere bleibt gleich.
 
 ## Die Ameise
 

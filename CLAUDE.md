@@ -80,6 +80,14 @@ These are what make the demo a demo. Do not simplify them away.
   business in the Rust repo have no counterpart here.
 * **Coordinates count from the top left, y downwards**, the way SVG does. One coordinate
   system in a program this size. The price: north is `y - 1`.
+* **The same wire format runs locally.** Ollama 0.35 serves `/v1/systemone` with
+  the same questions, criteria, probabilities and confidence — its own
+  announcement says it is based on TypeSafe's Jev API. The SDK speaks to it
+  unchanged: `TYPESAFE_BASE_URL=http://localhost:11434` (no `/v1`, the SDK
+  appends it) and `TYPESAFE_DEFAULT_MODEL=nimble`. Appendix B has the
+  measurements; the short version is that a single answer is faster than the
+  cloud (163 ms against 600) and a round of eight is far slower (15–25 s
+  against 0.6), because eight different prompts queue on one GPU.
 * `typesafe-sdk` is the official Python client — `AsyncTypeSafeClient`, `Choice`,
   `client.system_one(state=…, questions=…)`, answers at
   `response.choices["step"].choice / .probabilities / .confidence`, and `response.usage`.
