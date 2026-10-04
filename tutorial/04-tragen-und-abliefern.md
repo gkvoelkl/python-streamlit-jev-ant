@@ -1,5 +1,11 @@
 # Schritt 4 — Tragen und abliefern
 
+![Eine Arbeiterin mit weißem Helm schleppt einen großen roten Apfel über das
+Brett und läuft dabei vom Bau weg, der gleich hinter ihr liegt; daneben zeigt
+eine Leuchttafel „0/5"](bilder/schritt-4-titel.png)
+
+*Tragen kann sie jetzt. Sehen noch nicht.*
+
 **Ziel:** Eine Ameise, die an einer Frucht vorbeikommt, nimmt sie auf. Kommt sie
 damit in den Bau, wandert die Frucht in den Vorrat. Sobald fünf Früchte im Bau sind, ist das Level gewonnen.
 
