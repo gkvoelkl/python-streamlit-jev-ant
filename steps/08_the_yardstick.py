@@ -751,6 +751,10 @@ st.caption(f"Step 8 — {level['name']}. {level['briefing']}")
 st.image(board(level))
 
 with st.sidebar:
+    # The player is the queen, so the queen gets a face. The picture scales to
+    # the sidebar's width on its own; nothing has to be resized by hand.
+    st.image("queen_queeny.JPG", caption="Queeny, the queen. That is you.")
+
     st.subheader("TypeSafe key")
     if os.getenv("TYPESAFE_API_KEY"):
         st.caption("Found in `.env`. Nothing to do.")
