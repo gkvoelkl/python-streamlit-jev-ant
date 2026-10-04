@@ -1,5 +1,11 @@
 # Wenn Ameisen Jev fragen
 
+![Queeny, die Königin mit Krone, steht im Kontrollraum der Kolonie, links und
+rechts von ihr vier Arbeiterinnen mit Schutzhelmen und
+Werkzeug](bilder/queeny-und-arbeiterinnen.png)
+
+*Queeny und ihre Arbeiterinnen.*
+
 ## Spielerisch den Umgang mit dem Modell Jev von TypSave mit Python austesten
 
 Das neuartigen Modell Jev von TypSave trifft schnelle Bewertungen und Entscheidungen, die Programme in ihren Ablauf einbauen können.
