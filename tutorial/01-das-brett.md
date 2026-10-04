@@ -1,5 +1,11 @@
 # Schritt 1 — Das Brett
 
+![Queeny steht im Kontrollraum neben einem großen, leeren, grün leuchtenden
+Schachbrett, dessen obere Ecke gerade erst aus einem Lichtblitz
+entsteht](bilder/schritt-1-titel.png)
+
+*Bevor eine Ameise loslaufen kann, braucht es ein Brett.*
+
 **Ziel:** Eine Seite im Browser, auf der ein Spielbrett zu sehen ist. Ein Gitter,
 24 Felder breit, 16 hoch. Sonst nichts.
 

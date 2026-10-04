@@ -1,5 +1,12 @@
 # Schritt 2 — Eine Ameise fragt Jev
 
+![Eine Arbeiterin mit weißem Schutzhelm und Funkgerät steht allein auf dem
+leuchtenden Brett, über ihr eine Sprechblase mit einem Fragezeichen; von den
+Pfeilen um sie herum leuchtet einer golden und trägt die Aufschrift
+„Jev"](bilder/schritt-2-titel.png)
+
+*Sie fragt, und Jev zeigt ihr den Weg.*
+
 **Ziel:** Eine Ameise steht auf dem Brett. Sie drücken einen Knopf, und die Ameise geht dorthin, wo **TypeSafe Jev** es sagt.
 
 ![Das Brett von Schritt 2 mit der einen Ameise, die auf dem Feld steht, auf das
