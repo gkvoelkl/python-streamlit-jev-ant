@@ -1,5 +1,12 @@
 # Schritt 3 — Die Ameisen-Kolonie
 
+![Mehrere Arbeiterinnen mit bunten Helmen stehen verteilt auf dem leuchtenden
+Brett zwischen Früchten und dem Bau, jede mit einer Sprechblase voller
+Fragezeichen; von jeder führt eine leuchtende Linie zu einem großen goldenen
+„Jev" über dem Brett](bilder/schritt-3-titel.png)
+
+*Alle fragen auf einmal, und alle fragen dasselbe Modell.*
+
 **Ziel:** Acht Ameisen statt einer, das Spielfeld aus einer Datei lesen und für
 alle acht gleichzeitig einen Weg bei Jev erfragen.
 
