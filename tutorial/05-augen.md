@@ -1,5 +1,12 @@
 # Schritt 5 — Sehen
 
+![Die Arbeiterin mit weißem Helm trägt jetzt eine runde Brille und zeigt auf
+eine leuchtende Birne; um sie herum ein heller Kreis auf dem Brett, außerhalb
+davon Dunkel und Nebel, in der Ferne der Bau und eine grüne
+Spur](bilder/schritt-5-titel.png)
+
+*So weit sie sieht, so weit reicht die Wahl.*
+
 **Ziel:** Die Ameise sieht, was um sie herum los ist und dazu ein Schwellenwert, unter dem eine Antwort verworfen wird.
 
 ![Das Brett von Schritt 5 nach zwölf Runden: die Ameisen verteilt, zwei tragen
