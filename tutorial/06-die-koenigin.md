@@ -1,5 +1,11 @@
 # Schritt 6 — Die Königin
 
+![Queeny mit Krone und blauem Kleid, von hinten über die Schulter gesehen,
+hebt die Hand und spricht zu fünf Arbeiterinnen mit bunten Helmen, die vor ihr
+auf dem leuchtend grünen Spielbrett stehen und zu ihr aufsehen](bilder/schritt-6-titel.png)
+
+*Ein Satz von ihr, und die Kolonie wacht auf.*
+
 **Ziel:** Ein Textfeld. Was Sie hineinschreiben, steht im Zustand jeder Ameise,
 und jede liest es für sich. Und: Bis der erste Satz gesagt ist, schläft die
 Kolonie und es geht keine einzige Anfrage hinaus.
