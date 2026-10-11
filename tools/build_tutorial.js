@@ -1,9 +1,9 @@
-// Builds the Word document from the German chapters in `tutorial/`.
+// Builds the Word document from the German chapters in `tutorial/de/`.
 //
 //     npm install docx        # once
 //     node tools/build_tutorial.js
 //
-// The Markdown in tutorial/ is the source; `Ameisen-die-fragen.docx` is a
+// The Markdown in tutorial/de/ is the source; `Ameisen-die-fragen.docx` is a
 // product of it and is not edited by hand. Everything written here understands
 // exactly the Markdown those chapters use — headings, paragraphs, fenced code,
 // tables, bullet lists, block quotes, and inline `code`, **bold** and links.
@@ -29,7 +29,7 @@ const {
 } = require("docx");
 
 const ROOT = path.join(__dirname, "..");
-const CHAPTERS = path.join(ROOT, "tutorial");
+const CHAPTERS = path.join(ROOT, "tutorial", "de");
 const OUT = path.join(ROOT, "Ameisen-die-fragen.docx");
 
 const MONO = "Consolas";
@@ -340,15 +340,21 @@ function convert(markdown) {
 
 const files = fs
   .readdirSync(CHAPTERS)
-  .filter((name) => name.endsWith(".md"))
+  // README.md is the website's overview page, not a chapter.
+  .filter((name) => name.endsWith(".md") && name !== "README.md")
   .sort();
+
+// The line that links a chapter to its English translation is for the website
+// and GitHub; on paper it would point nowhere.
+const LANGUAGE_LINK = /^\*\[English version\]\([^)]*\)[^\n]*\n+/m;
 
 const body = [];
 files.forEach((name, index) => {
   if (index > 0) {
     body.push(new Paragraph({ children: [], pageBreakBefore: true }));
   }
-  body.push(...convert(fs.readFileSync(path.join(CHAPTERS, name), "utf8")));
+  const text = fs.readFileSync(path.join(CHAPTERS, name), "utf8");
+  body.push(...convert(text.replace(LANGUAGE_LINK, "")));
 });
 
 const document = new Document({

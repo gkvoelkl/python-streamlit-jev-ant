@@ -1,8 +1,10 @@
 # Schritt 1 — Das Brett
 
+*[English version](../en/01-das-brett.md)*
+
 ![Queeny steht im Kontrollraum neben einem großen, leeren, grün leuchtenden
 Schachbrett, dessen obere Ecke gerade erst aus einem Lichtblitz
-entsteht](bilder/schritt-1-titel.png)
+entsteht](../bilder/schritt-1-titel.png)
 
 *Bevor eine Ameise loslaufen kann, braucht es ein Brett.*
 
@@ -10,7 +12,7 @@ entsteht](bilder/schritt-1-titel.png)
 24 Felder breit, 16 hoch. Sonst nichts.
 
 ![Das Ergebnis von Schritt 1: ein dunkles Schachbrett aus 24 mal 16 Feldern im
-Browser, sonst nichts](bilder/schritt-1-brett.png)
+Browser, sonst nichts](../bilder/schritt-1-brett.png)
 
 *Mehr ist es nicht — und genau das ist der Sinn dieses Schrittes.*
 
@@ -153,7 +155,7 @@ Das kostet genau eine Kleinigkeit, gleich im nächsten Kapitel: Norden ist
 
 ![Das Koordinatensystem: der Nullpunkt liegt links oben, x zählt nach rechts und
 y nach unten; die Ameise steht auf (5, 3), darüber liegt Norden mit y minus
-1](bilder/koordinaten.png)
+1](../bilder/koordinaten.png)
 
 *Die Zahlen am Rand sind die Spalten und Zeilen. Die Ameise steht auf (5, 3);
 die vier Nachbarfelder zeigen, wie sich das rechnet.*

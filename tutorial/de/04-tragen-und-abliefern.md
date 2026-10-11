@@ -2,7 +2,7 @@
 
 ![Eine Arbeiterin mit weißem Helm schleppt einen großen roten Apfel über das
 Brett und läuft dabei vom Bau weg, der gleich hinter ihr liegt; daneben zeigt
-eine Leuchttafel „0/5"](bilder/schritt-4-titel.png)
+eine Leuchttafel „0/5"](../bilder/schritt-4-titel.png)
 
 *Tragen kann sie jetzt. Sehen noch nicht.*
 
@@ -11,7 +11,7 @@ damit in den Bau, wandert die Frucht in den Vorrat. Sobald fünf Früchte im Bau
 
 ![Das Brett von Schritt 4 nach 25 Runden: mehrere Ameisen stehen am oberen
 Rand, eine davon trägt eine Frucht, zwei sitzen im Bau, die Früchte liegen
-unberührt](bilder/schritt-4-tragen.png)
+unberührt](../bilder/schritt-4-tragen.png)
 
 *Fünfundzwanzig Runden, kein einziges Stück im Vorrat. Woran das liegt, steht
 weiter unten — und es ist aufschlussreicher, als es aussieht.*
@@ -155,7 +155,7 @@ hinweg unterscheiden kann. Genau hier zahlt sich SVG aus: „ein bisschen höher
 ist `y - 0.3`, nicht ein CSS-Rätsel.
 
 ![Nahaufnahme: zwei Ameisen nebeneinander unterhalb des Baus, die rechte trägt
-eine kleine Frucht auf dem Rücken](bilder/ameise-mit-frucht.png)
+eine kleine Frucht auf dem Rücken](../bilder/ameise-mit-frucht.png)
 
 *Links leer, rechts beladen, darüber die gelbe Kante des Baus. Der Unterschied
 muss über das ganze Brett hinweg erkennbar sein, nicht nur in der

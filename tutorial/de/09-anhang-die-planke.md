@@ -21,7 +21,7 @@ uv run streamlit run anhang/app_mit_planke.py
 
 ![Das Plankenlevel zu Beginn: die Früchte in der Nordwest-Ecke, davor ein
 L-förmiger Fluss, in der Mitte der Bau mit acht Ameisen, weit im Südosten die
-kleine braune Planke](bilder/planke-start.png)
+kleine braune Planke](../bilder/planke-start.png)
 
 Die Aufgabe steckt nicht im Tragen, sondern im **Sehen**. Keine Ameise weiß,
 dass hinter dem Fluss Obst liegt. Keine weiß, dass eine Planke helfen würde.
@@ -172,7 +172,7 @@ Der Satz, mit dem ich gespielt habe:
 > plank lies, and carry fruit back to the nest.
 
 ![Das Brett nach 25 Runden: die Planke liegt als brauner Übergang im Fluss,
-mehrere Ameisen sind hinüber, eine trägt schon eine Frucht](bilder/planke-bruecke.png)
+mehrere Ameisen sind hinüber, eine trägt schon eine Frucht](../bilder/planke-bruecke.png)
 
 Der Ablauf, gemessen: Die Planke wird um Runde 6 bis 10 aufgenommen, nach
 Nordwesten getragen — eine Antwort davon mit **0,96** Konfidenz — und zwischen

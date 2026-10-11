@@ -15,12 +15,23 @@ allowed to be simpler, and simpler is the point.
 
 ## Language
 
-**The project is English** — code, identifiers, comments, UI text, README, commit
+**The project is English** — code, identifiers, comments, UI text, README (with a German
+copy in `README_de.md` and a bilingual start page in `README.md`), commit
 messages.
 
-**The tutorial is German.** It is a Word document, written later, describing how to build
-this in eight steps. So comments in the code should carry the reasoning a German reader
-will need translated into the doc: say *why*, not just *what*.
+**The tutorial is German, with an English translation growing beside it.** The German
+chapters in `tutorial/de/` are the original; `tutorial/en/` holds translations under the
+same file names (so far step 1), and its overview links untranslated chapters to the
+German ones. Diagrams with text get an English copy in `tutorial/bilder/en/`. Comments in
+the code should carry the reasoning a reader will need in the chapters: say *why*, not
+just *what*.
+
+Two things are generated from the chapters and never edited by hand: the German Word
+document (`tools/build_tutorial.js`, from `tutorial/de/` only) and the bilingual website
+(MkDocs with `mkdocs-static-i18n`, `mkdocs.yml`, published on GitHub Pages by
+`.github/workflows/docs.yml`). A German chapter links to its translation in a line of its
+own, `*[English version](../en/<name>.md)*`; the Word build drops that line, and
+`tools/mkdocs_hooks.py` rewrites cross-language links for the website.
 
 ## The eight steps
 
@@ -43,7 +54,7 @@ dice is a measuring stick at the end, never a fallback.
 
 **Stop after every step** so the change can be tested by hand before the next one starts.
 
-**The tutorial grows with the code.** Every step gets its chapter in `tutorial/` as
+**The tutorial grows with the code.** Every step gets its chapter in `tutorial/de/` as
 German Markdown, written in the same turn as the step, not reconstructed at the end. The
 Word document is generated from those chapters when it is wanted. Code listings in a
 chapter must match the code word for word — the app's interface is English, so the
@@ -98,6 +109,9 @@ These are what make the demo a demo. Do not simplify them away.
 ```sh
 uv run streamlit run app.py          # the app
 uv add <package>                     # dependencies live in pyproject.toml
+uv run --only-group docs mkdocs serve   # the bilingual website, locally
+node tools/build_tutorial.js         # the German Word document
+uv run python tools/svg_to_png.py    # diagrams, German and English, to PNG
 uv export --no-hashes --no-dev --no-emit-project -o /dev/null   # requirements.txt is
                                      # hand-written and unpinned on purpose, for readers
 ```

@@ -2,7 +2,7 @@
 
 ![Queeny, die Königin mit Krone, steht im Kontrollraum der Kolonie, links und
 rechts von ihr vier Arbeiterinnen mit Schutzhelmen und
-Werkzeug](bilder/queeny-und-arbeiterinnen.png)
+Werkzeug](../bilder/queeny-und-arbeiterinnen.png)
 
 *Queeny und ihre Arbeiterinnen.*
 
@@ -14,7 +14,7 @@ Das Beipspiel in diesem Tutorial ist eine Ameisen-Kolonie, die im Browser zu seh
 
 ![Das fertige Spiel: acht Ameisen auf dem Brett, über jeder steht, wofür das Modell sich
 entschieden hat und wie sicher — grün bei hoher, rot bei knapper
-Zuversicht](bilder/das-spiel.png)
+Zuversicht](../bilder/das-spiel.png)
 
 *So sieht es am Ende von Schritt 7 aus. Über jeder Ameise steht, wofür das Modell sich
 entschieden hat und wie sicher es sich war — und die grünen Felder sind die
@@ -38,7 +38,7 @@ Adressen:
 
 ![Die TypeSafe-Konsole nach der Anmeldung: links die Navigation mit Playground,
 Usage, API Keys, Billing und Documentation, rechts Beispiele für die
-Fragetypen Noul und Choice](bilder/typesafe-website.png)
+Fragetypen Noul und Choice](../bilder/typesafe-website.png)
 
 *Die Konsole unter [console.typesafe.ai](https://console.typesafe.ai). Den
 Schlüssel, den Sie ab Schritt 2 brauchen, holen Sie sich links unter **API

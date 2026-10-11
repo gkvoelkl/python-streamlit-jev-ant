@@ -3,6 +3,9 @@
     uv run python tools/svg_to_png.py                # all of them
     uv run python tools/svg_to_png.py koordinaten    # just one
 
+The English versions in tutorial/bilder/en are rendered along with the German
+ones; "koordinaten" renders both.
+
 The rendering is QuickLook, which is macOS and the one renderer here that draws
 colour emoji. It always writes a square with the picture in the top left, so
 the empty part is cut away afterwards.
@@ -57,6 +60,6 @@ def render(svg: Path) -> None:
 
 if __name__ == "__main__":
     wanted = sys.argv[1:]
-    for svg in sorted(BILDER.glob("*.svg")):
+    for svg in sorted([*BILDER.glob("*.svg"), *BILDER.glob("en/*.svg")]):
         if not wanted or svg.stem in wanted:
             render(svg)

@@ -1,0 +1,92 @@
+site_name: Wenn Ameisen ein Decision-Model fragen
+site_description: Ein Spiel in acht Schritten mit Python, Streamlit und einem Decision-Model
+site_author: Gerhard Völkl
+site_url: https://gkvoelkl.github.io/python-streamlit-jev-ant/
+repo_url: https://github.com/gkvoelkl/python-streamlit-jev-ant
+repo_name: gkvoelkl/python-streamlit-jev-ant
+edit_uri: edit/main/tutorial/
+
+docs_dir: tutorial
+site_dir: site
+use_directory_urls: false
+exclude_docs: |
+  baseline.py
+  bilder/*.svg
+  bilder/en/*.svg
+hooks:
+  - tools/mkdocs_hooks.py
+
+nav:
+  - Übersicht: README.md
+  - Einleitung: 00-einleitung.md
+  - Die acht Schritte:
+      - 1 · Das Brett: 01-das-brett.md
+      - 2 · Eine Ameise fragt das Decision-Model: 02-eine-ameise-die-fragt.md
+      - 3 · Die Ameisen-Kolonie: 03-die-kolonie.md
+      - 4 · Tragen und abliefern: 04-tragen-und-abliefern.md
+      - 5 · Sehen: 05-augen.md
+      - 6 · Die Königin: 06-die-koenigin.md
+      - 7 · Zusehen: 07-zusehen.md
+      - 8 · Was bringt das Modell?: 08-was-bringt-das-modell.md
+  - Anhang:
+      - A · Die Planke und der Fluss: 09-anhang-die-planke.md
+      - B · Dasselbe Spiel ohne Cloud: 10-anhang-b-ohne-cloud.md
+
+theme:
+  name: material
+  language: de
+  features:
+    - navigation.footer
+    - navigation.top
+    - content.action.edit
+    - content.code.copy
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: green
+      toggle: {icon: material/weather-night, name: Dunkel}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: green
+      toggle: {icon: material/weather-sunny, name: Hell}
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: folder
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: de
+          name: Deutsch
+          default: true
+          build: true
+        - locale: en
+          name: English
+          build: true
+          site_name: When ants ask a decision model
+          site_description: A game in eight steps with Python, Streamlit and a decision model
+          nav_translations:
+            Übersicht: Overview
+            Einleitung: Introduction
+            Die acht Schritte: The eight steps
+            1 · Das Brett: 1 · The board
+            2 · Eine Ameise fragt das Decision-Model: 2 · One ant asks the decision model
+            3 · Die Ameisen-Kolonie: 3 · The ant colony
+            4 · Tragen und abliefern: 4 · Carrying and delivering
+            5 · Sehen: 5 · Seeing
+            6 · Die Königin: 6 · The queen
+            7 · Zusehen: 7 · Watching
+            8 · Was bringt das Modell?: 8 · What is the model worth?
+            Anhang: Appendix
+            A · Die Planke und der Fluss: A · The plank and the river
+            B · Dasselbe Spiel ohne Cloud: B · The same game without the cloud
+
+markdown_extensions:
+  - tables
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - pymdownx.highlight

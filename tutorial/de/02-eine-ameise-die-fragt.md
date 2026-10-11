@@ -3,14 +3,14 @@
 ![Eine Arbeiterin mit weißem Schutzhelm und Funkgerät steht allein auf dem
 leuchtenden Brett, über ihr eine Sprechblase mit einem Fragezeichen; von den
 Pfeilen um sie herum leuchtet einer golden und trägt die Aufschrift
-„Jev"](bilder/schritt-2-titel.png)
+„Jev"](../bilder/schritt-2-titel.png)
 
 *Sie fragt, und das Modell zeigt ihr den Weg.*
 
 **Ziel:** Eine Ameise steht auf dem Brett. Sie drücken einen Knopf, und die Ameise geht dorthin, wo das **Decision-Model** es sagt — in diesem Tutorial **TypeSafe Jev**.
 
 ![Das Brett von Schritt 2 mit der einen Ameise, die auf dem Feld steht, auf das
-das Modell sie geschickt hat](bilder/schritt-2-ameise.png)
+das Modell sie geschickt hat](../bilder/schritt-2-ameise.png)
 
 *Eine Ameise, und jeder Schritt, den sie getan hat, kam vom Decision-Model.*
 
@@ -30,7 +30,7 @@ die das Spiel später direkt im Netz benutzen: Jeder bringt seinen eigenen  Schl
 ![Die Seitenleiste mit der Überschrift „TypeSafe key", einem leeren Passwortfeld
 mit dem Hinweis „paste your key" und dem Auge zum Sichtbarmachen, darunter der
 Hinweis, dass der Schlüssel nirgends gespeichert
-wird](bilder/schluessel-seitenleiste.png)
+wird](../bilder/schluessel-seitenleiste.png)
 
 *Das Feld erscheint nur, wenn in `.env` kein Schlüssel steht — sonst zeigt die
 Seitenleiste bloß „Found in .env". Das Auge rechts macht das Eingefügte
@@ -103,7 +103,7 @@ y zählt nach unten (Kapitel 1), also ist Norden `(0, -1)`.
 
 ![Die acht Richtungen um eine Ameise herum, jede mit ihrem Namen und ihrem
 Versatz; Norden ist (0, −1), weil y nach unten
-zählt](bilder/richtungen.png)
+zählt](../bilder/richtungen.png)
 
 Dass die Richtungen **Namen** haben und nicht durchnummeriert sind, ist eine
 Frage der Lesbarkeit und der Kommunikaktion. Die Ameisen-Königin, der Spieler kann sagen: "Alle Ameisen bewegen sich nach Norden." Koordinaten würden hier nichts bringen.
@@ -125,7 +125,7 @@ def free_directions(ant: dict) -> list[str]:
 
 ![Links eine Ameise mitten auf dem Brett mit acht Pfeilen, rechts dieselbe
 Ameise am oberen Rand mit nur fünf Pfeilen; drei Richtungen sind durchgestrichen,
-weil es dort keine Felder gibt](bilder/optionen.png)
+weil es dort keine Felder gibt](../bilder/optionen.png)
 
 *Genau die grünen Pfeile werden zu `criteria`. Was durchgestrichen ist, bekommt
 das Modell nie zu sehen.*
@@ -282,7 +282,7 @@ die Wahrscheinlichkeiten auf zwei Stellen kommen.
 
 ![Die acht Wahrscheinlichkeiten einer echten Antwort als Balken, mit der Linie
 für den reinen Zufall bei 0,125 und der daraus berechneten
-Konfidenz](bilder/konfidenz.png)
+Konfidenz](../bilder/konfidenz.png)
 
 Der Teiler `n − 1` ist der Grund, warum man Konfidenzen **nicht** mit der
 höchsten Wahrscheinlichkeit verwechseln darf: Er rechnet die Zahl der Optionen

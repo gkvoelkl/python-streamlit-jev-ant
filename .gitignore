@@ -14,3 +14,6 @@ __pycache__/
 
 # JetBrains
 /.idea
+
+# Website build (MkDocs)
+site/

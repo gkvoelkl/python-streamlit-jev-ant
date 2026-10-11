@@ -3,14 +3,14 @@
 ![Die Arbeiterin mit weißem Helm trägt jetzt eine runde Brille und zeigt auf
 eine leuchtende Birne; um sie herum ein heller Kreis auf dem Brett, außerhalb
 davon Dunkel und Nebel, in der Ferne der Bau und eine grüne
-Spur](bilder/schritt-5-titel.png)
+Spur](../bilder/schritt-5-titel.png)
 
 *So weit sie sieht, so weit reicht die Wahl.*
 
 **Ziel:** Die Ameise sieht, was um sie herum los ist und dazu ein Schwellenwert, unter dem eine Antwort verworfen wird.
 
 ![Das Brett von Schritt 5 nach zwölf Runden: die Ameisen verteilt, zwei tragen
-eine Frucht, der Boden ist um den Bau herum grün von der Duftspur](bilder/schritt-5-sehen.png)
+eine Frucht, der Boden ist um den Bau herum grün von der Duftspur](../bilder/schritt-5-sehen.png)
 
 *Zwölf Runden, drei Früchte im Vorrat. Das Grün ist die Spur — sie entsteht
 weiter unten in diesem Kapitel.*
@@ -75,7 +75,7 @@ Die Ameise sieht in jede Richtung drei Felder weit, und das ist nicht viel — m
 
 ![Das Sichtfeld: ein Fenster von sieben mal sieben Feldern um die Ameise, eine
 Frucht drei Felder entfernt liegt darin, eine vier Felder entfernte nicht
-mehr](bilder/sichtweite.png)
+mehr](../bilder/sichtweite.png)
 
 Der Bau wird genannt, wenn er in Sichtweite ist und nur einer Ameise, die
 etwas trägt. Weiter unten wird sie durch das ergänzt, was echte
@@ -219,7 +219,7 @@ spricht, kommt sie durch — und die Schwelle fängt sie ab.
 
 ![Die Konfidenzskala von 0 bis 1 mit der Schwelle bei 0,22 und der Umrechnung:
 bei acht Optionen entspricht das einer höchsten Wahrscheinlichkeit von
-0,32](bilder/schwelle.png)
+0,32](../bilder/schwelle.png)
 
 Die zweite Prüfung — `step.choice not in offered` — ist die Rückversicherung
 gegen den Fall, dass das Modell etwas nennt, was nie angeboten wurde. Sie hat
@@ -262,7 +262,7 @@ def lay_scent(level: dict, ant: dict) -> None:
 
 ![Ausschnitt um den Bau nach achtzehn Runden: der Boden ringsum ist grün
 gefärbt, am stärksten dicht am Bau, eine Ameise trägt gerade eine Frucht
-heran](bilder/spur-nahaufnahme.png)
+heran](../bilder/spur-nahaufnahme.png)
 
 *Die Straßen der Kolonie. Je näher am Bau, desto stärker der Duft — deshalb
 führt bergauf nach Hause.*

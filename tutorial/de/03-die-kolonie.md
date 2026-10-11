@@ -3,7 +3,7 @@
 ![Mehrere Arbeiterinnen mit bunten Helmen stehen verteilt auf dem leuchtenden
 Brett zwischen Früchten und dem Bau, jede mit einer Sprechblase voller
 Fragezeichen; von jeder führt eine leuchtende Linie zu einem großen goldenen
-„Jev" über dem Brett](bilder/schritt-3-titel.png)
+„Jev" über dem Brett](../bilder/schritt-3-titel.png)
 
 *Alle fragen auf einmal, und alle fragen dasselbe Modell.*
 
@@ -11,7 +11,7 @@ Fragezeichen; von jeder führt eine leuchtende Linie zu einem großen goldenen
 alle acht gleichzeitig einen Weg beim Decision-Model erfragen.
 
 ![Das Brett von Schritt 3: acht Ameisen haben den Bau verlassen und verteilen
-sich, dazwischen liegen die acht Früchte](bilder/schritt-3-kolonie.png)
+sich, dazwischen liegen die acht Früchte](../bilder/schritt-3-kolonie.png)
 
 *Nach fünf Runden. Die Früchte liegen herum, aber noch kann niemand etwas mit
 ihnen anfangen — das ist Kapitel 4.*
@@ -60,7 +60,7 @@ def load_level() -> dict:
 ## Acht Ameisen im Bau
 
 ![Ausschnitt um den Bau: acht Ameisen sitzen in zwei Reihen zu vier in dem
-gelb umrandeten Quadrat](bilder/bau-start.png)
+gelb umrandeten Quadrat](../bilder/bau-start.png)
 
 *Die Startaufstellung: `i % size` und `i // size` verteilen die acht auf die
 ersten Reihen.*
@@ -157,7 +157,7 @@ def next_round(level: dict) -> None:
 ![Ablauf einer Runde: erst ein Bild des Bretts, dann für jede der acht Ameisen
 eine Frage, alle Anfragen gleichzeitig über asyncio.gather, dann die Antworten
 nacheinander ausführen mit der Prüfung, ob das Zielfeld noch frei
-ist](bilder/runde.png)
+ist](../bilder/runde.png)
 
 Erst **alle** fragen, dann alle handeln. Das hat eine Folge, die man leicht
 übersieht: Jede Antwort wir auf Grundlage **des selben** Spielbretts entschieden 
@@ -179,7 +179,7 @@ Der Bau bekommt eine **Umrandung** statt einer Füllung:
 ```
 
 ![Derselbe Ausschnitt nach drei Runden: zwei Ameisen stehen noch im Bau, sechs
-sind heraus und stehen ringsum auf dem Boden](bilder/bau-durchlaessig.png)
+sind heraus und stehen ringsum auf dem Boden](../bilder/bau-durchlaessig.png)
 
 *Drei Runden später. Man sieht, warum der Bau eine Umrandung und keine Füllung
 ist: Die Ameisen laufen hindurch und darüber hinaus. Ein ausgemalter Klotz sähe

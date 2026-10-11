@@ -197,7 +197,7 @@ Acht Schritte, ein Spiel. Was jetzt dasteht:
   ```
 
   ![Level 2 zu Beginn: der Bau mit acht Ameisen unten rechts, alle acht Früchte
-  weit oben links, dazwischen ein leeres Brett](bilder/level-2.png)
+  weit oben links, dazwischen ein leeres Brett](../bilder/level-2.png)
 
   Der Bau steht im Südosten, das ganze Obst im Nordwesten — 13 bis 17 Felder
   entfernt, bei einer Sichtweite von drei. Ohne einen Satz der Königin sucht
