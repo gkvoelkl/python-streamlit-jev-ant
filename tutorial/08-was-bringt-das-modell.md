@@ -1,6 +1,6 @@
 # Schritt 8 — Was bringt das Modell?
 
-**Ziel:** Ein Schalter, der Jev durch einen Würfel ersetzt. Dieselbe Kolonie,
+**Ziel:** Ein Schalter, der das Decision-Model durch einen Würfel ersetzt. Dieselbe Kolonie,
 dasselbe Brett, dieselben Möglichkeiten — nur entscheidet niemand mehr, sondern
 der Zufall.
 
@@ -20,7 +20,7 @@ def decide_with_dice(level: dict, taken: set[tuple[int, int]]) -> list[str | Non
 ```
 
 Entscheidend ist `free_directions` — **dieselbe** Funktion, die dem Modell die
-Auswahl baut. Der Würfel zieht aus genau dem, was Jev vorgelegt bekommen hätte.
+Auswahl baut. Der Würfel zieht aus genau dem, was das Modell vorgelegt bekommen hätte.
 Damit ist der Unterschied zwischen beiden das Auswählen und nicht das, was zur
 Auswahl stand. Ein Vergleich, bei dem der Zufall schlechtere Optionen bekäme,
 wäre keiner.
@@ -106,12 +106,12 @@ Mitte 80% 154 bis 383
 | | Runden bis fünf Früchte |
 |---|---|
 | Würfel (Median aus 200 Läufen) | **237** |
-| Jev, mit einem brauchbaren Befehl | **16 · 17** |
+| Decision-Model (Jev), mit einem brauchbaren Befehl | **16 · 17** |
 
 Rund **vierzehnmal** schneller, für etwa 130 Anfragen — einen Sechstel-Cent.
 
 Eine Zeile aus der alten Tabelle ist verschwunden, und das aus einem guten
-Grund: „Jev ohne Befehl" gibt es nicht mehr. Seit Kapitel 6 schläft die Kolonie,
+Grund: „Modell ohne Befehl" gibt es nicht mehr. Seit Kapitel 6 schläft die Kolonie,
 bis Sie etwas sagen.
 
 Der Grund für den großen Abstand ist nicht, dass das Modell geschickter wählt,
@@ -137,7 +137,7 @@ die der Zufall nicht verwerten kann.
 
 **Die Zahlen sind nicht gleichwertig gemessen.** 237 ist ein Median aus
 zweihundert Läufen mit `baseline.py`, das weder eine Spur legt noch eine liest.
-Die 16 und 17 für Jev sind zwei Einzelläufe, weil jeder davon über hundert
+Die 16 und 17 für das Decision-Model sind zwei Einzelläufe, weil jeder davon über hundert
 Anfragen kostet. Bei der Streuung des Würfels (97 bis 523!) sollte
 man auch beim Modell mehrere Läufe machen, bevor man eine Zahl ernst nimmt.
 

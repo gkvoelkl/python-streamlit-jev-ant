@@ -1,7 +1,7 @@
 # Anhang B — Dasselbe Spiel ohne Cloud
 
-Seit Version 0.35 beantwortet **Ollama** Entscheidungsfragen im selben Format wie
-TypeSafe: derselbe Pfad `/v1/systemone`, dieselben Fragetypen `choice`, `noul`
+Seit Version 0.35 führt **Ollama** Decision-Models auf dem eigenen Rechner aus
+und beantwortet Entscheidungsfragen im selben Format wie TypeSafe: derselbe Pfad `/v1/systemone`, dieselben Fragetypen `choice`, `noul`
 und `score`, dieselben `criteria`, und in der Antwort `probabilities`,
 `confidence` und `usage`. Die Ankündigung sagt das auch offen — die Schnittstelle
 sei „based on TypeSafe's Jev API".

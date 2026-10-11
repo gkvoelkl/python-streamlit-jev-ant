@@ -1,6 +1,6 @@
 # Schritt 7 — Zusehen
 
-**Ziel:** Über jeder Ameise steht, was Jev für sie entschieden hat und wie
+**Ziel:** Über jeder Ameise steht, was das Decision-Model für sie entschieden hat und wie
 sicher — in drei Farben. Unter dem Brett steht, was die Kolonie bisher
 gekostet hat.
 

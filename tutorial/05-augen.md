@@ -15,7 +15,7 @@ eine Frucht, der Boden ist um den Bau herum grün von der Duftspur](bilder/schri
 *Zwölf Runden, drei Früchte im Vorrat. Das Grün ist die Spur — sie entsteht
 weiter unten in diesem Kapitel.*
 
-Bis hierher hat Jev mehr oder weniger geraten, weil im Zustand (state) nichts stand, woraus sich etwas schließen ließe. Das ändert sich jetzt — und die Kolonie fängt an zu arbeiten.
+Bis hierher hat das Decision-Model mehr oder weniger geraten, weil im Zustand (state) nichts stand, woraus sich etwas schließen ließe. Das ändert sich jetzt — und die Kolonie fängt an zu arbeiten.
 
 ## Entfernung und Richtung in Worten
 

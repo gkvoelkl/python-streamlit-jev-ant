@@ -17,7 +17,7 @@ unberührt](bilder/schritt-4-tragen.png)
 weiter unten — und es ist aufschlussreicher, als es aussieht.*
 
 Damit ist das Spiel vollständig — es gibt ein Ziel, einen Weg dorthin und ein
-Ende. Jev entscheidet zwar jeden Schritt, aber die Ameisen sehen nicht und niemand sagt ihnen etwas. Sie stolpern in Früchte und in den Bau. 
+Ende. Das Decision-Model entscheidet zwar jeden Schritt, aber die Ameisen sehen nicht und niemand sagt ihnen etwas. Sie stolpern in Früchte und in den Bau. 
 
 Daran arbeiten die beiden nächsten Kapitel.
 
@@ -86,7 +86,7 @@ def pick_up_and_deliver(level: dict, ant: dict) -> None:
 Hier steckt eine Entwurfsentscheidung, die später Geld spart, deshalb steht sie
 ausführlich hier:
 
-**Aufnehmen und Abliefern sind keine Entscheidungen, sondern Folgen.** Jev
+**Aufnehmen und Abliefern sind keine Entscheidungen, sondern Folgen.** Das Modell
 entscheidet nur, wohin die Ameise geht. Steht danach eine Frucht neben ihr,
 nimmt sie sie; steht sie mit Frucht im Bau, legt sie sie ab.
 

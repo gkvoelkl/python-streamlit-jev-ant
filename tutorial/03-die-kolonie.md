@@ -8,7 +8,7 @@ Fragezeichen; von jeder führt eine leuchtende Linie zu einem großen goldenen
 *Alle fragen auf einmal, und alle fragen dasselbe Modell.*
 
 **Ziel:** Acht Ameisen statt einer, das Spielfeld aus einer Datei lesen und für
-alle acht gleichzeitig einen Weg bei Jev erfragen.
+alle acht gleichzeitig einen Weg beim Decision-Model erfragen.
 
 ![Das Brett von Schritt 3: acht Ameisen haben den Bau verlassen und verteilen
 sich, dazwischen liegen die acht Früchte](bilder/schritt-3-kolonie.png)
@@ -107,7 +107,7 @@ def free_directions(level: dict, ant: dict, taken: set[tuple[int, int]]) -> list
     return open_ways
 ```
 
-Damit ist die Auswahl, die das Modell Jev bekommt, noch einen Schritt enger an der
+Damit ist die Auswahl, die das Decision-Model bekommt, noch einen Schritt enger an der
 Wirklichkeit: kein Rand und kein Feld, auf dem schon eine Ameise oder einen Frucht ist.
 
 ## Acht Anfragen auf einmal

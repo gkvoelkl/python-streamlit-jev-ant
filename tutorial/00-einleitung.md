@@ -1,4 +1,4 @@
-# Wenn Ameisen Jev fragen
+# Wenn Ameisen ein Decision-Model fragen
 
 ![Queeny, die Königin mit Krone, steht im Kontrollraum der Kolonie, links und
 rechts von ihr vier Arbeiterinnen mit Schutzhelmen und
@@ -6,29 +6,29 @@ Werkzeug](bilder/queeny-und-arbeiterinnen.png)
 
 *Queeny und ihre Arbeiterinnen.*
 
-## Spielerisch den Umgang mit dem Modell Jev von TypSave mit Python austesten
+## Spielerisch den Umgang mit einem Decision-Model mit Python austesten
 
-Das neuartigen Modell Jev von TypSave trifft schnelle Bewertungen und Entscheidungen, die Programme in ihren Ablauf einbauen können.
+Ein Decision-Model ist eine neue Art von KI-Modell: Es trifft schnelle Bewertungen und Entscheidungen, die Programme in ihren Ablauf einbauen können.
 
-Das Beipspiel in diesem Tutorial ist eine Ameisen-Kolonie, die im Browser zu sehen ist. Jev steuert jede einzelne Ameisen nach den Anweisungen der Königin, die Sie sind. Die Ameisen sollen Früchte in den Bau bringen oder Hindernisse überwinden.
+Das Beipspiel in diesem Tutorial ist eine Ameisen-Kolonie, die im Browser zu sehen ist. Das Decision-Model steuert jede einzelne Ameise nach den Anweisungen der Königin, die Sie sind. Die Ameisen sollen Früchte in den Bau bringen oder Hindernisse überwinden.
 
-![Das fertige Spiel: acht Ameisen auf dem Brett, über jeder steht, wofür Jev sich
+![Das fertige Spiel: acht Ameisen auf dem Brett, über jeder steht, wofür das Modell sich
 entschieden hat und wie sicher — grün bei hoher, rot bei knapper
 Zuversicht](bilder/das-spiel.png)
 
-*So sieht es am Ende von Schritt 7 aus. Über jeder Ameise steht, wofür Jev sich
+*So sieht es am Ende von Schritt 7 aus. Über jeder Ameise steht, wofür das Modell sich
 entschieden hat und wie sicher es sich war — und die grünen Felder sind die
 Duftspur, die die Kolonie beim Suchen hinterlässt. Sie ist am Bau am stärksten,
 und bergauf ist heimwärts.*
 
 Kein Klicken, keine Tasten, keine Joy-Stick. Sie tippen ein „Holt die Früchte aus
 dem Norden", und jede Ameise entscheidet für sich, was das für sie bedeutet.
-Die Entscheidung trifft das Modell **TypeSafe Jev**.
+Die Entscheidung trifft ein **Decision-Model**, in diesem Tutorial **TypeSafe Jev**.
 
-Jev ist kein Chat-Modell. Es beantwortet keine Fragen in Prosa, sondern trifft
+Ein Decision-Model ist kein Chat-Modell. Es beantwortet keine Fragen in Prosa, sondern trifft
 **typisierte Entscheidungen mit kalibrierter Zuversicht** — genau das, was ein
-Programm in seinen Ablauf einbauen kann. Drei Adressen, die Sie brauchen
-werden:
+Programm in seinen Ablauf einbauen kann. Für TypeSafe Jev brauchen Sie drei
+Adressen:
 
 | | |
 |---|---|
@@ -47,11 +47,41 @@ rechts im Bild stehen schon die beiden Fragetypen, um die es gehen wird:*
 `noul` *für ein Ja/Nein mit Wahrscheinlichkeit und* `choice` *für eine Auswahl
 — die zweite ist die, die jede Ameise stellt.*
 
-Jede Ameise stellt ihm einmal pro Runde eine Frage an Jev und die Antwort ist eine von genau eine der Möglichkeiten, die diese eine Ameise in
+Jede Ameise stellt dem Decision-Model einmal pro Runde eine Frage, und die Antwort ist genau eine der Möglichkeiten, die diese eine Ameise in
 diesem Moment wirklich zur Auswahl hat.
 
 Das Programm baut die Auswahlmöglichkeiten **zur Laufzeit** aus dem, was die Ameise
 sieht. Ist keine Frucht in Sichtweite, gibt es die Antwort-Möglichkeit „hol die Frucht" nicht. 
+
+## Wer Decision-Models anbietet
+
+Jev war im September 2026 das erste Decision-Model, inzwischen gibt es
+mehrere. Die Anbieter nennen sie auch „System One Models". Stand Oktober 2026
+gibt es unter anderem diese:
+
+| Anbieter | Modell | Wie |
+|---|---|---|
+| TypeSafe AI | Jev | Cloud, das Modell dieses Tutorials |
+| OpenAI | Decisions API | Cloud, Beta seit Oktober 2026 |
+| Microsoft | Microsoft-Decision-1 | Cloud, über Azure und OpenRouter |
+| Upstage | Solar Decide | Cloud, Beta |
+| meraGPT | Decider 1 | Cloud |
+| Cloudflare | Clef | Cloud oder selbst betrieben, offene Gewichte |
+| AWS | Strands Decider 2B | zum Herunterladen |
+| Bespoke Labs | Nimble | zum Herunterladen, läuft unter Ollama |
+| Together AI | Tev1 | zum Herunterladen, läuft unter Ollama |
+
+**Auch Ollama kann Decision-Models.** Seit Version 0.35 bietet Ollama den
+Endpunkt `/v1/systemone` an, mit denselben Fragen, Auswahlen,
+Wahrscheinlichkeiten und derselben Konfidenz wie Jev. Das Modell läuft dann
+auf Ihrem eigenen Rechner, ohne Schlüssel und ohne Kosten pro Anfrage. Die
+Bibliothek aus diesem Tutorial spricht unverändert mit Ollama, es reichen drei
+Einträge in der `.env`. Wie das geht und wie schnell es ist, steht in
+Anhang B.
+
+Der Markt bewegt sich schnell. Die Tabelle ist eine Momentaufnahme, keine
+Empfehlung. Für das Tutorial gilt: Was ein Decision-Model ist und wie man es
+fragt, bleibt gleich, egal von wem es kommt.
 
 ## Was Sie brauchen
 
@@ -75,7 +105,7 @@ Nach **jedem** Schritt haben Sie ein Programm, das läuft. Sie sehen immer etwas
 | Schritt | Was danach läuft |
 |---|---|
 | 1 | Das Brett — ein Gitter im Browser |
-| 2 | **Eine Ameise, die Jev fragt** — ein Klick, eine Anfrage, ein Schritt |
+| 2 | **Eine Ameise, die das Modell fragt** — ein Klick, eine Anfrage, ein Schritt |
 | 3 | Die Kolonie — acht Ameisen mit acht parallele Anfragen |
 | 4 | Tragen und abliefern — Früchte heimbringen, gewinnen |
 | 5 | Augen — Sichtfeld, bessere Optionen, eine Schwelle |

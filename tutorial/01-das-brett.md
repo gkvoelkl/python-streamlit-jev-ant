@@ -39,9 +39,9 @@ uv add streamlit typesafe-sdk python-dotenv
 
 `streamlit` macht es möglich Browser-Oberflächen mit Python zu erstellen.
 
-`typesafe-sdk` ist die Bibliothek, die die Verbindung zum Modell Jev herstellt.
+`typesafe-sdk` ist die Bibliothek, die die Verbindung zum Decision-Model TypeSafe Jev herstellt.
 
-`python-dotenv` liest den API-Schlüssel für Jev aus einer Datei, damit dieser nicht direkt im Programm steht.
+`python-dotenv` liest den API-Schlüssel für das Decision-Model aus einer Datei, damit dieser nicht direkt im Programm steht.
 
 ## Die erste Seite
 

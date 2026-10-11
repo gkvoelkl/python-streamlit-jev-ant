@@ -1,22 +1,22 @@
-# Schritt 2 — Eine Ameise fragt Jev
+# Schritt 2 — Eine Ameise fragt das Decision-Model
 
 ![Eine Arbeiterin mit weißem Schutzhelm und Funkgerät steht allein auf dem
 leuchtenden Brett, über ihr eine Sprechblase mit einem Fragezeichen; von den
 Pfeilen um sie herum leuchtet einer golden und trägt die Aufschrift
 „Jev"](bilder/schritt-2-titel.png)
 
-*Sie fragt, und Jev zeigt ihr den Weg.*
+*Sie fragt, und das Modell zeigt ihr den Weg.*
 
-**Ziel:** Eine Ameise steht auf dem Brett. Sie drücken einen Knopf, und die Ameise geht dorthin, wo **TypeSafe Jev** es sagt.
+**Ziel:** Eine Ameise steht auf dem Brett. Sie drücken einen Knopf, und die Ameise geht dorthin, wo das **Decision-Model** es sagt — in diesem Tutorial **TypeSafe Jev**.
 
 ![Das Brett von Schritt 2 mit der einen Ameise, die auf dem Feld steht, auf das
-Jev sie geschickt hat](bilder/schritt-2-ameise.png)
+das Modell sie geschickt hat](bilder/schritt-2-ameise.png)
 
-*Eine Ameise, und jeder Schritt, den sie getan hat, kam von Jev.*
+*Eine Ameise, und jeder Schritt, den sie getan hat, kam vom Decision-Model.*
 
 ## Der API-KEY
 
-Anfragen bei Jev brachen Sie einen perönlichen **API-KEY**. Diesen bekommen Sie von der Web-Seite [console.typesafe.ai/keys](https://console.typesafe.ai/keys). 
+Für Anfragen bei TypeSafe Jev brauchen Sie einen persönlichen **API-KEY**. Diesen bekommen Sie von der Web-Seite [console.typesafe.ai/keys](https://console.typesafe.ai/keys). 
 
 Entweder schreiben Sie diesen Schlüssel **in die Datei `.env`**.
 
@@ -108,7 +108,7 @@ zählt](bilder/richtungen.png)
 Dass die Richtungen **Namen** haben und nicht durchnummeriert sind, ist eine
 Frage der Lesbarkeit und der Kommunikaktion. Die Ameisen-Königin, der Spieler kann sagen: "Alle Ameisen bewegen sich nach Norden." Koordinaten würden hier nichts bringen.
 
-Darüber hinaus sind diese Namen das, was dem Modell Jev zur Auswahl gestellt wird und was es zurückgibt. `"north-east"` ist ein Wort, das ein Sprachmodell
+Darüber hinaus sind diese Namen das, was dem Decision-Model zur Auswahl gestellt wird und was es zurückgibt. `"north-east"` ist ein Wort, das ein Sprachmodell
 versteht; `(1, -1)` ist keines.
 
 ## Was diese Ameise aktuell tun kann
@@ -128,7 +128,7 @@ Ameise am oberen Rand mit nur fünf Pfeilen; drei Richtungen sind durchgestriche
 weil es dort keine Felder gibt](bilder/optionen.png)
 
 *Genau die grünen Pfeile werden zu `criteria`. Was durchgestrichen ist, bekommt
-Jev nie zu sehen.*
+das Modell nie zu sehen.*
 
 Diese Funktion ermittelt, welche Nachbarfelder der Ameise frei und damit für den nächsten Schritt in Frage kommen. Zusätzlich gibt es eine Prüfung, ob nich der Rand des Spielfeldes erreicht ist.
 
@@ -143,7 +143,7 @@ STEP_QUESTION = (
 
 Dies ist die grundsätzliche Frage, die sich bei jedem Schritt der Ameise stellt.
 
-## Die Anfrage an Jev
+## Die Anfrage an das Decision-Model
 
 ```python
 from typesafe_sdk import Choice, TypeSafeClient, TypeSafeError
@@ -161,16 +161,16 @@ def ask_jev(ant: dict) -> object:
     return client.system_one(state=state, questions=questions)
 ```
 
-Eine Frage an Jev besteht immer aus:
+Eine Frage an das Decision-Model besteht immer aus:
 
-* **state** : Die Grundlage für Jevs Entscheidung. In diesem Beispiel die aktuelle Situation der Ameise.
+* **state** : Die Grundlage für die Entscheidung des Modells. In diesem Beispiel die aktuelle Situation der Ameise.
 
-* **question** : Frage, die Jev beantworten soll. 
+* **question** : Frage, die das Modell beantworten soll. 
 
-Das Besondere bei Jev ist, dass er nicht wie Chat-Modelle mit Text antwortet,
+Das Besondere an einem Decision-Model ist, dass es nicht wie Chat-Modelle mit Text antwortet,
 sondern man gibt ihm den Datentyp für die Antwort vor.
 
-**Choice** gibt einen Auswahl **criteria** vor, aus denen Jev eine Auswahl. Bei der Ameise sind die dies Richtungen, in die sie gehen kann.
+**Choice** gibt eine Auswahl vor, die **criteria**, aus denen das Modell eine auswählt. Bei der Ameise sind dies die Richtungen, in die sie gehen kann.
 
 ### Die Auswahl entsteht zur Laufzeit
 
@@ -244,10 +244,10 @@ Scheitert die Anfrage, bleibt die Ameise stehen.
     )
 ```
 
-Die Anworten von Jev sind zusätzlich in einem Balkendiagramm zu sehen. Eine klare
+Die Antworten des Modells sind zusätzlich in einem Balkendiagramm zu sehen. Eine klare
 Antwort ist ein hoher Balken.
 
-## Eine Anwort von Jev
+## Eine Antwort des Decision-Models
 
 Eine Anwort auf eine echte Anfrage:
 
@@ -264,7 +264,7 @@ Der Wert **Konfidenz** sagt, wie sich die Wahrscheinlichkeit über die Optionen
 verteilt: Liegt alles auf einer, ist er 1. Je gleichmäßiger sie sich verteilt,
 desto kleiner wird er, bis auf 0 bei völliger Gleichverteilung.
 
-Das ist ein feiner, aber wichtiger Unterschied zu „wie sicher ist Jev, dass die
+Das ist ein feiner, aber wichtiger Unterschied zu „wie sicher ist das Modell, dass die
 Antwort **richtig** ist". Darüber sagt der Wert nichts. Er misst nur, wie klar
 eine Option herausragt. Ein Modell kann sich sehr sicher sein und trotzdem
 danebenliegen — dann ist die Konfidenz hoch und die Antwort falsch.
@@ -277,7 +277,7 @@ Die Dokumentation von TypeSafe gibt die Rechnung für drei Optionen an:
 > **Konfidenz = (n × höchste Wahrscheinlichkeit − 1) ÷ (n − 1)**
 
 An der Antwort oben nachgerechnet — acht Optionen, die höchste bei 0,37:
-`(8 × 0,37 − 1) ÷ 7 = 0,28`. Gemeldet hat Jev 0,29; der Rest ist Rundung, weil
+`(8 × 0,37 − 1) ÷ 7 = 0,28`. Gemeldet hat das Modell 0,29; der Rest ist Rundung, weil
 die Wahrscheinlichkeiten auf zwei Stellen kommen.
 
 ![Die acht Wahrscheinlichkeiten einer echten Antwort als Balken, mit der Linie
