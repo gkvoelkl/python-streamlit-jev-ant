@@ -41,9 +41,10 @@
   <text x="310" y="230" fill="#c8ccd6" font-size="13" text-anchor="middle">south-east</text>
   <text x="310" y="252" fill="#8b8b93" font-size="14" text-anchor="middle">(1, 1)</text>
 
-  <text x="380" y="80" fill="#c8ccd6" font-size="14">Der Name ist für Jev,</text>
-  <text x="380" y="100" fill="#c8ccd6" font-size="14">das Zahlenpaar für</text>
-  <text x="380" y="120" fill="#c8ccd6" font-size="14">die Rechnung.</text>
+  <text x="380" y="80" fill="#c8ccd6" font-size="14">Der Name ist</text>
+  <text x="380" y="100" fill="#c8ccd6" font-size="14">fürs Modell, das</text>
+  <text x="380" y="120" fill="#c8ccd6" font-size="14">Zahlenpaar für</text>
+  <text x="380" y="140" fill="#c8ccd6" font-size="14">die Rechnung.</text>
 
   <text x="380" y="168" fill="#7fd18b" font-size="14">Norden ist (0, −1),</text>
   <text x="380" y="188" fill="#7fd18b" font-size="14">weil y nach unten</text>

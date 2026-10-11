@@ -354,7 +354,7 @@ files.forEach((name, index) => {
 const document = new Document({
   creator: "gkvoelkl",
   title: "Ameisen, die fragen",
-  description: "Ein Spiel in acht Schritten mit Python, Streamlit und TypeSafe Jev",
+  description: "Ein Spiel in acht Schritten mit Python, Streamlit und einem Decision-Model",
   numbering: {
     config: [
       {

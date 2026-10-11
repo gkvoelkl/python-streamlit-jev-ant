@@ -57,7 +57,7 @@
   <text x="440" y="290" fill="#7fd18b" font-size="22" text-anchor="middle" font-weight="600">5 Optionen</text>
 
   <text x="40" y="330" fill="#c8ccd6" font-size="15">
-    Was übrig bleibt, wird zu `criteria` — und nur daraus darf Jev wählen.
+    Was übrig bleibt, wird zu `criteria` — nur daraus wählt das Modell.
   </text>
   <text x="40" y="352" fill="#8b8b93" font-size="14">
     Eine Antwort, die es nicht gibt, stand nie zur Wahl.
