@@ -6,22 +6,23 @@
 Schachbrett, dessen obere Ecke gerade erst aus einem Lichtblitz
 entsteht](../bilder/schritt-1-titel.png)
 
-*Bevor eine Ameise loslaufen kann, braucht es ein Brett.*
 
-**Ziel:** Eine Seite im Browser, auf der ein Spielbrett zu sehen ist. Ein Gitter,
-24 Felder breit, 16 hoch. Sonst nichts.
+**Ziel:** 
+
+* Eine Seite im Browser, auf der ein Spielbrett zu sehen ist.
+* Ein Gitter, 24 Felder breit, 16 hoch. Sonst nichts.
 
 ![Das Ergebnis von Schritt 1: ein dunkles Schachbrett aus 24 mal 16 Feldern im
 Browser, sonst nichts](../bilder/schritt-1-brett.png)
 
-*Mehr ist es nicht — und genau das ist der Sinn dieses Schrittes.*
+*Das erste Spielbrett*
 
 
-## Wenn Sie ein neues Projekt anlegen
+## Neues Projekt anlegen
 
-Die Bearbeitung von Python-Projekten erleichtert das Tool **uv** erheblich.
-Sie finden es unter [docs.astral.sh/uv](https://docs.astral.sh/uv/); installiert
-ist es mit einer Zeile:
+Die Bearbeitung von Python-Projekten erleichtert das freie Tool **uv**.
+
+Sie finden es unter [docs.astral.sh/uv](https://docs.astral.sh/uv/); installiert ist es mit einer Zeile:
 
 ```sh
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -39,15 +40,15 @@ uv add streamlit typesafe-sdk python-dotenv
 
 *  `uv add` fügt die drei verwendeten Python-Module hinzu und erzeugt `uv.lock` mit den genauen Versionen.
 
-`streamlit` macht es möglich Browser-Oberflächen mit Python zu erstellen.
+`streamlit` macht es möglich, Browser-Oberflächen mit Python zu erstellen.
 
 `typesafe-sdk` ist die Bibliothek, die die Verbindung zum Decision-Model TypeSafe Jev herstellt.
 
 `python-dotenv` liest den API-Schlüssel für das Decision-Model aus einer Datei, damit dieser nicht direkt im Programm steht.
 
-## Die erste Seite
+## Die erste Version
 
-Legen Sie `app.py` an:
+Legen Sie als Erstes die Datei `app.py` an, die später das komplette Spiel enthält.
 
 ```python
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next."""
@@ -89,36 +90,37 @@ st.caption(f"Step 1 — the board, {COLUMNS} by {ROWS}.")
 st.image(board())
 ```
 
-Starten:
+Starten des Python-Programmes mit dem Tool uv:
 
 ```sh
 uv run streamlit run app.py
 ```
 
-Der Browser öffnet sich auf `http://localhost:8501` und zeigt die Spielfläche.
+Der Browser öffnet sich mit `http://localhost:8501` und zeigt die Spielfläche.
 
 ## Warum SVG
 
-Das Spielbrett besteht aus Quadraten und später kommen ein paar Figuren hinzu.
-Genau dafür ist SVG (**S**calable **V**ector **G**raphics, skalierbare
-Vektorgrafik) besonders geeignet: Aus Linien, Flächen und Texten Bilder im Browser zu zeichnen. SVG ist ein Teil von
-HTML, ein Text, der das Bild beschreibt.
+Um im Browser grafische Elemente zu generieren und zu bewegen, gibt es die unterschiedlichsten Techniken. Bei diesem Programm besteht das Spielbrett aus Quadraten und später kommen ein paar Figuren hinzu.
 
-Deshalb sind keine zusätzlichen JavaScript-Zeichenbibliotheken und keine
+Genau dafür ist die Beschreibungssprache für Grafik SVG (**S**calable **V**ector **G**raphics, skalierbare Vektorgrafik) besonders geeignet: Aus Linien, Flächen und Texten Bilder im Browser zu zeichnen. 
+
+SVG ist ein Teil von HTML, eigentlich strukturierter Text, der das Bild beschreibt.
+
+Deshalb sind keine zusätzlichen JavaScript-Zeichenbibliotheken oder
 Bilddateien nötig, die das Programm beim Start erst nachladen müsste.
 
-Die Funktion `board()` gibt eine Zeichenkette zurück — mehr ist nicht nötig.
+Die Funktion `board()` erstellt die Zeichenkette, die das Spielfeld im SVG-Format beschreibt, und gibt sie zurück — mehr ist nicht nötig.
 
 ## Warum ein `pattern` und keine Schleife
 
-Das Naheliegende beim Erstellen des Spielfelds wäre eine doppelte Schleife über alle 24 × 16 Felder, die für jedes ein einzelnes Rechteck (in SVG `<rect>`) schreibt. 
+Die naheliegende Vorgehensweise beim Erstellen des Spielfelds wäre eine doppelte Schleife über alle 24 × 16 Felder, die für jedes ein einzelnes Rechteck (in SVG `<rect>`) schreibt. 
 
-Stattdessen verwendet das Programm ein `<pattern>`: Zwei Quadrate werden **einmal** beschrieben, und der Browser wiederholt sie über die ganze Fläche.
+Das Programm verwendet stattdessen ein `<pattern>`-Element: Zwei Quadrate werden **einmal** beschrieben, und der Browser wiederholt sie über die ganze Fläche.
 
 
-## Tipp: `st.image()` und nicht `st.html()` zum Zeichnen in Streamlit verwenden
+## Tipp: `st.image()` und nicht `st.html()` zum Zeichnen in Streamlit
 
-Um eine Zeichenkette mit SVG auszugeben, wäre `st.html()` das Naheliegende —
+Um eine Zeichenkette mit SVG in Python zusammen mit dem Modul Streamlit auszugeben, wäre `st.html()` das Naheliegende —
 SVG ist schließlich ein Teil von HTML. Der Aufruf funktioniert auch und wirft
 keinen Fehler, aber auf der Seite ist **nichts** zu sehen.
 
@@ -133,7 +135,7 @@ dafür gedacht.
 
 Ein schwarzes Brett auf weißem Hintergrund passt nicht.
 
-Zwei Zeilen in `.streamlit/config.toml` der Streamlit-Konfigurationsdatei beheben das:
+Zwei Zeilen in `.streamlit/config.toml`, der Streamlit-Konfigurationsdatei, beheben das:
 
 ```toml
 [theme]
@@ -147,18 +149,13 @@ Mode um.
 ## Koordinaten: y zeigt nach unten
 
 Eine Festlegung, die den Rest des Tutorials begleitet: Positionen werden von
-**links oben** gezählt, x nach rechts, y nach **unten**. So rechnet SVG, und
-zwei Koordinatensysteme in einem Programm dieser Größe lohnen sich nicht.
+**links oben** gezählt, x nach **rechts**, y nach **unten**. Genauso arbeitet SVG.
 
-Das kostet genau eine Kleinigkeit, gleich im nächsten Kapitel: Norden ist
-`y - 1`.
 
 ![Das Koordinatensystem: der Nullpunkt liegt links oben, x zählt nach rechts und
 y nach unten; die Ameise steht auf (5, 3), darüber liegt Norden mit y minus
 1](../bilder/koordinaten.png)
 
-*Die Zahlen am Rand sind die Spalten und Zeilen. Die Ameise steht auf (5, 3);
-die vier Nachbarfelder zeigen, wie sich das rechnet.*
 
 ## Ausprobieren
 

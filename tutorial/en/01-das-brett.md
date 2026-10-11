@@ -6,22 +6,24 @@
 green, whose top corner is just emerging from a flash of
 light](../bilder/schritt-1-titel.png)
 
-*Before an ant can set off, there has to be a board.*
 
-**Goal:** A page in the browser showing a game board. A grid, 24 squares wide
-and 16 high. Nothing else.
+**Goal:**
+
+* A page in the browser showing a game board.
+* A grid, 24 squares wide and 16 high. Nothing else.
 
 ![The result of step 1: a dark chessboard of 24 by 16 squares in the browser,
 nothing else](../bilder/schritt-1-brett.png)
 
-*That is all there is — and that is exactly the point of this step.*
+*The first board*
 
 
-## If you start a new project
+## Creating a new project
 
-The tool **uv** makes working on Python projects a great deal easier. You will
-find it at [docs.astral.sh/uv](https://docs.astral.sh/uv/); it installs with
-one line:
+The free tool **uv** makes working on Python projects easier.
+
+You will find it at [docs.astral.sh/uv](https://docs.astral.sh/uv/); it
+installs with one line:
 
 ```sh
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -47,9 +49,9 @@ uv add streamlit typesafe-sdk python-dotenv
 `python-dotenv` reads the API key for the decision model from a file, so that
 it does not sit in the program itself.
 
-## The first page
+## The first version
 
-Create `app.py`:
+First create the file `app.py`, which will later hold the complete game.
 
 ```python
 """Jev Ants — an ant colony that asks TypeSafe Jev what to do next."""
@@ -91,7 +93,7 @@ st.caption(f"Step 1 — the board, {COLUMNS} by {ROWS}.")
 st.image(board())
 ```
 
-Start it:
+Start the Python program with the tool uv:
 
 ```sh
 uv run streamlit run app.py
@@ -101,28 +103,35 @@ The browser opens at `http://localhost:8501` and shows the board.
 
 ## Why SVG
 
-The board is made of squares, and a few figures will join it later. That is
-exactly what SVG (**S**calable **V**ector **G**raphics) is good at: drawing
-pictures in the browser out of lines, shapes and text. SVG is part of HTML — a
-piece of text that describes the picture.
+There are all sorts of techniques for creating and moving graphical elements
+in the browser. In this program the board is made of squares, and a few
+figures will join it later.
 
-So there is no need for extra JavaScript drawing libraries, nor for image files
-the program would first have to load at start-up.
+That is exactly what the graphics description language SVG (**S**calable
+**V**ector **G**raphics) is good at: drawing pictures in the browser out of
+lines, shapes and text.
 
-The function `board()` returns a string — nothing more is needed.
+SVG is part of HTML — really structured text that describes the picture.
+
+So there is no need for extra JavaScript drawing libraries or image files the
+program would first have to load at start-up.
+
+The function `board()` creates the string that describes the board in SVG
+format and returns it — nothing more is needed.
 
 ## Why a `pattern` and not a loop
 
 The obvious way to build the board would be a double loop over all 24 × 16
 squares, writing a separate rectangle (an SVG `<rect>`) for each one.
 
-Instead the program uses a `<pattern>`: two squares are described **once**, and
+Instead the program uses a `<pattern>` element: two squares are described **once**, and
 the browser repeats them across the whole area.
 
 
-## Tip: draw in Streamlit with `st.image()`, not `st.html()`
+## Tip: `st.image()`, not `st.html()`, for drawing in Streamlit
 
-To put out a string containing SVG, `st.html()` would be the obvious choice —
+To put out a string containing SVG from Python with the Streamlit module,
+`st.html()` would be the obvious choice —
 SVG is part of HTML, after all. The call works and raises no error, but
 **nothing** shows up on the page.
 
@@ -151,17 +160,14 @@ This file is only read at start-up — so restart Streamlit after changing it.
 ## Coordinates: y points down
 
 One decision that stays with you for the rest of the tutorial: positions are
-counted from the **top left**, x to the right, y **downwards**. That is how SVG
-counts, and two coordinate systems are not worth it in a program this size.
+counted from the **top left**, x to the **right**, y **downwards**. That is
+exactly how SVG works.
 
-It costs exactly one small thing, right in the next chapter: north is `y - 1`.
 
 ![The coordinate system: the origin is at the top left, x counts to the right
 and y downwards; the ant stands on (5, 3), and north of it is y minus
 1](../bilder/en/koordinaten.png)
 
-*The numbers along the edges are the columns and rows. The ant stands on
-(5, 3); the four neighbouring squares show how the arithmetic works.*
 
 ## Try it out
 
