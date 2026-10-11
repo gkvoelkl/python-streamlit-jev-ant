@@ -53,25 +53,8 @@ diesem Moment wirklich zur Auswahl hat.
 Das Programm baut die Auswahlmöglichkeiten **zur Laufzeit** aus dem, was die Ameise
 sieht. Ist keine Frucht in Sichtweite, gibt es die Antwort-Möglichkeit „hol die Frucht" nicht. 
 
-## Wer Decision-Models anbietet
 
-Jev war im September 2026 das erste Decision-Model, inzwischen gibt es
-mehrere. Die Anbieter nennen sie auch „System One Models". Stand Oktober 2026
-gibt es unter anderem diese:
-
-| Anbieter | Modell | Wie |
-|---|---|---|
-| TypeSafe AI | Jev | Cloud, das Modell dieses Tutorials |
-| OpenAI | Decisions API | Cloud, Beta seit Oktober 2026 |
-| Microsoft | Microsoft-Decision-1 | Cloud, über Azure und OpenRouter |
-| Upstage | Solar Decide | Cloud, Beta |
-| meraGPT | Decider 1 | Cloud |
-| Cloudflare | Clef | Cloud oder selbst betrieben, offene Gewichte |
-| AWS | Strands Decider 2B | zum Herunterladen |
-| Bespoke Labs | Nimble | zum Herunterladen, läuft unter Ollama |
-| Together AI | Tev1 | zum Herunterladen, läuft unter Ollama |
-
-**Auch Ollama kann Decision-Models.** Seit Version 0.35 bietet Ollama den
+**Lokale Alternative Ollama mit Decision-Models.** Seit Version 0.35 bietet Ollama den
 Endpunkt `/v1/systemone` an, mit denselben Fragen, Auswahlen,
 Wahrscheinlichkeiten und derselben Konfidenz wie Jev. Das Modell läuft dann
 auf Ihrem eigenen Rechner, ohne Schlüssel und ohne Kosten pro Anfrage. Die
