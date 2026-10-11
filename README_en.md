@@ -4,12 +4,15 @@
 
 An ant colony where every ant asks a decision model —
 [TypeSafe Jev](https://docs.typesafe.ai/introduction) — what to do next. You are
-the queen, and your only control is a sentence.
+the queen, and your only way to intervene is to type orders in natural
+language.
 
-A small Python port of [rust-bevy-jev-ants](https://github.com/gkvoelkl/rust-bevy-jev-ants),
-built in eight steps — each one a program that runs, and from step 2 on every
-step the ants take was decided by the model. The tags `step-1` … `step-8` are
-those eight states, and `steps/` holds the same files to copy from.
+This is a Python port of [rust-bevy-jev-ants](https://github.com/gkvoelkl/rust-bevy-jev-ants).
+It comes with a tutorial in eight steps that describes how the program is
+built.
+
+The GitHub tags `step-1` … `step-8` hold the program as it stands after each
+step of the tutorial. The directory `steps/` holds the same files side by side.
 
 ## Run it
 
@@ -19,11 +22,7 @@ cd python-streamlit-jev-ant
 uv run streamlit run app.py
 ```
 
-`uv` reads `pyproject.toml`, makes the environment and starts the app in one go.
-Without uv, `pip install -r requirements.txt` and then `streamlit run app.py`
-does the same thing with unpinned versions.
-
-From step 2 on you need a TypeSafe key from
+From step 2 of the tutorial on you need a TypeSafe key from
 [console.typesafe.ai](https://console.typesafe.ai/keys), either in `.env` as
 `TYPESAFE_API_KEY` or typed into the sidebar.
 

@@ -29,24 +29,28 @@
 
 ## English
 
-You are the queen of an ant colony, and your only control is a sentence. Type
-“Fetch the fruit from the north”, and every ant decides for itself what that
-means for it — by asking a decision model. A decision model does not answer in
-prose: it picks one of the options it is given and says how sure it is.
+You are the queen of an ant colony, and your only way to intervene is to type
+an order.
+
+You type “Fetch the fruit from the north”, and every ant decides for itself what
+that means for it — by asking a decision model.
+
+A decision model does not answer in prose: it picks a next step from the current
+situation and the possible actions.
 
 ### What you get
 
 - **A game to try out** — a Streamlit app with eight ants on a board, fruit to
-  bring home and a text field for the queen. Above every ant: what the model
-  chose and how sure it was; below the board: stores, requests and cost.
-- **A matching tutorial** — eight steps, each ending in a program that runs,
-  plus two appendices: from an empty board to a colony that listens, and at the
-  end a dice in the model's place as a yardstick. Written in German, step 1 is
-  translated into English.
+  bring home and a text field for the queen's orders. Above every ant you see
+  what the model chose and how sure it was; below the board you see stores,
+  requests and cost.
+- **A matching tutorial** — in eight steps the tutorial builds the complete
+  game: from an empty board to the colony. At the end of every step there is a
+  game you can test.
 
 ### Getting started
 
-You need Python 3.12 or newer and [uv](https://docs.astral.sh/uv/).
+You need Python 3.12 or newer and the tool [uv](https://docs.astral.sh/uv/).
 
 ```sh
 git clone https://github.com/gkvoelkl/python-streamlit-jev-ant
@@ -72,26 +76,23 @@ and no cost.
 
 ## Deutsch
 
-Sie sind die Königin einer Ameisen-Kolonie, und Ihr einziges Steuer ist ein
-Satz. Sie tippen „Holt die Früchte aus dem Norden", und jede Ameise entscheidet
-für sich, was das für sie bedeutet — indem sie ein Decision-Model fragt. Ein
-Decision-Model antwortet nicht in Prosa: Es wählt eine der Möglichkeiten, die
-es bekommt, und sagt, wie sicher es sich ist.
+Sie sind die Königin einer Ameisen-Kolonie, und Ihre einzige Möglichkeit einzugreifen ist das Eingeben eines Befehls. 
+
+Sie tippen „Holt die Früchte aus dem Norden", und jede Ameise entscheidet für sich, was das für sie bedeutet — indem sie ein Decision-Model fragt. 
+
+Ein Decision-Model antwortet nicht in Prosa: Es wählt einen nächsten Schritt aus der aktuellen Situation und möglichen Aktionen.
 
 ### Was Sie bekommen
 
 - **Ein Spiel zum Ausprobieren** — eine Streamlit-App mit acht Ameisen auf
-  einem Brett, Früchten zum Heimbringen und einem Textfeld für die Königin.
-  Über jeder Ameise steht, was das Modell gewählt hat und wie sicher es war,
-  unter dem Brett Vorrat, Anfragen und Kosten.
-- **Ein passendes Tutorial** — acht Schritte, jeder endet mit einem Programm,
-  das läuft, dazu zwei Anhänge: vom leeren Brett bis zur Kolonie, die zuhört,
-  und am Ende ein Würfel an Stelle des Modells als Maßstab. Auf Deutsch
-  geschrieben, Schritt 1 ist ins Englische übersetzt.
+  einem Brett, Früchten zum Heimbringen und einem Textfeld für die Befehle der Königin.
+  Über jeder Ameise steht, was das Modell gewählt hat und wie sicher es dabei war,
+  unter dem Brett sehen Sie Vorrat, Anfragen und Kosten.
+- **Ein passendes Tutorial** — in acht Schritten baut das Tutorial das komplette Spiel auf: vom leeren Brett bis zur Kolonie. Am Ende jedes Schrittes ist ein testbares Spiel vorhanden.
 
 ### Loslegen
 
-Sie brauchen Python 3.12 oder neuer und [uv](https://docs.astral.sh/uv/).
+Sie brauchen Python 3.12 oder neuer und das Werkzeug [uv](https://docs.astral.sh/uv/).
 
 ```sh
 git clone https://github.com/gkvoelkl/python-streamlit-jev-ant

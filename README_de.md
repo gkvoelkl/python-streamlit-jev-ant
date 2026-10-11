@@ -2,14 +2,11 @@
 
 *[English version](README_en.md)*
 
-Eine Ameisen-Kolonie, in der jede Ameise ein Decision-Model —
-[TypeSafe Jev](https://docs.typesafe.ai/introduction) — fragt, was sie als
-Nächstes tun soll. Sie sind die Königin, und Ihr einziges Steuer ist ein Satz.
+Eine Ameisen-Kolonie, in der jede Ameise ein Decision-Model — [TypeSafe Jev](https://docs.typesafe.ai/introduction) — fragt, was sie als Nächstes tun soll. Sie sind die Königin, und Ihre einzige Eingriffsmöglichkeit ist die Eingabe von Befehlen in natürlicher Sprache.
 
-Eine kleine Python-Portierung von [rust-bevy-jev-ants](https://github.com/gkvoelkl/rust-bevy-jev-ants),
-gebaut in acht Schritten — jeder ein Programm, das läuft, und ab Schritt 2 hat
-das Modell jeden Schritt der Ameisen entschieden. Die Tags `step-1` … `step-8`
-sind diese acht Stände, und `steps/` enthält dieselben Dateien zum Abschreiben.
+Dies ist eine Python-Portierung von [rust-bevy-jev-ants](https://github.com/gkvoelkl/rust-bevy-jev-ants). Zusätzlich gibt es ein Tutorial in 8 Schritten, das die Erstellung des Programms beschreibt.
+
+Unter den GitHub Tags `step-1` … `step-8` finden Sie die Programmschritte, die jeweils zu den entsprechenden Teilen gehören. Im Verzeichnis `steps/` finden Sie die gleichen in der Übersicht.
 
 ## Starten
 
@@ -19,11 +16,7 @@ cd python-streamlit-jev-ant
 uv run streamlit run app.py
 ```
 
-`uv` liest `pyproject.toml`, legt die Umgebung an und startet die App in einem
-Zug. Ohne uv tut `pip install -r requirements.txt` und danach
-`streamlit run app.py` dasselbe, mit nicht festgelegten Versionen.
-
-Ab Schritt 2 brauchen Sie einen TypeSafe-Schlüssel von
+Ab Schritt 2 des Tutorials brauchen Sie einen TypeSafe-Schlüssel von
 [console.typesafe.ai](https://console.typesafe.ai/keys), entweder in `.env` als
 `TYPESAFE_API_KEY` oder in der Seitenleiste eingetippt.
 
