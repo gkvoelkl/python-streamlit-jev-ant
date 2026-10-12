@@ -44,7 +44,6 @@ Schritt 1 ist ins Englische übersetzt, die übrigen Kapitel folgen.
 
 - **Website:** [gkvoelkl.github.io/python-streamlit-jev-ant](https://gkvoelkl.github.io/python-streamlit-jev-ant/)
 - **Markdown:** [tutorial/de/README.md](tutorial/de/README.md) · englische Übersetzung in [tutorial/en/](tutorial/en/README.md)
-- **Word:** `Ameisen-die-fragen.docx`
 
 Die Kapitel in `tutorial/de/` und `tutorial/en/` sind die Quelle. Zwei Dinge
 werden daraus erzeugt — bearbeiten Sie die Kapitel, nicht diese:

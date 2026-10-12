@@ -17,3 +17,6 @@ __pycache__/
 
 # Website build (MkDocs)
 site/
+
+# The Word document is built from the chapters when it is wanted, never committed.
+Ameisen-die-fragen.docx
