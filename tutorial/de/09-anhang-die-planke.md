@@ -1,14 +1,24 @@
-# Anhang A — Die Planke und der Fluss
+# Anhang A — Der Weg über den Fluss
 
-Das Spiel der acht Schritte, um drei Dinge erweitert: **Wasser**, das keine
-Ameise durchquert, eine **Planke**, die eine Ameise aufheben kann, und einen
-**Übergang**, der dort entsteht, wo sie abgelegt wird.
+![Queeny, von hinten gesehen, zeigt über das leuchtende Brett auf einen
+L-förmigen dunkelblauen Fluss; am diesseitigen Ufer stehen drei Arbeiterinnen
+mit einer langen Planke, hinter dem Fluss liegt in der Ecke ein Haufen roter
+Äpfel](../bilder/anhang-a-titel.png)
 
-Alles andere ist unverändert übernommen, die Duftspur aus Kapitel 5
-eingeschlossen — eine Ameise mit Frucht findet hier genauso über den Geruch nach
-Hause wie auf dem ersten Brett.
+*Das Obst liegt drüben. Wie man hinüberkommt, weiß nur sie.*
 
-Das Level ist das zweite aus der Rust-Fassung dieses Spiels, mit gespiegeltem y.
+**Ziel:** Das Spiel aus den acht Schritten bekommt drei neue Dinge:
+
+* **Wasser**, das keine Ameise durchquert,
+* eine **Planke**, die eine Ameise aufheben kann,
+* und einen **Übergang**, der dort entsteht, wo sie abgelegt wird.
+
+Alles andere ist unverändert übernommen, die Duftspur aus Kapitel 5 und der
+Würfel aus Kapitel 8 eingeschlossen. Eine Ameise mit Frucht findet hier genauso
+über den Geruch nach Hause wie auf dem ersten Brett.
+
+Das Level ist das zweite aus der Rust-Fassung dieses Spiels, nur mit
+gespiegelter y-Achse, weil hier y nach unten zählt.
 
 Das fertige Programm liegt unter `anhang/app_mit_planke.py`, das Level daneben
 als `anhang/level-planke.json`:
@@ -30,6 +40,9 @@ halbe Brettbreite auseinander.
 
 Nur Sie sehen das ganze Bild, und ein Satz ist alles, was Sie haben.
 
+Aus `anhang/level-planke.json`, gekürzt um Name, Briefing und die Lage der
+Früchte:
+
 ```json
 {
   "columns": 30,
@@ -42,7 +55,7 @@ Nur Sie sehen das ganze Bild, und ein Satz ist alles, was Sie haben.
 }
 ```
 
-Der Fluss ist überall ein Feld breit. Das genügt: Niemand watet.
+Der Fluss ist überall ein Feld breit. Das genügt, denn niemand watet.
 
 ## Eine Hand statt eines Schalters
 
@@ -50,10 +63,13 @@ Bisher war `carrying` ein Wahrheitswert — trägt eine Frucht, ja oder nein. Je
 gibt es zwei Dinge zu tragen, also wird daraus ein Wort:
 
 ```python
-            "holding": None,        # oder "a fruit" oder "the plank"
+            # What this ant has hold of: nothing, "a fruit" or "the plank".
+            # A word rather than a flag, because there are two things now and
+            # because this is what goes into the state as it stands.
+            "holding": None,
 ```
 
-Das zahlt sich gleich zweimal aus. Im Zustand steht der Wert unverändert drin:
+Das zahlt sich aus, denn im Zustand steht der Wert unverändert drin:
 
 ```python
         "the ant is carrying": ant["holding"] or "nothing",
@@ -87,23 +103,31 @@ heißt, sammelt sich an einer Stelle.
 
 ```python
 TAKE_PLANK = "take the plank"
+```
 
+In `options()`:
+
+```python
     plank = st.session_state.plank
-    if plank and not ant["holding"] and steps_away(...) == 1:
+    if plank and not ant["holding"] and steps_away(plank[0] - ant["x"], plank[1] - ant["y"]) == 1:
         extra[TAKE_PLANK] = "pick up the plank lying beside this ant"
+```
 
+Am Ende kommt sie zu den Richtungen dazu:
+
+```python
     return {way: towards.get(way) for way in ways} | extra
 ```
 
 Die Regel ist dieselbe wie bei allen anderen Optionen: Sie existiert nur, wenn
-sie möglich ist. Eine Ameise mit vollen Händen sieht sie nie, eine weit weg
-auch nicht.
+sie möglich ist. Eine Ameise mit vollen Händen bekommt sie nie angeboten, eine
+weit entfernte auch nicht.
 
 **Warum ist das Aufnehmen eine Entscheidung und das Ablegen nicht?** In Kapitel
 4 war beides eine Folge, und die Begründung war: Eine Frage, deren Antwort fast
 immer dieselbe ist, ist eine bezahlte und weggeworfene Anfrage.
 
-Bei der Planke liegt es andersherum. Eine Ameise, die gerade zu einer Frucht
+Bei der Planke ist es zur Hälfte anders. Eine Ameise, die gerade zu einer Frucht
 unterwegs ist, soll nicht im Vorbeigehen eine Planke aufheben — hier ist die
 Antwort offen, also wird gefragt. Umgekehrt hat eine Ameise, die mit der Planke
 am Wasser ankommt, genau eine sinnvolle Möglichkeit, also wird nicht gefragt:
@@ -134,8 +158,8 @@ PLANK_VISIBLE_FROM = 8
 ```
 
 Mit den üblichen drei Feldern Sicht ging das Level nicht. Über dreißig Runden
-hinweg lief keine einzige Ameise zur Planke — sie konnte gar nicht wissen, dass
-es sie gibt. Die Rust-Fassung hat dieselbe Konstante mit demselben Wert. Eine
+hinweg lief keine einzige Ameise zur Planke — keine konnte wissen, dass es sie
+gibt. Die Rust-Fassung hat dieselbe Konstante mit demselben Wert. Eine
 Planke ist ein großes Ding, das offen herumliegt.
 
 **Zweitens: Wer die Planke trägt, darf nicht erfahren, wo der Bau ist.**
@@ -154,8 +178,12 @@ Kreis. Jetzt erfährt jede Last nur ihr eigenes Ziel:
 **Drittens: Der Übergang muss von überall sichtbar sein.**
 
 Sonst wird die Planke gelegt — und danach findet niemand die Stelle wieder.
-Gemessen: achtzig Runden, eine Frucht. Der Übergang ist jetzt ein Wahrzeichen
-wie der Bau.
+Gemessen: achtzig Runden, eine Frucht. Der Übergang wird jetzt jeder Ameise
+genannt, egal wie weit weg sie steht, als Wahrzeichen wie der Bau:
+
+```python
+                f"the crossing over the water, {phrase(bx - ant['x'], by - ant['y'])}"
+```
 
 Dreimal dieselbe Lehre, und sie ist die wichtigste dieses Tutorials:
 
@@ -227,8 +255,11 @@ lohnt — und dieser Anhang ist der Beweis, dass er nicht theoretisch ist.
 
 ## Ausprobieren
 
-* Sagen Sie zuerst gar nichts und drücken Sie zwanzig Runden. Die Kolonie
-  findet den Fluss, und dort endet sie.
+* Geben Sie zuerst einen Befehl, der weder Fluss noch Planke erwähnt, etwa
+  „Search for fruit and bring it home", und spielen Sie zwanzig Runden. Die
+  Kolonie findet den Fluss, und dort endet sie.
+* Schalten Sie den Würfel ein und lassen Sie ihn hundert Runden laufen. Hebt er
+  die Planke je auf? Und wenn ja, legt er sie an eine sinnvolle Stelle?
 * Sagen Sie nur „Fetch the plank in the south-east". Wird sie geholt? Und wohin
   wird sie getragen?
 * Setzen Sie `PLANK_VISIBLE_FROM` auf 3 zurück und spielen Sie noch einmal.

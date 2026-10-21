@@ -26,10 +26,10 @@ nav:
       - 4 · Tragen und abliefern: 04-tragen-und-abliefern.md
       - 5 · Sehen: 05-augen.md
       - 6 · Die Königin: 06-die-koenigin.md
-      - 7 · Zusehen: 07-zusehen.md
-      - 8 · Was bringt das Modell?: 08-was-bringt-das-modell.md
+      - 7 · Einblicke: 07-zusehen.md
+      - 8 · Was bringt das Decision-Model?: 08-was-bringt-das-modell.md
   - Anhang:
-      - A · Die Planke und der Fluss: 09-anhang-die-planke.md
+      - A · Der Weg über den Fluss: 09-anhang-die-planke.md
       - B · Dasselbe Spiel ohne Cloud: 10-anhang-b-ohne-cloud.md
 
 theme:
@@ -78,10 +78,10 @@ plugins:
             4 · Tragen und abliefern: 4 · Carrying and delivering
             5 · Sehen: 5 · Seeing
             6 · Die Königin: 6 · The queen
-            7 · Zusehen: 7 · Watching
-            8 · Was bringt das Modell?: 8 · What is the model worth?
+            7 · Einblicke: 7 · Insights
+            8 · Was bringt das Decision-Model?: 8 · What is the decision model worth?
             Anhang: Appendix
-            A · Die Planke und der Fluss: A · The plank and the river
+            A · Der Weg über den Fluss: A · The way across the river
             B · Dasselbe Spiel ohne Cloud: B · The same game without the cloud
 
 markdown_extensions:

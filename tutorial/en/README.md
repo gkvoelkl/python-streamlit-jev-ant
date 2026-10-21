@@ -34,10 +34,10 @@ Introduction – [German](../de/00-einleitung.md)
 4. Carrying and delivering – [German](../de/04-tragen-und-abliefern.md)
 5. Seeing – [German](../de/05-augen.md)
 6. The queen – [German](../de/06-die-koenigin.md)
-7. Watching – [German](../de/07-zusehen.md)
-8. What is the model worth? – [German](../de/08-was-bringt-das-modell.md)
+7. Insights – [German](../de/07-zusehen.md)
+8. What is the decision model worth? – [German](../de/08-was-bringt-das-modell.md)
 
 **Appendix**
 
-- A · The plank and the river – [German](../de/09-anhang-die-planke.md)
+- A · The way across the river – [German](../de/09-anhang-die-planke.md)
 - B · The same game without the cloud – [German](../de/10-anhang-b-ohne-cloud.md)

@@ -32,10 +32,10 @@ dem eigenen Rechner, siehe Anhang B.
 4. [Tragen und abliefern](04-tragen-und-abliefern.md)
 5. [Sehen](05-augen.md)
 6. [Die Königin](06-die-koenigin.md)
-7. [Zusehen](07-zusehen.md)
-8. [Was bringt das Modell?](08-was-bringt-das-modell.md)
+7. [Einblicke](07-zusehen.md)
+8. [Was bringt das Decision-Model?](08-was-bringt-das-modell.md)
 
 **Anhang**
 
-- A · [Die Planke und der Fluss](09-anhang-die-planke.md)
+- A · [Der Weg über den Fluss](09-anhang-die-planke.md)
 - B · [Dasselbe Spiel ohne Cloud](10-anhang-b-ohne-cloud.md)

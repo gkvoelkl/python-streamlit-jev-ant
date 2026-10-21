@@ -78,8 +78,9 @@ fragt, bleibt gleich, egal von wem es kommt.
 * Einen Texteditor und einen Browser.
 
 Kosten: Eine Anfrage sind rund 350 bis 600 Eingabe-Tokens, und eine Million
-davon kostet 0,042 Dollar. Ein komplettes Spiel — acht Ameisen, zwanzig Runden
-— liegt bei etwa **einem Fünftel-Cent**. Zum Durcharbeiten des ganzen Tutorials reicht wahrscheinlich ein einstelliger Centbetrag.
+davon kostet 0,042 Dollar. Ein komplettes Spiel — acht Ameisen, zwanzig bis
+sechzig Runden — liegt bei **einem halben bis einem ganzen Cent**. Zum
+Durcharbeiten des ganzen Tutorials reichen wahrscheinlich ein paar Cent.
 
 ## Die acht Schritte des Tutorial
 
@@ -93,8 +94,8 @@ Nach **jedem** Schritt haben Sie ein Programm, das läuft. Sie sehen immer etwas
 | 4 | Tragen und abliefern — Früchte heimbringen, gewinnen |
 | 5 | Augen — Sichtfeld, bessere Optionen, eine Schwelle |
 | 6 | Die Königin — Ihr Satz |
-| 7 | Zusehen — was jede Ameise gewählt hat, und was es kostet |
-| 8 | Was bringt das Modell? — der Vergleich mit einem Würfel |
+| 7 | Einblicke — was jede Ameise gewählt hat, und was es kostet |
+| 8 | Was bringt das Decision-Model? — der Vergleich mit einem Würfel |
 
  **Ab Schritt 2 entscheidet das Modell**, und alles danach handelt davon, was es
 dabei zu sehen bekommt. 

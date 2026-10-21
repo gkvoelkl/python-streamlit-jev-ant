@@ -1,17 +1,15 @@
-"""Wie lange braucht der Zufall für fünf Früchte?
+"""How long does chance take for five fruits?
 
-Dieselben Regeln wie `app.py` nach Schritt 4, nur ohne Streamlit und ohne
-Zeichnen — damit sich zwanzig Durchläufe in einer Sekunde rechnen statt in
-zweitausend Klicks.
-
-Die Zahl aus Kapitel 4 kommt hierher. Nach Schritt 6 lohnt es sich, sie neu zu
-messen und zu vergleichen.
+The same rules as the dice in `app.py`, without Streamlit and without drawing,
+so that two hundred runs take a second instead of thousands of clicks. No trail
+either: the dice could not read one anyway.
 
     python3 tutorial/baseline.py
 """
 import json, random, statistics
+from pathlib import Path
 
-L = json.load(open('/Users/monikagerhard25/Desktop/git/python-streamlit-jev-ant/level1.json'))
+L = json.loads((Path(__file__).resolve().parent.parent / "level1.json").read_text(encoding="utf-8"))
 D = [(0,-1),(1,-1),(1,0),(1,1),(0,1),(-1,1),(-1,0),(-1,-1)]
 N = L["nest"]
 
@@ -40,16 +38,16 @@ def run(limit=20000):
                     if cell in fruit:
                         fruit.discard(cell); taken.discard(cell); a["c"] = True; break
         if not fruit and not any(a["c"] for a in ants):
-            return None  # nichts mehr zu holen
+            return None  # nothing left to fetch
     return limit
 
-# Zwanzig Läufe reichen nicht: der Median schwankte zwischen zwei Messungen um
-# vierzig Runden. Zweihundert sind in einer Sekunde gerechnet und stehen still.
+# Twenty runs are not enough: the median moved by forty rounds between two
+# measurements. Two hundred take a second and hold still.
 RUNS = 200
 
 results = sorted(r for r in (run() for _ in range(RUNS)) if isinstance(r, int))
-print(f"{len(results)} von {RUNS} Läufen haben fünf Früchte heimgebracht")
-print(f"Median   {statistics.median(results):.0f} Runden")
-print(f"Mittel   {statistics.mean(results):.0f} Runden")
-print(f"Spanne   {results[0]} bis {results[-1]}")
-print(f"Mitte 80% {results[len(results)//10]} bis {results[-len(results)//10]}")
+print(f"{len(results)} of {RUNS} runs brought five fruits home")
+print(f"median    {statistics.median(results):.0f} rounds")
+print(f"mean      {statistics.mean(results):.0f} rounds")
+print(f"range     {results[0]} to {results[-1]}")
+print(f"middle 80% {results[len(results)//10]} to {results[-len(results)//10]}")

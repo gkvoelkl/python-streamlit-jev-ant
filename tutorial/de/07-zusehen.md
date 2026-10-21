@@ -156,9 +156,10 @@ meter.write(
 Links die Kolonie, rechts das Messgerät. Die Reihenfolge ist Absicht: Der
 Vorrat ist das Spiel, die Kosten sind nur das, womit man es misst.
 
-Aus einem echten Lauf: 88 Entscheidungen, 53 verworfen, 48.100 Token, **0,0020
-Dollar**. Ein ganzes Spiel kostet also einen Fünftel-Cent, eine Runde mit acht
-Ameisen rund 0,0002 Dollar. Diese Zahl sollte man kennen, bevor man anfängt,
+Aus einem echten Lauf: 88 Entscheidungen in elf Runden, 53 verworfen, 48.100
+Token, **0,0020 Dollar**. Eine Runde mit acht Ameisen kostet also rund 0,0002
+Dollar, ein ganzes Spiel einen halben bis einen ganzen Cent (gemessen in
+Kapitel 8). Diese Zahl sollte man kennen, bevor man anfängt,
 im Sekundentakt nachzufragen.
 
 ## Tipp: Dollarzeichen sind LaTeX
