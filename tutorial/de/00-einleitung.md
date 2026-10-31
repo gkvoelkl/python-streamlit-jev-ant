@@ -12,7 +12,7 @@ Werkzeug](../bilder/queeny-und-arbeiterinnen.png)
 
 Ein Decision-Model ist eine neue Art von KI-Modell: Es trifft schnelle Bewertungen und Entscheidungen, die Programme in ihren Ablauf einbauen können.
 
-Das Beipspiel in diesem Tutorial ist eine Ameisen-Kolonie, die im Browser zu sehen ist. Das Decision-Model steuert jede einzelne Ameise nach den Anweisungen der Königin, die Sie sind. Die Ameisen sollen Früchte in den Bau bringen oder Hindernisse überwinden.
+Das Beispiel in diesem Tutorial ist eine Ameisen-Kolonie, die im Browser zu sehen ist. Das Decision-Model steuert jede einzelne Ameise nach den Anweisungen der Königin, die Sie sind. Die Ameisen sollen Früchte in den Bau bringen oder Hindernisse überwinden.
 
 ![Das fertige Spiel: acht Ameisen auf dem Brett, über jeder steht, wofür das Modell sich
 entschieden hat und wie sicher — grün bei hoher, rot bei knapper
@@ -23,7 +23,7 @@ entschieden hat und wie sicher es sich war — und die grünen Felder sind die
 Duftspur, die die Kolonie beim Suchen hinterlässt. Sie ist am Bau am stärksten,
 und bergauf ist heimwärts.*
 
-Kein Klicken, keine Tasten, keine Joy-Stick. Sie tippen ein „Holt die Früchte aus
+Kein Klicken, keine Tasten, kein Joystick. Sie tippen ein „Holt die Früchte aus
 dem Norden", und jede Ameise entscheidet für sich, was das für sie bedeutet.
 Die Entscheidung trifft ein **Decision-Model**, in diesem Tutorial **TypeSafe Jev**.
 
@@ -64,8 +64,7 @@ Bibliothek aus diesem Tutorial spricht unverändert mit Ollama, es reichen drei
 Einträge in der `.env`. Wie das geht und wie schnell es ist, steht in
 Anhang B.
 
-Der Markt bewegt sich schnell. Die Tabelle ist eine Momentaufnahme, keine
-Empfehlung. Für das Tutorial gilt: Was ein Decision-Model ist und wie man es
+Der Markt bewegt sich schnell. Für das Tutorial gilt: Was ein Decision-Model ist und wie man es
 fragt, bleibt gleich, egal von wem es kommt.
 
 ## Was Sie brauchen
@@ -84,7 +83,7 @@ davon kostet 0,042 Dollar. Ein komplettes Spiel — acht Ameisen, zwanzig bis
 sechzig Runden — liegt bei **einem halben bis einem ganzen Cent**. Zum
 Durcharbeiten des ganzen Tutorials reichen wahrscheinlich ein paar Cent.
 
-## Die acht Schritte des Tutorial
+## Die acht Schritte des Tutorials
 
 Nach **jedem** Schritt haben Sie ein Programm, das läuft. Sie sehen immer etwas Neues auf dem Bildschirm.
 
@@ -92,7 +91,7 @@ Nach **jedem** Schritt haben Sie ein Programm, das läuft. Sie sehen immer etwas
 |---|---|
 | 1 | Das Brett — ein Gitter im Browser |
 | 2 | **Eine Ameise, die das Modell fragt** — ein Klick, eine Anfrage, ein Schritt |
-| 3 | Die Kolonie — acht Ameisen mit acht parallele Anfragen |
+| 3 | Die Kolonie — acht Ameisen mit acht parallelen Anfragen |
 | 4 | Tragen und abliefern — Früchte heimbringen, gewinnen |
 | 5 | Augen — Sichtfeld, bessere Optionen, eine Schwelle |
 | 6 | Die Königin — Ihr Satz |

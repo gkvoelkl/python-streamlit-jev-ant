@@ -287,9 +287,10 @@ TypeSafe's documentation gives the calculation for three options:
 
 > **confidence = (n × highest probability − 1) ÷ (n − 1)**
 
-Checked against the answer above — eight options, the highest at 0.37:
-`(8 × 0.37 − 1) ÷ 7 = 0.28`. The model reported 0.29; the rest is rounding,
-because the probabilities come with two decimal places.
+Checked against a second real answer, the one in the picture below — eight
+options, the highest at 0.37: `(8 × 0.37 − 1) ÷ 7 = 0.28`. The model reported
+0.29; the rest is rounding, because the probabilities come with two decimal
+places.
 
 ![The eight probabilities of a real answer as bars, with the line for pure
 chance at 0.125 and the confidence calculated from

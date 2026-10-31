@@ -108,7 +108,7 @@ Versatz; Norden ist (0, −1), weil y nach unten
 zählt](../bilder/richtungen.png)
 
 Dass die Richtungen **Namen** haben und nicht durchnummeriert sind, ist eine
-Frage der Lesbarkeit und der Kommunikaktion. Die Ameisen-Königin, der Spieler kann sagen: "Alle Ameisen bewegen sich nach Norden." Koordinaten würden hier nichts bringen.
+Frage der Lesbarkeit und der Kommunikation. Die Ameisen-Königin, der Spieler kann sagen: "Alle Ameisen bewegen sich nach Norden." Koordinaten würden hier nichts bringen.
 
 Darüber hinaus sind diese Namen das, was dem Decision-Model zur Auswahl gestellt wird und was es zurückgibt. `"north-east"` ist ein Wort, das ein Sprachmodell
 versteht; `(1, -1)` ist keines.
@@ -132,7 +132,7 @@ weil es dort keine Felder gibt](../bilder/optionen.png)
 *Genau die grünen Pfeile werden zu `criteria`. Was durchgestrichen ist, bekommt
 das Modell nie zu sehen.*
 
-Diese Funktion ermittelt, welche Nachbarfelder der Ameise frei und damit für den nächsten Schritt in Frage kommen. Zusätzlich gibt es eine Prüfung, ob nich der Rand des Spielfeldes erreicht ist.
+Diese Funktion ermittelt, welche Nachbarfelder der Ameise frei und damit für den nächsten Schritt in Frage kommen. Zusätzlich gibt es eine Prüfung, ob der Rand des Spielfeldes erreicht ist.
 
 ## Die Frage
 
@@ -180,7 +180,7 @@ sondern man gibt ihm den Datentyp für die Antwort vor.
 criteria=dict.fromkeys(ways)
 ```
 
-`ways` kommt aus der Funktion `free_directions`. Das ist **keine feste Liste von acht Richtungen**, sondern das, was für die Ameise jetzt möglich. Eine Ameise am Rand bekommt den Rand nicht angeboten.
+`ways` kommt aus der Funktion `free_directions`. Das ist **keine feste Liste von acht Richtungen**, sondern das, was für die Ameise jetzt möglich ist. Eine Ameise am Rand bekommt den Rand nicht angeboten.
 
 `dict.fromkeys(ways)` enthält `{"north": None, "east": None, …}`. Die Werte sind
 Beschreibungen, die man den Möglichkeiten mitgeben kann.
@@ -251,7 +251,7 @@ Antwort ist ein hoher Balken.
 
 ## Eine Antwort des Decision-Models
 
-Eine Anwort auf eine echte Anfrage:
+Eine Antwort auf eine echte Anfrage:
 
 | | |
 |---|---|
@@ -278,9 +278,10 @@ Die Dokumentation von TypeSafe gibt die Rechnung für drei Optionen an:
 
 > **Konfidenz = (n × höchste Wahrscheinlichkeit − 1) ÷ (n − 1)**
 
-An der Antwort oben nachgerechnet — acht Optionen, die höchste bei 0,37:
-`(8 × 0,37 − 1) ÷ 7 = 0,28`. Gemeldet hat das Modell 0,29; der Rest ist Rundung, weil
-die Wahrscheinlichkeiten auf zwei Stellen kommen.
+Nachgerechnet an einer zweiten echten Antwort, der aus dem Bild unten — acht
+Optionen, die höchste bei 0,37: `(8 × 0,37 − 1) ÷ 7 = 0,28`. Gemeldet hat das
+Modell 0,29; der Rest ist Rundung, weil die Wahrscheinlichkeiten auf zwei
+Stellen kommen.
 
 ![Die acht Wahrscheinlichkeiten einer echten Antwort als Balken, mit der Linie
 für den reinen Zufall bei 0,125 und der daraus berechneten
@@ -292,7 +293,7 @@ heraus. 0,37 sind bei acht Möglichkeiten dreimal so viel wie Zufall, bei zwei
 Möglichkeiten dagegen weniger als die Hälfte. Genau das braucht dieses Spiel,
 denn die Zahl der Optionen ändert sich hier mit jedem Schritt.
 
-0,33 ist auf dem ersten Blick zwar wenig, aber eigentlich richtig.
+0,33 ist auf den ersten Blick zwar wenig, aber eigentlich richtig.
 
 Fragen Sie sich, was die Ameise weiß: 
 
