@@ -16,23 +16,18 @@ ollama pull nimble
 ```
 
 Zur Einführung gab es drei Modelle: `nimble` (9B), `tev1` (4B) und
-`tev1:0.8b`. Alle drei gibt es noch, und das hier Gemessene ist `nimble`; auf
-der Platte belegt es **9,5 GB**.
-
-Inzwischen ist die Auswahl größer. Unter
+`tev1:0.8b`. Alle drei gibt es noch. Inzwischen ist die Auswahl größer: Unter
 [ollama.com/search?c=decision](https://ollama.com/search?c=decision) stehen
 Ende Oktober 2026 zwölf Decision-Models, darunter:
 
-| Modell | Größen | Hinweis |
+| Modell | Größe auf der Platte | Hinweis |
 |---|---|---|
-| `nimble` | 9B | hier gemessen, Apache 2.0 |
-| `nimble-v3` | 9B | Nachfolger, ab Ollama 0.40.4, nur **nicht-kommerziell** (CC BY-NC 4.0) |
-| `tev1` | 4B, 0.8B | antwortet mit nur etwa 2000 Token Kontext |
-| `d3` | 2B bis 27B | ab Ollama 0.40.9, versteht auch Bilder |
-
-Gemessen habe ich nur `nimble`. Die anderen sprechen dieselbe Schnittstelle
-`/v1/systemone` und sollten sich ebenso über `TYPESAFE_DEFAULT_MODEL` einsetzen
-lassen; ausprobiert habe ich es nicht.
+| `nimble` | 9,3 GB (9B) | hier gemessen, Apache 2.0 |
+| `kev` | 6,7 GB (9B) | hier gemessen, Apache 2.0, ab Ollama 0.40.4 |
+| `strands-decider` | 2,0 GB (2B) | hier gemessen, Apache 2.0, nur Apple Silicon |
+| `nimble-v3` | 9,3 GB (9B) | Nachfolger von nimble, nur **nicht-kommerziell** (CC BY-NC 4.0) |
+| `tev1` | 4,5 GB (4B), 0,8 GB (0.8B) | antwortet mit nur etwa 2000 Token Kontext |
+| `d3` | 3 bis 30 GB (2B bis 27B) | ab Ollama 0.40.9, versteht auch Bilder |
 
 Dann in `.env`:
 
@@ -44,7 +39,8 @@ TYPESAFE_DEFAULT_MODEL=nimble
 
 Mehr nicht. Das `typesafe-sdk` liest beide Adressen aus der Umgebung
 (`TYPESAFE_BASE_URL` und `TYPESAFE_DEFAULT_MODEL`), und einen Schlüssel braucht
-Ollama nicht — das Feld darf nur nicht leer sein.
+Ollama nicht — das Feld darf nur nicht leer sein. Ein anderes Modell ist eine
+andere Zeile `TYPESAFE_DEFAULT_MODEL`.
 
 Hier zahlt sich aus, was in Kapitel 2 nur ein Satz war: dass die Basis-URL
 konfigurierbar ist.
@@ -54,62 +50,53 @@ konfigurierbar ist.
 > Fehlermeldung lautet dann `404 page not found` und sieht aus, als fehlte das
 > Modell. Richtig ist `http://localhost:11434`.
 
+Gemessen habe ich auf einem Apple M4 mit 32 GB und Ollama 0.40.13. Ollama
+rechnet die drei Modelle dort über MLX auf der GPU.
+
 ## Antwortet es brauchbar?
 
 Eine Ameise, die eine Frucht zwei Felder im Nordosten sieht:
 
-| | |
-|---|---|
-| Gewählt | `north-east` |
-| Konfidenz | **0,985** |
-| Wahrscheinlichkeit darauf | 0,996 |
-| Eingabe-Tokens | 289 |
-| Latenz, erster Aufruf | 1442 ms (das Modell wird geladen) |
-| Latenz, danach | **163 ms** im Median aus fünf Aufrufen |
+| | nimble | kev | strands-decider |
+|---|---|---|---|
+| Gewählt | `north-east` | `north-east` | `north-east` |
+| Konfidenz | **0,99** | 0,78 | 0,75 |
+| Eingabe-Tokens | 328 | 128 | 196 |
+| erster Aufruf (Modell wird geladen) | 3,8–8,8 s | 4,7 s | 1,9 s |
+| danach, Median | **1,4–2,8 s** | 1,2 s | **0,4 s** |
 
-Eine einzelne Anfrage beantwortet nimble also **schneller als die Cloud**, wo
-ich rund 600 ms gemessen habe.
+Alle drei wählen richtig. nimble ist dabei am entschlossensten, aber auch am
+langsamsten.
 
-## Ein ganzes Level
-
-Dasselbe Brett, derselbe Befehl wie in Kapitel 5:
-
-| | Jev (Cloud) | nimble (lokal) |
-|---|---|---|
-| Runden bis fünf Früchte | 16 · 17 | **26** |
-| verworfene Antworten | 23–26 % | **53 %** |
-| eine Runde mit acht Ameisen | 0,6 s | **15–25 s** |
-| Kosten für das Spiel | ~0,0005 $ | **0** |
-| Schlüssel nötig | ja | nein |
-
-Das Spiel geht also auf, nur langsamer und mit mehr Verwürfen. Die doppelte
-Verwurfsquote entsteht dort, wo eine Ameise **nichts** sieht: Bei einer
-sichtbaren Frucht ist nimble so entschlossen wie Jev, bei einer Frage ohne
-Anhaltspunkte ist es unentschlossener — und die Schwelle aus Kapitel 5 fängt
-mehr davon ab.
+In der Cloud habe ich für eine Anfrage rund 600 ms gemessen. Lokal ist also nur
+das kleinste Modell schneller.
 
 ## Die Zahl, die mich zuerst getäuscht hat
 
-Eine einzelne Anfrage: 163 ms. Eine Runde: 25 Sekunden. Das ist Faktor 150 bei
-acht Anfragen, und das kann nicht stimmen.
-
-Ich habe deshalb acht Anfragen gleichzeitig abgeschickt und gemessen — 1,5
-Sekunden. Also doch alles in Ordnung? Nein: **Ich hatte achtmal dieselbe Anfrage
-geschickt.** Gleiche Prompts teilen sich den Cache, und das misst nichts.
-
-Mit acht *verschiedenen* Zuständen, also dem echten Fall:
+In einer früheren Fassung dieses Anhangs stand für nimble: **163 ms**. Heute
+messe ich dasselbe noch einmal, fünfmal dieselbe Anfrage hintereinander:
 
 ```
-8 gleiche Anfragen:        3,4 s
-8 verschiedene Anfragen:  20,5 s
-8 verschiedene, nochmal:  15,5 s
+gleiche Anfrage:       6918, 5, 4, 4, 4, 5 ms
+verschiedene Anfragen: 4242, 2582, 2440, 2888, 2644, 2377 ms
 ```
 
-Das deckt sich mit den 25 Sekunden im Spiel.
+Nach dem ersten Aufruf kommt die gleiche Anfrage in 4 ms zurück. Das ist keine
+Rechenzeit, das ist ein **Cache**: Ollama merkt sich die Antwort auf einen
+Prompt, den es schon einmal gesehen hat. Fünfmal dieselbe Anfrage misst also
+nichts.
 
-**Der Grund:** Acht verschiedene Prompts brauchen acht eigene Vorberechnungen,
-und eine Maschine mit einer GPU arbeitet sie praktisch nacheinander ab. Ein
-Dienst im Netz hat viele.
+Dieselbe Falle gibt es bei acht Ameisen gleichzeitig:
+
+```
+8 gleiche Anfragen:        2,7 s
+8 verschiedene Anfragen:  22,7 s
+8 verschiedene, nochmal:  22,4 s
+```
+
+Acht verschiedene brauchen etwa achtmal so lange wie eine. Acht verschiedene
+Prompts brauchen acht eigene Vorberechnungen, und eine Maschine mit einer GPU
+arbeitet sie praktisch nacheinander ab. Ein Dienst im Netz hat viele.
 
 Daraus folgt etwas, das in Kapitel 3 so nicht stehen konnte:
 
@@ -117,11 +104,42 @@ Daraus folgt etwas, das in Kapitel 3 so nicht stehen konnte:
 > **lokal fast nichts**. Dieselbe Zeile Code, gegensätzlicher Nutzen — je
 > nachdem, ob die Wartezeit Netzwerk ist oder Rechenzeit.
 
-Wer lokal ernsthaft spielen will, dreht deshalb nicht an der Parallelität,
-sondern an der Zahl der Fragen: weniger Ameisen, ein größeres Denkintervall,
-oder Absichten statt Einzelschritten, wie es Kapitel 8 vorschlägt. Genau dort
-wird die Ersparnis lokal zur Geschwindigkeit, während sie in der Cloud nur Geld
-spart.
+Messen Sie lokal deshalb immer mit Anfragen, die sich unterscheiden. Im Spiel
+passiert das von selbst, weil jede Ameise woanders steht.
+
+## Ein ganzes Level
+
+Dasselbe Brett und derselbe Befehl wie in Kapitel 8, „Fan out and search, and
+carry what you find straight home.", je drei Läufe, höchstens 60 Runden:
+
+| | Jev (Cloud, Kapitel 8) | nimble | kev | strands-decider |
+|---|---|---|---|---|
+| Runden bis fünf Früchte | 23 · 26 · 59 | **19 · 22 · 23** | nicht geschafft | nicht geschafft |
+| verworfene Antworten | 36–47 % | 28–41 % | 100 % | 100 % |
+| eine Runde mit acht Ameisen, Median | 0,6 s | **11–18 s** | — | — |
+| ein ganzes Spiel | unter einer Minute | **5–6 Minuten** | — | — |
+| Kosten für das Spiel | ~0,005 $ | **0** | 0 | 0 |
+| Schlüssel nötig | ja | nein | nein | nein |
+
+**nimble spielt so gut wie Jev.** Drei Läufe sind zu wenig, um zu sagen, dass
+es besser ist. Aber es ist nicht schlechter. Der Preis ist die Zeit: Eine
+Runde dauert lokal zwanzig- bis dreißigmal so lange.
+
+**kev und strands-decider kommen nicht aus dem Bau.** Im Bau sieht eine Ameise
+nur die anderen Ameisen. Darauf antworten beide Modelle unentschlossen: kev mit
+einer Konfidenz von höchstens 0,18, strands-decider mit 0,02 bis 0,07. Beides
+liegt unter der Schwelle von 0,22 aus Kapitel 5, also wird jede Antwort
+verworfen, und keine Ameise bewegt sich.
+
+Und weil sich im Bau dann nichts ändert, ändert sich auch die Frage nicht: Die
+Modelle laufen mit Temperatur 0, jede Runde kommt dieselbe Antwort, und die
+Kolonie steckt für immer fest.
+
+### Tipp: Die Schwelle gehört zum Modell
+
+Die 0,22 wurden mit Jev gemessen. Konfidenz ist bei jedem Modell anders
+geeicht, und eine Schwelle, die für das eine Modell passt, kann ein anderes
+komplett lahmlegen. Wer das Modell wechselt, muss die Schwelle neu messen.
 
 ## Was damit nicht geht
 
@@ -129,9 +147,9 @@ spart.
 zeigt auf den Server von Streamlit. Wer das Spiel im Netz anbietet, braucht
 weiterhin einen Schlüssel — der lokale Weg ist der für die eigene Maschine.
 
-**Ein kleiner Rechner.** 9,5 GB Modell wollen geladen und im Speicher gehalten
-werden. `tev1:0.8b` und `d3:2b` sind der Weg für schwächere Hardware; gemessen
-habe ich sie nicht.
+**Ein kleiner Rechner.** nimble will 9,3 GB geladen und im Speicher gehalten
+haben. Die kleinen Modelle wären schnell genug, spielen aber mit der Schwelle
+aus Kapitel 5 nicht.
 
 ## Ausprobieren
 
@@ -143,6 +161,5 @@ habe ich sie nicht.
 * Setzen Sie in `level1.json` `"ants"` auf 3 und spielen Sie lokal. Eine Runde
   wird dreimal schneller, das Spiel dafür zäher. Welcher Tausch ist Ihnen
   lieber?
-* Laden Sie `tev1:0.8b` und messen Sie dagegen. Reicht ein Modell mit 0,8
-  Milliarden Parametern für acht Ameisen, die nur eine Himmelsrichtung wählen
-  sollen?
+* Nehmen Sie `kev` und senken Sie `MIN_CONFIDENCE` auf 0,1. Kommt die Kolonie
+  jetzt aus dem Bau? Und was ist eine Antwort mit 0,1 Konfidenz noch wert?

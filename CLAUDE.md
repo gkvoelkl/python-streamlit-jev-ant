@@ -96,9 +96,12 @@ These are what make the demo a demo. Do not simplify them away.
   announcement says it is based on TypeSafe's Jev API. The SDK speaks to it
   unchanged: `TYPESAFE_BASE_URL=http://localhost:11434` (no `/v1`, the SDK
   appends it) and `TYPESAFE_DEFAULT_MODEL=nimble`. Appendix B has the
-  measurements; the short version is that a single answer is faster than the
-  cloud (163 ms against 600) and a round of eight is far slower (15–25 s
-  against 0.6), because eight different prompts queue on one GPU.
+  measurements (M4, 32 GB, Ollama 0.40.13, 2026-10-31): nimble plays as well as
+  the cloud (19–23 rounds) but a round of eight takes 11–18 s against 0.6,
+  because eight different prompts queue on one GPU. Ollama caches identical
+  prompts (4 ms), so measure only with requests that differ — the old "163 ms"
+  was the cache. kev and strands-decider never leave the nest: their
+  confidence there stays under the 0.22 floor, which was measured for Jev.
 * `typesafe-sdk` is the official Python client — `AsyncTypeSafeClient`, `Choice`,
   `client.system_one(state=…, questions=…)`, answers at
   `response.choices["step"].choice / .probabilities / .confidence`, and `response.usage`.
