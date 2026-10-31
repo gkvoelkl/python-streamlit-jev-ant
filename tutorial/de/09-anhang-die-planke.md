@@ -5,43 +5,39 @@ L-förmigen dunkelblauen Fluss; am diesseitigen Ufer stehen drei Arbeiterinnen
 mit einer langen Planke, hinter dem Fluss liegt in der Ecke ein Haufen roter
 Äpfel](../bilder/anhang-a-titel.png)
 
-*Das Obst liegt drüben. Wie man hinüberkommt, weiß nur sie.*
+*Das Obst liegt auf der der anderen Seite des Flusses. Die Königin weiß, wie man übersetzt.*
 
-**Ziel:** Das Spiel aus den acht Schritten bekommt drei neue Dinge:
+**Ziel:** Zum Spiel kommen drei neue Dinge:
 
-* **Wasser**, das keine Ameise durchquert,
+* **Wasser**, das keine Ameise durchqueren kann,
 * eine **Planke**, die eine Ameise aufheben kann,
-* und einen **Übergang**, der dort entsteht, wo sie abgelegt wird.
+* und einen **Übergang**, der dort entsteht, wo sie die Planke abgelegt.
 
-Alles andere ist unverändert übernommen, die Duftspur aus Kapitel 5 und der
-Würfel aus Kapitel 8 eingeschlossen. Eine Ameise mit Frucht findet hier genauso
-über den Geruch nach Hause wie auf dem ersten Brett.
+Alles andere ist unverändert geblieben. 
 
-Das Level ist das zweite aus der Rust-Fassung dieses Spiels, nur mit
-gespiegelter y-Achse, weil hier y nach unten zählt.
+Das Level ist das zweite Level des Spieles.
 
-Das fertige Programm liegt unter `anhang/app_mit_planke.py`, das Level daneben
-als `anhang/level-planke.json`:
+Das fertige Programm finden Sie unter `anhang/app_mit_planke.py`, das Level daneben als `anhang/level-planke.json`:
 
 ```sh
 uv run streamlit run anhang/app_mit_planke.py
 ```
 
-## Das Level
+## Das zweite Level
 
 ![Das Plankenlevel zu Beginn: die Früchte in der Nordwest-Ecke, davor ein
 L-förmiger Fluss, in der Mitte der Bau mit acht Ameisen, weit im Südosten die
 kleine braune Planke](../bilder/planke-start.png)
 
-Die Aufgabe steckt nicht im Tragen, sondern im **Sehen**. Keine Ameise weiß,
-dass hinter dem Fluss Obst liegt. Keine weiß, dass eine Planke helfen würde.
-Und keine sieht beides — drei Felder Sicht, und die beiden Dinge liegen eine
-halbe Brettbreite auseinander.
+Die Aufgabe steckt nicht im Tragen, sondern im **Erkennen**.
 
-Nur Sie sehen das ganze Bild, und ein Satz ist alles, was Sie haben.
+Keine Ameise weiß, dass hinter dem Fluss Obst liegt. Keine weiß, dass eine Planke helfen würde.
 
-Aus `anhang/level-planke.json`, gekürzt um Name, Briefing und die Lage der
-Früchte:
+Und keine sieht beides — drei Felder Sicht, und die beiden Dinge liegen eine halbe Brettbreite auseinander.
+
+Nur Sie sehen das ganze Bild, und ein Satz ist alles, was notwendig ist.
+
+Aus `anhang/level-planke.json`, gekürzt um Name, Briefing und die Lage der Früchte:
 
 ```json
 {
@@ -59,8 +55,9 @@ Der Fluss ist überall ein Feld breit. Das genügt, denn niemand watet.
 
 ## Eine Hand statt eines Schalters
 
-Bisher war `carrying` ein Wahrheitswert — trägt eine Frucht, ja oder nein. Jetzt
-gibt es zwei Dinge zu tragen, also wird daraus ein Wort:
+Bisher war das Attribut `carrying` der Ameise ein Wahrheitswert — trägt eine Frucht, ja oder nein. 
+
+Jetzt gibt es zwei Dinge zu tragen, also wird daraus eine Zeichenkette:
 
 ```python
             # What this ant has hold of: nothing, "a fruit" or "the plank".
