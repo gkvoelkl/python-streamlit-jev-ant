@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this game or tutorial, please cite it as below."
+title: "Jev Ants: when ants ask a decision model"
+abstract: >-
+  An ant colony in the browser where every ant asks a decision model
+  (TypeSafe Jev, or a local model through Ollama) what to do next, and the
+  player, as the queen, steers the colony with one sentence: a Streamlit
+  game, and a tutorial in German and English that builds it in eight steps,
+  with options made at runtime, a confidence threshold and a dice as the
+  yardstick.
+type: software
+authors:
+  - given-names: Gerhard
+    family-names: Völkl
+license: MIT
+repository-code: "https://github.com/gkvoelkl/python-streamlit-jev-ant"
+url: "https://gkvoelkl.github.io/python-streamlit-jev-ant/"
+keywords:
+  - decision model
+  - TypeSafe Jev
+  - Ollama
+  - typed decisions
+  - confidence
+  - Streamlit
+  - Python
+  - tutorial
+  - game
