@@ -46,8 +46,8 @@ Appendix B of the tutorial has the measurements.
 
 ## The tutorial
 
-The tutorial builds the game in eight steps. It was written in German; step 1
-is translated into English, the other chapters follow.
+The tutorial builds the game in eight steps. It was written in German and is
+fully translated into English.
 
 - **Website:** [gkvoelkl.github.io/python-streamlit-jev-ant/en/](https://gkvoelkl.github.io/python-streamlit-jev-ant/en/)
 - **Markdown:** [tutorial/en/README.md](tutorial/en/README.md) · German original in [tutorial/de/](tutorial/de/README.md)
@@ -74,7 +74,7 @@ app.py              the game, one file
 level1.json         the board, the nest, the fruit, what wins
 steps/              app.py as it stood after each step, generated from the tags
 tutorial/de/        the German chapters — the original
-tutorial/en/        the English translation, so far step 1
+tutorial/en/        the English translation, every chapter
 tutorial/bilder/    pictures and diagrams; English diagrams in bilder/en/
 tools/              the generators for the Word document, the PNGs and the website
 mkdocs.yml          the website

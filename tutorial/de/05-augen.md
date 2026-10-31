@@ -1,5 +1,7 @@
 # Schritt 5 — Sehen
 
+*[English version](../en/05-augen.md)*
+
 ![Die Arbeiterin mit weißem Helm trägt jetzt eine runde Brille und zeigt auf
 eine leuchtende Birne; um sie herum ein heller Kreis auf dem Brett, außerhalb
 davon Dunkel und Nebel, in der Ferne der Bau und eine grüne

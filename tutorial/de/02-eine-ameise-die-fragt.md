@@ -1,5 +1,7 @@
 # Schritt 2 — Eine Ameise fragt das Decision-Model
 
+*[English version](../en/02-eine-ameise-die-fragt.md)*
+
 ![Eine Arbeiterin mit weißem Schutzhelm und Funkgerät steht allein auf dem
 leuchtenden Brett, über ihr eine Sprechblase mit einem Fragezeichen; von den
 Pfeilen um sie herum leuchtet einer golden und trägt die Aufschrift

@@ -19,10 +19,10 @@ allowed to be simpler, and simpler is the point.
 copy in `README_de.md` and a bilingual start page in `README.md`), commit
 messages.
 
-**The tutorial is German, with an English translation growing beside it.** The German
+**The tutorial is German, with a complete English translation beside it.** The German
 chapters in `tutorial/de/` are the original; `tutorial/en/` holds translations under the
-same file names (so far step 1), and its overview links untranslated chapters to the
-German ones. Diagrams with text get an English copy in `tutorial/bilder/en/`. Comments in
+same file names, every chapter and both appendices. A change to a German chapter is
+carried over to its translation in the same commit. Diagrams with text get an English copy in `tutorial/bilder/en/`. Comments in
 the code should carry the reasoning a reader will need in the chapters: say *why*, not
 just *what*.
 

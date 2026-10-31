@@ -1,6 +1,6 @@
 # Tutorial: Wenn Ameisen ein Decision-Model fragen
 
-*[English version](../en/README.md) – Schritt 1 ist übersetzt, die übrigen folgen.*
+*[English version](../en/README.md) – alle Kapitel und beide Anhänge sind übersetzt.*
 
 Eine Ameisen-Kolonie im Browser, gebaut in acht Schritten mit Python und
 Streamlit. Jede Ameise fragt ein Decision-Model, was sie als Nächstes tun soll –

@@ -1,5 +1,7 @@
 # Schritt 8 — Was bringt das Decision-Model?
 
+*[English version](../en/08-was-bringt-das-modell.md)*
+
 ![Queeny, von hinten gesehen, hält einen leuchtenden Würfel auf der Hand;
 links von ihr stehen Arbeiterinnen mit Äpfeln ungeordnet auf dem Brett, über
 ihnen schwebt ein zweiter Würfel; rechts gehen Arbeiterinnen mit weißen Helmen

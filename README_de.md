@@ -39,8 +39,8 @@ Die Messungen dazu stehen in Anhang B des Tutorials.
 
 ## Das Tutorial
 
-Das Tutorial baut das Spiel in acht Schritten. Es ist auf Deutsch geschrieben;
-Schritt 1 ist ins Englische übersetzt, die übrigen Kapitel folgen.
+Das Tutorial baut das Spiel in acht Schritten. Es ist auf Deutsch geschrieben
+und vollständig ins Englische übersetzt.
 
 - **Website:** [gkvoelkl.github.io/python-streamlit-jev-ant](https://gkvoelkl.github.io/python-streamlit-jev-ant/)
 - **Markdown:** [tutorial/de/README.md](tutorial/de/README.md) · englische Übersetzung in [tutorial/en/](tutorial/en/README.md)

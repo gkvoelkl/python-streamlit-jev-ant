@@ -1,5 +1,7 @@
 # Anhang A — Der Weg über den Fluss
 
+*[English version](../en/09-anhang-die-planke.md)*
+
 ![Queeny, von hinten gesehen, zeigt über das leuchtende Brett auf einen
 L-förmigen dunkelblauen Fluss; am diesseitigen Ufer stehen drei Arbeiterinnen
 mit einer langen Planke, hinter dem Fluss liegt in der Ecke ein Haufen roter

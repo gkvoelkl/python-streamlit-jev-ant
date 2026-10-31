@@ -1,5 +1,7 @@
 # Schritt 4 — Tragen und abliefern
 
+*[English version](../en/04-tragen-und-abliefern.md)*
+
 ![Eine Arbeiterin mit weißem Helm schleppt einen großen roten Apfel über das
 Brett und läuft dabei vom Bau weg, der gleich hinter ihr liegt; daneben zeigt
 eine Leuchttafel „0/5"](../bilder/schritt-4-titel.png)

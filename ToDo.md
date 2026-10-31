@@ -2,53 +2,30 @@
 
 What is still open, as of 2026-10-31.
 
-## Revising the German chapters
+## Tutorial
 
-- [ ] 0 — Introduction (vendor table dropped in 865e1f4, not yet revised in full)
-- [x] 1 — The board
-- [ ] 2 — One ant, and it asks
-- [ ] 3 — The colony
-- [ ] 4 — Carrying and delivering (revised once with the second level, check again)
-- [ ] 5 — Eyes
-- [ ] 6 — The queen (in progress, typos fixed)
-- [x] 7 — Seeing it
-- [x] 8 — What is the model worth?
-- [ ] A — The plank (revised in 0b46a65, further edits in progress, typos fixed)
-- [ ] B — Without the cloud (measured again with nimble, kev, strands-decider; title picture added)
+- [x] German chapters revised (0–8, A, B)
+- [x] English translation of every chapter and both appendices, with the
+      `*[English version]*` line in each German chapter
+- [x] English copies of the diagrams in `tutorial/bilder/en/`
+      (`python3 tools/translate_svg.py && uv run python tools/svg_to_png.py`)
+- [ ] Read the English chapters through once more as a native reader would
 
 ## Pictures
 
-- [ ] `queeny_and_worker.JPG` (untracked, repo root) — decide where it goes,
-      convert to PNG under `tutorial/bilder/`, or delete it
-- [ ] `queen_queeny.JPG` in the repo root — same question
+- [ ] `queeny_and_worker.JPG` (untracked, repo root) — the same picture is
+      already `tutorial/bilder/queeny-und-arbeiterinnen.png`; delete it
+- [ ] `queen_queeny.JPG` in the repo root — the app's sidebar loads it, so it
+      stays unless the app is changed
 
-## English translation
+## Like python-streamlit-neural-earth-field
 
-Chapter 1 is translated, the rest links to the German chapters.
-
-- [ ] 0 — Introduction
-- [ ] 2 — One ant, and it asks
-- [ ] 3 — The colony
-- [ ] 4 — Carrying and delivering
-- [ ] 5 — Eyes
-- [ ] 6 — The queen
-- [ ] 7 — Seeing it
-- [ ] 8 — What is the model worth?
-- [ ] A — The plank
-- [ ] B — Without the cloud
-
-Each translated chapter gets the `*[English version](../en/<name>.md)*` line in its
-German original and an entry in `tutorial/en/README.md`.
-
-Diagrams with text that still need an English copy in `tutorial/bilder/en/`
-(then `uv run python tools/svg_to_png.py`):
-
-- [ ] `konfidenz.svg`
-- [ ] `optionen.svg`
-- [ ] `richtungen.svg`
-- [ ] `runde.svg`
-- [ ] `schwelle.svg`
-- [ ] `sichtweite.svg`
+- [ ] A licence (`LICENSE`, MIT there) and the badge in `README.md`
+- [ ] `CITATION.cff`
+- [ ] A GitHub remote, push, and the GitHub Pages website live
+- [ ] Release `v1.0`, topics on GitHub, social preview with Queeny
+- [ ] The app on Streamlit Community Cloud, with the badge and an
+      “App online” link in the READMEs
 
 ## At the end
 

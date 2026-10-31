@@ -1,5 +1,7 @@
 # Wenn Ameisen ein Decision-Model fragen
 
+*[English version](../en/00-einleitung.md)*
+
 ![Queeny, die Königin mit Krone, steht im Kontrollraum der Kolonie, links und
 rechts von ihr vier Arbeiterinnen mit Schutzhelmen und
 Werkzeug](../bilder/queeny-und-arbeiterinnen.png)

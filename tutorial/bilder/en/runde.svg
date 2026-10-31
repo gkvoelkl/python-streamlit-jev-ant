@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="680" viewBox="0 0 800 680"
+     font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="pfeil" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b8b93"/>
+    </marker>
+    <marker id="pfeilgruen" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7fd18b"/>
+    </marker>
+    <marker id="pfeilrot" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e08074"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="680" fill="#1b1b21"/>
+  <text x="24" y="28" fill="#c8ccd6" font-size="17" font-weight="600">One round</text>
+
+  <!-- 1 — der Stand -->
+  <circle cx="24" cy="69" r="13" fill="#3a3a44"/>
+  <text x="24" y="69" fill="#c8ccd6" font-size="13" text-anchor="middle"
+        dominant-baseline="central">1</text>
+  <rect x="48" y="46" width="412" height="46" rx="6" fill="#2b2b33" stroke="#45454f"/>
+  <text x="66" y="63" fill="#c8ccd6" font-size="14">Take a picture of the board</text>
+  <text x="66" y="82" fill="#8b8b93" font-size="13">taken_cells() — which squares are taken</text>
+  <line x1="254" y1="92" x2="254" y2="116" stroke="#8b8b93" stroke-width="2" marker-end="url(#pfeil)"/>
+  <text x="490" y="66" fill="#8b8b93" font-size="13">One single state,</text>
+  <text x="490" y="84" fill="#8b8b93" font-size="13">against which all eight decide.</text>
+
+  <!-- 2 — acht Fragen -->
+  <circle cx="24" cy="145" r="13" fill="#3a3a44"/>
+  <text x="24" y="145" fill="#c8ccd6" font-size="13" text-anchor="middle"
+        dominant-baseline="central">2</text>
+  <g fill="#2b2b33" stroke="#45454f">
+    <rect x="48" y="122" width="96" height="46" rx="6"/>
+    <rect x="152" y="122" width="96" height="46" rx="6"/>
+    <rect x="256" y="122" width="96" height="46" rx="6"/>
+    <rect x="364" y="122" width="96" height="46" rx="6"/>
+  </g>
+  <g fill="#c8ccd6" font-size="13" text-anchor="middle">
+    <text x="96" y="140">Ant 1</text>
+    <text x="200" y="140">Ant 2</text>
+    <text x="304" y="140">…</text>
+    <text x="412" y="140">Ant 8</text>
+  </g>
+  <g fill="#8b8b93" font-size="11" text-anchor="middle">
+    <text x="96" y="158">free ways</text>
+    <text x="200" y="158">free ways</text>
+    <text x="412" y="158">free ways</text>
+  </g>
+  <g stroke="#8b8b93" stroke-width="2" marker-end="url(#pfeil)">
+    <line x1="96" y1="168" x2="96" y2="200"/>
+    <line x1="200" y1="168" x2="200" y2="200"/>
+    <line x1="304" y1="168" x2="304" y2="200"/>
+    <line x1="412" y1="168" x2="412" y2="200"/>
+  </g>
+  <text x="490" y="142" fill="#8b8b93" font-size="13">Each question holds only</text>
+  <text x="490" y="160" fill="#8b8b93" font-size="13">what concerns this one ant.</text>
+
+  <!-- 3 — parallel fragen -->
+  <circle cx="24" cy="231" r="13" fill="#3a3a44"/>
+  <text x="24" y="231" fill="#c8ccd6" font-size="13" text-anchor="middle"
+        dominant-baseline="central">3</text>
+  <rect x="48" y="208" width="412" height="46" rx="6" fill="#26332a" stroke="#7fd18b"/>
+  <text x="66" y="225" fill="#7fd18b" font-size="14" font-weight="600">
+    asyncio.gather — all eight requests at once
+  </text>
+  <text x="66" y="244" fill="#7fd18b" font-size="13">about 0.6 seconds for the whole round</text>
+  <line x1="254" y1="254" x2="254" y2="278" stroke="#8b8b93" stroke-width="2" marker-end="url(#pfeil)"/>
+  <text x="490" y="228" fill="#8b8b93" font-size="13">One after the other it would be four —</text>
+  <text x="490" y="246" fill="#8b8b93" font-size="13">a round nobody watches.</text>
+
+  <!-- 4 — nacheinander ausführen -->
+  <circle cx="24" cy="307" r="13" fill="#3a3a44"/>
+  <text x="24" y="307" fill="#c8ccd6" font-size="13" text-anchor="middle"
+        dominant-baseline="central">4</text>
+  <rect x="48" y="284" width="412" height="46" rx="6" fill="#2b2b33" stroke="#45454f"/>
+  <text x="66" y="301" fill="#c8ccd6" font-size="14">Carry out the answers, one after the other</text>
+  <text x="66" y="320" fill="#8b8b93" font-size="13">now the board changes with every step</text>
+  <line x1="254" y1="330" x2="254" y2="352" stroke="#8b8b93" stroke-width="2" marker-end="url(#pfeil)"/>
+
+  <!-- 5 — die Prüfung -->
+  <path d="M 254 356 L 386 406 L 254 456 L 122 406 Z" fill="#2f2a1e" stroke="#c8b24a"/>
+  <text x="254" y="400" fill="#c8b24a" font-size="14" text-anchor="middle">target</text>
+  <text x="254" y="420" fill="#c8b24a" font-size="14" text-anchor="middle">still free?</text>
+  <text x="490" y="392" fill="#c8b24a" font-size="13">Two ants may have chosen</text>
+  <text x="490" y="410" fill="#c8b24a" font-size="13">the same square — both</text>
+  <text x="490" y="428" fill="#c8b24a" font-size="13">against the earlier picture.</text>
+
+  <line x1="122" y1="406" x2="90" y2="406" stroke="#e08074" stroke-width="2"/>
+  <line x1="90" y1="406" x2="90" y2="480" stroke="#e08074" stroke-width="2" marker-end="url(#pfeilrot)"/>
+  <text x="100" y="400" fill="#e08074" font-size="13">no</text>
+  <line x1="386" y1="406" x2="418" y2="406" stroke="#7fd18b" stroke-width="2"/>
+  <line x1="418" y1="406" x2="418" y2="480" stroke="#7fd18b" stroke-width="2" marker-end="url(#pfeilgruen)"/>
+  <text x="392" y="400" fill="#7fd18b" font-size="13">yes</text>
+
+  <rect x="30" y="484" width="120" height="44" rx="6" fill="#33262a" stroke="#e08074"/>
+  <text x="90" y="511" fill="#e08074" font-size="13" text-anchor="middle">stays put</text>
+  <rect x="358" y="484" width="120" height="44" rx="6" fill="#26332a" stroke="#7fd18b"/>
+  <text x="418" y="511" fill="#7fd18b" font-size="13" text-anchor="middle">moves</text>
+
+  <line x1="90" y1="528" x2="90" y2="556" stroke="#8b8b93" stroke-width="2"/>
+  <line x1="418" y1="528" x2="418" y2="556" stroke="#8b8b93" stroke-width="2"/>
+  <line x1="90" y1="556" x2="418" y2="556" stroke="#8b8b93" stroke-width="2"/>
+  <line x1="254" y1="556" x2="254" y2="574" stroke="#8b8b93" stroke-width="2" marker-end="url(#pfeil)"/>
+  <rect x="184" y="580" width="140" height="42" rx="6" fill="#2b2b33" stroke="#45454f"/>
+  <text x="254" y="601" fill="#c8ccd6" font-size="14" text-anchor="middle"
+        dominant-baseline="central">round + 1</text>
+
+  <text x="490" y="500" fill="#ded9cb" font-size="15" font-weight="600">An answer is</text>
+  <text x="490" y="520" fill="#ded9cb" font-size="15" font-weight="600">a wish, not a move.</text>
+</svg>

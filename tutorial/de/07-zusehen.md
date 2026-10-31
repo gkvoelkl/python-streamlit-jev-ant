@@ -1,5 +1,7 @@
 # Schritt 7 — Einblicke
 
+*[English version](../en/07-zusehen.md)*
+
 ![Queeny, von hinten über die Schulter gesehen, blickt über das leuchtende Brett
 auf vier Arbeiterinnen mit bunten Helmen; über jeder schwebt ein Pfeil in einem
 farbigen Schild — grün, gelb, grün, rot —, und am Rand des Bretts leuchten zwei

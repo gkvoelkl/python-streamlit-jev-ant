@@ -1,5 +1,7 @@
 # Anhang B — Dasselbe Spiel ohne Cloud
 
+*[English version](../en/10-anhang-b-ohne-cloud.md)*
+
 ![Queeny, von hinten über die Schulter gesehen, sitzt nachts an einem
 Schreibtisch vor einem Laptop; auf dem Bildschirm leuchtet das Spielbrett mit
 Arbeiterinnen und Äpfeln, ein Kabel führt zur Steckdose, daneben eine
