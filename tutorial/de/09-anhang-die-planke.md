@@ -5,17 +5,17 @@ L-förmigen dunkelblauen Fluss; am diesseitigen Ufer stehen drei Arbeiterinnen
 mit einer langen Planke, hinter dem Fluss liegt in der Ecke ein Haufen roter
 Äpfel](../bilder/anhang-a-titel.png)
 
-*Das Obst liegt auf der der anderen Seite des Flusses. Die Königin weiß, wie man übersetzt.*
+*Das Obst liegt auf der anderen Seite des Flusses. Die Königin weiß, wie man übersetzt.*
 
 **Ziel:** Zum Spiel kommen drei neue Dinge:
 
 * **Wasser**, das keine Ameise durchqueren kann,
 * eine **Planke**, die eine Ameise aufheben kann,
-* und einen **Übergang**, der dort entsteht, wo sie die Planke abgelegt.
+* und einen **Übergang**, der dort entsteht, wo sie die Planke abgelegt hat.
 
-Alles andere ist unverändert geblieben. 
+Alles andere ist unverändert geblieben.
 
-Das Level ist das zweite Level des Spieles.
+Das Level ist das zweite Level des Spiels.
 
 Das fertige Programm finden Sie unter `anhang/app_mit_planke.py`, das Level daneben als `anhang/level-planke.json`:
 
@@ -55,7 +55,7 @@ Der Fluss ist überall ein Feld breit. Das genügt, denn niemand watet.
 
 ## Eine Hand statt eines Schalters
 
-Bisher war das Attribut `carrying` der Ameise ein Wahrheitswert — trägt eine Frucht, ja oder nein. 
+Bisher war das Attribut `carrying` der Ameise ein Wahrheitswert — trägt eine Frucht, ja oder nein.
 
 Jetzt gibt es zwei Dinge zu tragen, also wird daraus eine Zeichenkette:
 

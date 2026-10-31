@@ -6,11 +6,11 @@ auf dem leuchtend grünen Spielbrett stehen und zu ihr aufsehen](../bilder/schri
 
 *Ein Satz von ihr, und die Kolonie wird aktiv.*
 
-**Ziel:** 
-* Ein Textfeld. 
-* Was Sie hineinschreiben, ist eine Nachricht an jede Ameise und steht in deren Zustand 
-* Und: Bis zur ersten Nachricht, schläft die
-Kolonie.
+**Ziel:**
+
+* Ein Textfeld.
+* Was Sie hineinschreiben, ist eine Nachricht an jede Ameise und steht in deren Zustand.
+* Und: Bis zur ersten Nachricht schläft die Kolonie.
 
 Jetzt können Sie aktiv eingreifen.
 
@@ -23,12 +23,12 @@ In `start()`:
     st.session_state.awake = False
 ```
 
-Es sind zwei neue zentrale Attribute vorhanden.
+Es gibt zwei neue zentrale Attribute.
 
-Attribut `awake` definiert, ob die Kolonie aktiv ist.
+Das Attribut `awake` legt fest, ob die Kolonie aktiv ist.
 Das zweite Attribut `order` enthält den aktuellen Befehl der Königin.
 
-Vor dem ersten Satz der Königin gibt es keine Aktivitäten und somit ist keine Anfrage an das Decision-Model notwendig.
+Vor dem ersten Satz der Königin gibt es keine Aktivitäten, und somit ist keine Anfrage an das Decision-Model notwendig.
 
 ```python
 ready = bool(api_key()) and st.session_state.awake and not won
@@ -66,7 +66,7 @@ Er weckt nicht und schläfert nicht ein. Er nimmt nur zurück, was gesagt wurde.
 
 ## Tipp: Widget-Namen und `session_state` teilen sich einen Namensraum
 
-In einer frühreren Fassung hieß das Formular order `st.form("order")` und die Anwendung brach ab:
+In einer früheren Fassung hieß das Formular `st.form("order")`, und die Anwendung brach ab:
 
 ```
 StreamlitValueAssignmentNotAllowedError:
@@ -77,9 +77,9 @@ Values for the widget with key 'order' cannot be set using st.session_state.
 
 Ein Widget mit dem Namen `order` verwendet automatisch `st.session_state.order`.
 
-Das Programm setzt in der Variable  `st.session_state.order` die aktuelle Nachricht der Königing. Beides geht aber nicht. 
+Das Programm setzt in der Variable `st.session_state.order` die aktuelle Nachricht der Königin. Beides geht aber nicht.
 
-Die Lösung ist banal das Formular in `order_form` umbennen.
+Die Lösung ist banal: das Formular in `order_form` umbenennen.
 
 ## Der Befehl der Königin im Zustand jeder Ameise
 
@@ -101,7 +101,7 @@ Dazu ein Satz in der Frage:
 > If the ant queen has said something, it applies to this ant too and comes
 > before the rest.
 
-Der Befehl der Königin wird **unverändert** weitergegen. Sie können auf Deutsch schreiben, da das Modell das genauso versteht.
+Der Befehl der Königin wird **unverändert** weitergegeben. Sie können auf Deutsch schreiben, das Modell versteht es genauso.
 
 ## Vier Sätze, vier Ergebnisse
 
@@ -113,7 +113,6 @@ Hier wird es interessant. Dieselbe Kolonie, dasselbe Level, vier Läufe:
 | „Spread out to the corners, the fruit is far from the nest…" | **61 %** | 3 von 5 nach 15 Runden |
 | „The fruit lies far out near the edges, most of it to the north and the west. Go there…" | **3 %** | Kolonie klemmt in der Nordwest-Ecke |
 | „You are all crowded in one corner… turn around, search the middle and the south" | 10 % | löst sich, holt weiter |
-
 
 ### Tipp: Vage Sätze machen unsicher
 
@@ -140,22 +139,21 @@ nebeneinander stehen und in Kapitel 8 gemessen wird.
 
 Der vierte Satz wurde als Befehl in einer schwierigen Situation gegeben:
 
-„Ihr steht alle in einer Ecke und dort ist nichts mehr Dreht um, geht auseinander, sucht die Mitte und den Süden." 
+„Ihr steht alle in einer Ecke, und dort ist nichts mehr. Dreht um, geht auseinander, sucht die Mitte und den Süden."
 
-Innerhalb von fünfzehn Runden löste sich das Knäul auf und der Vorrat wuchs weiter.
+Innerhalb von fünfzehn Runden löste sich das Knäuel auf, und der Vorrat wuchs weiter.
 
-Immer einen Satz sagen, zusehen ob er erfolgreich ist. Dann nachjustieren.
+Immer einen Satz sagen, zusehen, ob er erfolgreich ist. Dann nachjustieren.
 
 ## Ausprobieren
 
-Das Eingabe-Feld ist die Schnittstelle zur Ameisen-kolonie.
+Das Eingabefeld ist die Schnittstelle zur Ameisenkolonie.
 
 * Fangen Sie mit „Go west" an und sehen Sie zu, wie wörtlich das genommen wird.
 * Sagen Sie etwas, das die Ameisen nicht wissen können, weil sie nur drei Felder
   weit sehen: wo das Obst wirklich liegt. Nur Sie sehen das Brett.
 * Sagen Sie etwas Widersprüchliches („Bleibt zusammen und verteilt euch") und
-  schauen Sie
-  in die verworfenen Antworten.
+  schauen Sie in die verworfenen Antworten.
 * Sagen Sie etwas auf Deutsch. Dann denselben Satz auf Englisch. Ändert sich die
   Konfidenz?
 * Drücken Sie „Say nothing" mitten im Spiel. Die Kolonie bleibt wach und entscheidet

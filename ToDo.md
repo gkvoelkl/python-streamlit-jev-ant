@@ -10,16 +10,11 @@ What is still open, as of 2026-10-31.
 - [ ] 3 — The colony
 - [ ] 4 — Carrying and delivering (revised once with the second level, check again)
 - [ ] 5 — Eyes
-- [ ] 6 — The queen (in progress, uncommitted)
+- [ ] 6 — The queen (in progress, typos fixed)
 - [x] 7 — Seeing it
 - [x] 8 — What is the model worth?
-- [ ] A — The plank (revised in 0b46a65, further edits uncommitted)
+- [ ] A — The plank (revised in 0b46a65, further edits in progress, typos fixed)
 - [ ] B — Without the cloud
-
-Typos in the uncommitted appendix A edits:
-
-- "auf der der anderen Seite des Flusses" — double "der"
-- "wo sie die Planke abgelegt" — missing "hat"
 
 ## Pictures
 
