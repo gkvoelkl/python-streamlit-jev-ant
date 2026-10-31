@@ -338,3 +338,7 @@ the value.
   pictures.
 * Change `STEP_QUESTION` to “Which way should it go? It is looking for food in
   the north.” and look at the confidence.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

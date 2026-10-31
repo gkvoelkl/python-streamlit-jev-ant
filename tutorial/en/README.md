@@ -41,3 +41,7 @@ read the same as here.
 
 - A · [The way across the river](09-anhang-die-planke.md)
 - B · [The same game without the cloud](10-anhang-b-ohne-cloud.md)
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

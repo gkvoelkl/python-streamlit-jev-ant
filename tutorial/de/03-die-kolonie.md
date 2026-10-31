@@ -211,3 +211,7 @@ Durch die Emojis als Spielfiguren spart man sich zusätzliche Bilddateien.
 * Ändern Sie in `level1.json` `"ants"` auf 20 und laden Sie neu. Nichts passiert, weil
   `start()` die Kolonie nur aufstellt, wenn keine da ist. Dafür ist „Start
   over" da — und mit zwanzig Ameisen im Bau sehen Sie, wie eng es wird.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

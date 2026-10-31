@@ -129,3 +129,7 @@ where you start the program.
 
 But you can just as well start with an empty file and type the programs
 yourself. That is what the tutorial is written for.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

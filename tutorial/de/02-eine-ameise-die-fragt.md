@@ -328,3 +328,6 @@ gibt der Ameise die Möglichkeit mehr zu sehen, Kapitel 6 gibt der Königin eine
 * Ändern Sie `STEP_QUESTION` in „Which way should it go? It is looking for food
   in the north." und sehen Sie sich die Konfidenz an.
 
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

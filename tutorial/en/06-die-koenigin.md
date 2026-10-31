@@ -167,3 +167,7 @@ The input field is the interface to the ant colony.
   confidence change?
 * Press “Say nothing” in the middle of a game. The colony stays awake and keeps
   deciding for itself — it does not fall asleep again.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

@@ -227,3 +227,7 @@ Acht Schritte, ein Spiel. Was jetzt dasteht:
   `STEP_QUESTION` zu drehen kostet keine Zeile Code und ändert das Verhalten
   der ganzen Kolonie. Eine der Übungen in Kapitel 5 zeigt es: Nehmen Sie den
   Satz über das Ausschwärmen heraus, und die Kolonie verhält sich anders.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

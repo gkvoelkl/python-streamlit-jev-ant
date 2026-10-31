@@ -160,3 +160,7 @@ Das Eingabefeld ist die Schnittstelle zur Ameisenkolonie.
   Konfidenz?
 * Drücken Sie „Say nothing" mitten im Spiel. Die Kolonie bleibt wach und entscheidet
   weiter für sich — sie schläft nicht wieder ein.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

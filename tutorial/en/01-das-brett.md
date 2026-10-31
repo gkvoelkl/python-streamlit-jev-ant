@@ -175,3 +175,7 @@ and y downwards; the ant stands on (5, 3), and north of it is y minus
 * Change `CELL` to 40 and reload — Streamlit notices the change by itself.
 * Swap `st.image` for `st.html` as an experiment and watch how it vanishes
   without a trace. Then change it back.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

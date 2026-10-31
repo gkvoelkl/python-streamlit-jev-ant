@@ -246,3 +246,7 @@ in the state.
 * Look at the state that is sent now — it has gained two lines (`carrying`,
   `in the nest`). Each of them was a decision. What is missing is everything
   the ant *sees*.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

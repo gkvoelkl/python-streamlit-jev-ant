@@ -208,3 +208,7 @@ in eine Ecke marschiert.
   Frucht, wird ihr Etikett grün, bevor sie dort ankommt.
 * Lassen Sie die Kosten mitlaufen und rechnen Sie hoch: Was kostet ein Brett mit
   50 Ameisen und 200 Runden?
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

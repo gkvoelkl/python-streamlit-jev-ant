@@ -246,3 +246,7 @@ mehr das Stärkste im Zustand.
 * Sehen Sie sich den Zustand an, der jetzt verschickt wird — er hat zwei Zeilen
   bekommen (`carrying`, `in the nest`). Jede davon war eine Entscheidung. Was
   fehlt, ist alles, was die Ameise *sieht*.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

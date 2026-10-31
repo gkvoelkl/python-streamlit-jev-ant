@@ -238,3 +238,7 @@ Eight steps, one game. What stands there now:
   the behaviour of the whole colony. One of the exercises in chapter 5 shows
   it: take out the sentence about fanning out, and the colony behaves
   differently.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

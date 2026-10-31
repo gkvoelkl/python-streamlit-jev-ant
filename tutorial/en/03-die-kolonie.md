@@ -221,3 +221,7 @@ With emojis as game pieces you save yourself extra image files.
   `start()` only sets up the colony when there is none. That is what “Start
   over” is for — and with twenty ants in the nest you will see how tight it
   gets.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

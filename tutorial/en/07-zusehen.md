@@ -204,3 +204,7 @@ this very colony marched into a corner as one with an equally clear order.
   green before it gets there.
 * Let the cost run along and extrapolate: what does a board with 50 ants and
   200 rounds cost?
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

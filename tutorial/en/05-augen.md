@@ -408,3 +408,7 @@ with empty hands is to do.
   summit moves out of the nest to where there is the most traffic — and the
   carriers walk in the wrong direction. That is the most instructive mistake you
   can build into this program.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

@@ -128,3 +128,7 @@ dort gesucht, wo Sie das Programm aufrufen.
 
 Sie können aber genauso gut mit einer leeren Datei anfangen und die Programme
 selbst mittippen. Dafür ist das Tutorial geschrieben.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

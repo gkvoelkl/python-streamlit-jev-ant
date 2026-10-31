@@ -172,3 +172,7 @@ aus Kapitel 5 nicht.
   lieber?
 * Nehmen Sie `kev` und senken Sie `MIN_CONFIDENCE` auf 0,1. Kommt die Kolonie
   jetzt aus dem Bau? Und was ist eine Antwort mit 0,1 Konfidenz noch wert?
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

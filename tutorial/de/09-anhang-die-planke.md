@@ -271,3 +271,7 @@ lohnt — und dieser Anhang ist der Beweis, dass er nicht theoretisch ist.
 * Sehen Sie dem Brett zu, nachdem die Brücke liegt: Wo wird es grün? Die Spur
   zeigt, welchen Weg die Kolonie tatsächlich nimmt — und wie schnell er wieder
   verblasst, wenn niemand ihn benutzt.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

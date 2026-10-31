@@ -398,3 +398,7 @@ Ameise mit leeren Händen tun soll.
   sich dann, der Gipfel wandert aus dem Bau heraus dorthin, wo am meisten
   Verkehr ist — und die Trägerinnen laufen in die falsche Richtung. Das ist der
   lehrreichste Fehler, den man in diesem Programm bauen kann.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

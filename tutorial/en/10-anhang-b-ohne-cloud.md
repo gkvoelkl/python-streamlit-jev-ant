@@ -171,3 +171,7 @@ chapter 5.
   faster, the game slower going. Which trade do you prefer?
 * Take `kev` and lower `MIN_CONFIDENCE` to 0.1. Does the colony get out of the
   nest now? And what is an answer with 0.1 confidence still worth?
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

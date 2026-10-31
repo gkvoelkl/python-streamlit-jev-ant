@@ -278,3 +278,7 @@ off — and this appendix is the proof that it is not theoretical.
 * Watch the board after the bridge is down: where does it turn green? The trail
   shows which way the colony really takes — and how quickly it fades again when
   nobody uses it.
+
+---
+
+*This tutorial was created by Gerhard Völkl using Claude Code (Anthropic). It is meant to help you learn more about what happens when ants ask a decision model. Suggestions for improvement are welcome at gkvoelkl@nelson-games.de.*

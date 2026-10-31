@@ -39,3 +39,7 @@ dem eigenen Rechner, siehe Anhang B.
 
 - A · [Der Weg über den Fluss](09-anhang-die-planke.md)
 - B · [Dasselbe Spiel ohne Cloud](10-anhang-b-ohne-cloud.md)
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*

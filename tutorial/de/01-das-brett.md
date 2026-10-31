@@ -164,3 +164,7 @@ y nach unten; die Ameise steht auf (5, 3), darüber liegt Norden mit y minus
   selbst.
 * Tauschen Sie `st.image` versuchsweise gegen `st.html` und sehen Sie sich an,
   wie spurlos das verschwindet. Dann wieder zurück.
+
+---
+
+*Dieses Tutorial wurde von Gerhard Völkl unter Verwendung von Claude Code (Anthropic) erstellt. Es soll helfen, mehr über das Thema „Wenn Ameisen ein Decision-Model fragen“ zu lernen. Verbesserungsvorschläge gerne an gkvoelkl@nelson-games.de.*
