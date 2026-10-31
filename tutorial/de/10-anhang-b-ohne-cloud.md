@@ -15,8 +15,24 @@ Netz**. Und zwar ohne eine Zeile Code zu ändern.
 ollama pull nimble
 ```
 
-Drei Modelle stehen zur Wahl: `nimble` (9B), `tev1` (4B) und `tev1:0.8b`. Das
-hier Gemessene ist `nimble`; auf der Platte belegt es **9,5 GB**.
+Zur Einführung gab es drei Modelle: `nimble` (9B), `tev1` (4B) und
+`tev1:0.8b`. Alle drei gibt es noch, und das hier Gemessene ist `nimble`; auf
+der Platte belegt es **9,5 GB**.
+
+Inzwischen ist die Auswahl größer. Unter
+[ollama.com/search?c=decision](https://ollama.com/search?c=decision) stehen
+Ende Oktober 2026 zwölf Decision-Models, darunter:
+
+| Modell | Größen | Hinweis |
+|---|---|---|
+| `nimble` | 9B | hier gemessen, Apache 2.0 |
+| `nimble-v3` | 9B | Nachfolger, ab Ollama 0.40.4, nur **nicht-kommerziell** (CC BY-NC 4.0) |
+| `tev1` | 4B, 0.8B | antwortet mit nur etwa 2000 Token Kontext |
+| `d3` | 2B bis 27B | ab Ollama 0.40.9, versteht auch Bilder |
+
+Gemessen habe ich nur `nimble`. Die anderen sprechen dieselbe Schnittstelle
+`/v1/systemone` und sollten sich ebenso über `TYPESAFE_DEFAULT_MODEL` einsetzen
+lassen; ausprobiert habe ich es nicht.
 
 Dann in `.env`:
 
@@ -114,8 +130,8 @@ zeigt auf den Server von Streamlit. Wer das Spiel im Netz anbietet, braucht
 weiterhin einen Schlüssel — der lokale Weg ist der für die eigene Maschine.
 
 **Ein kleiner Rechner.** 9,5 GB Modell wollen geladen und im Speicher gehalten
-werden. `tev1:0.8b` ist der Weg für schwächere Hardware; gemessen habe ich es
-nicht.
+werden. `tev1:0.8b` und `d3:2b` sind der Weg für schwächere Hardware; gemessen
+habe ich sie nicht.
 
 ## Ausprobieren
 
