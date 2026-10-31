@@ -14,12 +14,10 @@ What is still open, as of 2026-10-31.
 - [x] 7 — Seeing it
 - [x] 8 — What is the model worth?
 - [ ] A — The plank (revised in 0b46a65, further edits in progress, typos fixed)
-- [ ] B — Without the cloud (measured again with nimble, kev, strands-decider; title picture missing)
+- [ ] B — Without the cloud (measured again with nimble, kev, strands-decider; title picture added)
 
 ## Pictures
 
-- [ ] `anhang-b-titel.png` — title picture for appendix B (Kling Image 3.0, like
-      the others), then the image line at the top of `10-anhang-b-ohne-cloud.md`
 - [ ] `queeny_and_worker.JPG` (untracked, repo root) — decide where it goes,
       convert to PNG under `tutorial/bilder/`, or delete it
 - [ ] `queen_queeny.JPG` in the repo root — same question

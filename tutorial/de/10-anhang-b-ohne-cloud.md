@@ -1,5 +1,12 @@
 # Anhang B — Dasselbe Spiel ohne Cloud
 
+![Queeny, von hinten über die Schulter gesehen, sitzt nachts an einem
+Schreibtisch vor einem Laptop; auf dem Bildschirm leuchtet das Spielbrett mit
+Arbeiterinnen und Äpfeln, ein Kabel führt zur Steckdose, daneben eine
+Tischlampe, draußen vor dem Fenster ziehen Wolken](../bilder/anhang-b-titel.png)
+
+*Dasselbe Spiel, aber diesmal auf dem eigenen Rechner.*
+
 Seit Version 0.35 führt **Ollama** Decision-Models auf dem eigenen Rechner aus
 und beantwortet Entscheidungsfragen im selben Format wie TypeSafe: derselbe Pfad `/v1/systemone`, dieselben Fragetypen `choice`, `noul`
 und `score`, dieselben `criteria`, und in der Antwort `probabilities`,
