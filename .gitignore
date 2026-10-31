@@ -20,3 +20,6 @@ site/
 
 # The Word document is built from the chapters when it is wanted, never committed.
 Ameisen-die-fragen.docx
+
+# The work list is local, as in python-streamlit-neural-earth-field.
+ToDo.md
