@@ -67,8 +67,12 @@ app.py              das Spiel, eine Datei
 level1.json         das Brett, der Bau, die Früchte, was gewinnt
 steps/              app.py nach jedem Schritt, erzeugt aus den Tags
 tutorial/de/        die deutschen Kapitel — das Original
-tutorial/en/        die englische Übersetzung, bisher Schritt 1
+tutorial/en/        die englische Übersetzung, alle Kapitel
 tutorial/bilder/    Bilder und Abbildungen; englische Abbildungen in bilder/en/
 tools/              die Generatoren für Word-Dokument, PNGs und Website
 mkdocs.yml          die Website
 ```
+
+## Lizenz
+
+MIT, siehe [LICENSE](LICENSE).

@@ -16,6 +16,7 @@
   <a href="https://gkvoelkl.github.io/python-streamlit-jev-ant/"><img src="https://img.shields.io/badge/Tutorial-Deutsch%20%7C%20English-2A86B0" alt="Tutorial: Deutsch | English"></a>
   <a href="https://github.com/gkvoelkl/python-streamlit-jev-ant/actions/workflows/docs.yml"><img src="https://github.com/gkvoelkl/python-streamlit-jev-ant/actions/workflows/docs.yml/badge.svg" alt="Website build"></a>
   <a href="https://claude.com/claude-code"><img src="https://img.shields.io/badge/Claude%20Code-D97757?logo=claude&logoColor=white" alt="Claude Code"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green" alt="License: MIT"></a>
 </p>
 
 <p align="center">

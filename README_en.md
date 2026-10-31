@@ -79,3 +79,7 @@ tutorial/bilder/    pictures and diagrams; English diagrams in bilder/en/
 tools/              the generators for the Word document, the PNGs and the website
 mkdocs.yml          the website
 ```
+
+## Licence
+
+MIT, see [LICENSE](LICENSE).

@@ -20,7 +20,7 @@ What is still open, as of 2026-10-31.
 
 ## Like python-streamlit-neural-earth-field
 
-- [ ] A licence (`LICENSE`, MIT there) and the badge in `README.md`
+- [x] MIT licence (`LICENSE`) and the badge in `README.md`
 - [ ] `CITATION.cff`
 - [ ] A GitHub remote, push, and the GitHub Pages website live
 - [ ] Release `v1.0`, topics on GitHub, social preview with Queeny
