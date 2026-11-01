@@ -73,8 +73,11 @@ def vision(level: dict, ant: dict) -> list[str]:
 
     if ant["carrying"]:
         nx, ny = nearest_nest_cell(level, ant)
-        if (nx, ny) != (ant["x"], ant["y"]):
+        near = steps_away(nx - ant["x"], ny - ant["y"])
+        if 0 < near <= VISION_RADIUS:
             seen.append(f"the nest, {phrase(nx - ant['x'], ny - ant['y'])}")
+
+        ...  # and the trail, further down
 
     return seen
 ```
@@ -103,9 +106,9 @@ Until now the options for the answer were a list of names. Now every direction
 gets a description — when there is something to describe:
 
 ```python
-def options(level, ant, taken) -> dict[str, str | None]:
+def options(level: dict, ant: dict, taken: set[tuple[int, int]]) -> dict[str, str | None]:
     ways = free_directions(level, ant, taken)
-    towards = {}
+    towards: dict[str, str] = {}
 
     if ant["carrying"]:
         nx, ny = nearest_nest_cell(level, ant)
@@ -114,7 +117,7 @@ def options(level, ant, taken) -> dict[str, str | None]:
         if home and 0 < near <= VISION_RADIUS:
             towards[home] = f"towards the nest, {phrase(nx - ant['x'], ny - ant['y'])}"
 
-        way = uphill(ant)          # the trail, see further down
+        way = uphill(ant)
         if way and way[0] not in towards:
             towards[way[0]] = f"the smell of the colony gets {describe_scent(way[1])}er"
     else:
@@ -186,7 +189,7 @@ The same ant two rounds later, now with a fruit on its back:
 MIN_CONFIDENCE = 0.22
 
 
-def accepted(answer, offered) -> str | None:
+def accepted(answer: object, offered: dict[str, str | None]) -> str | None:
     if isinstance(answer, BaseException):
         st.session_state.discarded.append(type(answer).__name__)
         return None
@@ -251,10 +254,18 @@ Real ants do not only use their eyes, they use a **scent trail**: they leave a
 trail behind, and the way back is the direction in which it gets stronger.
 
 ```python
-SCENT_DEPOSIT = 1.0        # what a searching ant leaves behind
-SCENT_STEP_DECAY = 0.88    # ... times this for every step since the nest
-SCENT_HALF_LIFE = 12.0     # rounds until a trail has faded to half
-SCENT_THRESHOLD = 0.05     # below this a square counts as odourless
+# What a searching ant leaves on the cell it just left, before the decay below.
+SCENT_DEPOSIT = 1.0
+
+# What is left of that with every step since the ant was last in the nest.
+SCENT_STEP_DECAY = 0.88
+
+# Rounds for a trail to fade to half. Evaporation is not decoration: it is how
+# the colony forgets a way that leads nowhere any more.
+SCENT_HALF_LIFE = 12.0
+
+# Below this a cell counts as unscented, so old trails stop being offered.
+SCENT_THRESHOLD = 0.05
 ```
 
 ### Laid while searching, not while carrying

@@ -142,7 +142,9 @@ Und in `board()` bekommt eine tragende Ameise eine kleine Frucht darüber:
 
 ```python
     ants_svg = "\n".join(
-        cell_text(ant["x"], ant["y"], "🐜")
+        cell_disc(ant["x"], ant["y"])
+        + "\n"
+        + cell_text(ant["x"], ant["y"], "🐜")
         + (
             "\n" + cell_text(ant["x"], ant["y"], "🍎", size=0.45, lift=0.3)
             if ant["carrying"]
@@ -172,8 +174,8 @@ carried = sum(ant["carrying"] for ant in st.session_state.ants)
 st.write(
     f"Round **{st.session_state.round}** · "
     f"**{st.session_state.stores}** of {level['target']} stored · "
-    f"**{carried}** being carried · "
-    f"**{len(st.session_state.fruit)}** left on the board"
+    f"**{carried}** carried · "
+    f"**{len(st.session_state.fruit)}** on the board"
 )
 
 if won:

@@ -44,7 +44,8 @@ ready = bool(api_key()) and st.session_state.awake and not won
 with st.form("order_form", clear_on_submit=True, border=False):
     field, say = st.columns([6, 1])
     draft = field.text_input(
-        "The queen says", placeholder="say something to the colony",
+        "The queen says",
+        placeholder="say something to the colony",
         label_visibility="collapsed",
     )
     if say.form_submit_button("Say", width="stretch") and draft.strip():
@@ -61,7 +62,7 @@ sentence can be typed straight away.
 Plus a button that takes the order back:
 
 ```python
-if hush.button("Say nothing", disabled=not st.session_state.order):
+if hush.button("Say nothing", width="stretch", disabled=not st.session_state.order):
     st.session_state.order = ""
     st.rerun()
 ```

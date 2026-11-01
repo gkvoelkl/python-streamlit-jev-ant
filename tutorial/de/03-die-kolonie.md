@@ -117,7 +117,7 @@ Wirklichkeit: kein Rand und kein Feld, auf dem schon eine Ameise oder einen Fruc
 An dieser Stelle lohnt sich `async`.
 
 ```python
-async def ask_everyone(payloads, key) -> list[object]:
+async def ask_everyone(payloads: list[tuple[dict, dict]], key: str) -> list[object]:
     async with AsyncTypeSafeClient(api_key=key, timeout=20) as client:
         return await asyncio.gather(
             *(client.system_one(state=state, questions=q) for state, q in payloads),

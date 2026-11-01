@@ -121,7 +121,7 @@ reality: no edge, and no square that already holds an ant or a fruit.
 This is where `async` pays off.
 
 ```python
-async def ask_everyone(payloads, key) -> list[object]:
+async def ask_everyone(payloads: list[tuple[dict, dict]], key: str) -> list[object]:
     async with AsyncTypeSafeClient(api_key=key, timeout=20) as client:
         return await asyncio.gather(
             *(client.system_one(state=state, questions=q) for state, q in payloads),

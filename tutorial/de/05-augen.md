@@ -67,8 +67,11 @@ def vision(level: dict, ant: dict) -> list[str]:
 
     if ant["carrying"]:
         nx, ny = nearest_nest_cell(level, ant)
-        if (nx, ny) != (ant["x"], ant["y"]):
+        near = steps_away(nx - ant["x"], ny - ant["y"])
+        if 0 < near <= VISION_RADIUS:
             seen.append(f"the nest, {phrase(nx - ant['x'], ny - ant['y'])}")
+
+        ...  # and the trail, further down
 
     return seen
 ```
@@ -94,9 +97,9 @@ Und im Zustand:
 Bisher war die Auswahl für die Antwort eine Liste von Namen. Jetzt bekommt jede Richtung eine Beschreibung — wenn es etwas zu beschreiben gibt:
 
 ```python
-def options(level, ant, taken) -> dict[str, str | None]:
+def options(level: dict, ant: dict, taken: set[tuple[int, int]]) -> dict[str, str | None]:
     ways = free_directions(level, ant, taken)
-    towards = {}
+    towards: dict[str, str] = {}
 
     if ant["carrying"]:
         nx, ny = nearest_nest_cell(level, ant)
@@ -105,7 +108,7 @@ def options(level, ant, taken) -> dict[str, str | None]:
         if home and 0 < near <= VISION_RADIUS:
             towards[home] = f"towards the nest, {phrase(nx - ant['x'], ny - ant['y'])}"
 
-        way = uphill(ant)          # die Spur, siehe weiter unten
+        way = uphill(ant)
         if way and way[0] not in towards:
             towards[way[0]] = f"the smell of the colony gets {describe_scent(way[1])}er"
     else:
@@ -178,7 +181,7 @@ Dieselbe Ameise zwei Runden später, jetzt mit Frucht auf dem Rücken:
 MIN_CONFIDENCE = 0.22
 
 
-def accepted(answer, offered) -> str | None:
+def accepted(answer: object, offered: dict[str, str | None]) -> str | None:
     if isinstance(answer, BaseException):
         st.session_state.discarded.append(type(answer).__name__)
         return None
@@ -238,10 +241,18 @@ Echte Ameisen verwenden nicht nur die Augen, sondern die **Duftspur**: Sie hinte
 
 
 ```python
-SCENT_DEPOSIT = 1.0        # was eine suchende Ameise hinterlässt
-SCENT_STEP_DECAY = 0.88    # ... mal diesem Wert je Schritt seit dem Bau
-SCENT_HALF_LIFE = 12.0     # Runden, bis eine Spur auf die Hälfte verblasst
-SCENT_THRESHOLD = 0.05     # darunter gilt ein Feld als geruchlos
+# What a searching ant leaves on the cell it just left, before the decay below.
+SCENT_DEPOSIT = 1.0
+
+# What is left of that with every step since the ant was last in the nest.
+SCENT_STEP_DECAY = 0.88
+
+# Rounds for a trail to fade to half. Evaporation is not decoration: it is how
+# the colony forgets a way that leads nowhere any more.
+SCENT_HALF_LIFE = 12.0
+
+# Below this a cell counts as unscented, so old trails stop being offered.
+SCENT_THRESHOLD = 0.05
 ```
 
 ### Gelegt wird beim Suchen, nicht beim Tragen

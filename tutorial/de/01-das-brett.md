@@ -51,7 +51,13 @@ uv add streamlit typesafe-sdk python-dotenv
 Legen Sie als Erstes die Datei `app.py` an, die später das komplette Spiel enthält.
 
 ```python
-"""Jev Ants — an ant colony that asks TypeSafe Jev what to do next."""
+"""Jev Ants — an ant colony that asks TypeSafe Jev what to do next.
+
+Step 1: the board. A grid and nothing else, so that the one thing this step is
+about — getting a picture on the page at all — has nothing to hide behind.
+
+    uv run streamlit run app.py
+"""
 
 import streamlit as st
 
@@ -62,7 +68,7 @@ CELL = 28
 DARK = "#2b2b33"
 LIGHT = "#33333d"
 
-st.set_page_config(page_title="Jev Ants", page_icon="🐜", layout="wide")
+st.set_page_config(page_title="Jev Ants", layout="wide")
 
 
 def board() -> str:
@@ -71,7 +77,7 @@ def board() -> str:
 
     return f"""
 <svg width="{width}" height="{height}" viewBox="0 0 {width} {height}"
-     xmlns="http://www.w3.org/2000/svg">
+     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The board">
   <defs>
     <pattern id="chequer" width="{2 * CELL}" height="{2 * CELL}"
              patternUnits="userSpaceOnUse">
@@ -85,8 +91,8 @@ def board() -> str:
 """
 
 
-st.title("🐜 Jev Ants")
-st.caption(f"Step 1 — the board, {COLUMNS} by {ROWS}.")
+st.title("Jev Ants")
+st.caption(f"Step 1 — the board, {COLUMNS} by {ROWS}. Nothing lives on it yet.")
 st.image(board())
 ```
 

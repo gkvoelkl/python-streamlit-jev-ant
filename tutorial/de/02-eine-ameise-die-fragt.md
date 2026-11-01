@@ -242,7 +242,8 @@ Scheitert die Anfrage, bleibt die Ameise stehen.
 
     st.bar_chart(
         {"probability": dict(sorted(said["probabilities"].items()))},
-        horizontal=True, height=260,
+        horizontal=True,
+        height=260,
     )
 ```
 
